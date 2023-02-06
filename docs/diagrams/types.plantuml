@@ -12,7 +12,20 @@ interface Type
 ASTNode <|-- Type
 
 class IntType
+class DoubleType
+class CharType
 
-Type <|.. IntType
+interface SimpleType
+
+class FuncType {
+    params: VarDefinition
+    returnType: SimpleType
+}
+
+Type <|.. SimpleType
+Type <|.. FuncType
+SimpleType <|.. IntType
+SimpleType <|.. DoubleType
+SimpleType <|.. CharType
 
 @enduml
