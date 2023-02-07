@@ -14,18 +14,33 @@ ASTNode <|-- Type
 class IntType
 class DoubleType
 class CharType
+class Array
+class Struct
 
-interface SimpleType
+class Array {
+    size: int
+    type: Type
+}
+
+class StructField {
+    name: String
+    type: Type
+}
+
+class Struct {
+    fields: List<StructField>
+}
 
 class FuncType {
     params: VarDefinition
     returnType: SimpleType
 }
 
-Type <|.. SimpleType
 Type <|.. FuncType
-SimpleType <|.. IntType
-SimpleType <|.. DoubleType
-SimpleType <|.. CharType
+Type <|.. IntType
+Type <|.. DoubleType
+Type <|.. CharType
+Type <|.. Array
+Type <|.. Struct
 
 @enduml

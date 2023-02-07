@@ -40,7 +40,12 @@ class Cast {
     type: Type
 }
 
-class UnaryOperation {
+class NotOperation {
+    operator: String
+    expression: Expression
+}
+
+class MinusOperation {
     operator: String
     expression: Expression
 }
@@ -51,8 +56,24 @@ class LogicOperation {
     rightExpression: Expression
 }
 
+class ComparissonOperation {
+    operator: String
+    leftExpression: Expression
+    rightExpression: Expression
+}
+
 class Invocation {
     arguments: LIst<Expression>
+}
+
+class Indexing {
+    array: Expression
+    index: Expression
+}
+
+class FieldAccess {
+    struct: Expression
+    field: String
 }
 
 ASTNode <|-- Expression
@@ -60,7 +81,13 @@ Expression <|.. IntLiteral
 Expression <|.. DoubleLiteral
 Expression <|.. CharLiteral
 Expression <|.. Variable
+Expression <|.. NotOperation
+Expression <|.. MinusOperation
+Expression <|.. LogicOperation
 Expression <|.. ArithmeticOperation
+Expression <|.. Invocation
+Expression <|.. Cast
+
 ArithmeticOperation o-- "2" Expression
 
 
