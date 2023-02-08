@@ -11,7 +11,7 @@ interface ASTNode {
 class Program
 
 ASTNode <|.. Program
-Program <|.. Definition
+Program o-- "0..n" Definition
 Definition <|.. VarDefinition
 Definition <|.. FunctionDefinition
 
@@ -26,7 +26,7 @@ class VarDefinition {
 
 class FunctionDefinition {
     name: String
-    varDefinitions: VarDefinition
+    varDefinitions: List<VarDefinition>
     statements: List<Statement>
     type: FuncType
 }
