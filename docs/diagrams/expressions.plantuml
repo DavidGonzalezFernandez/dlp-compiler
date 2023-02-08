@@ -35,9 +35,10 @@ class CharLiteral {
     value: char
 }
 
+' La conversión explícita a tipos simples se podrá realizar usando la palabra clave as
 class Cast {
-    variable: Variable
-    type: Type
+    variableName: String
+    newType: Type   /'Tiene que ser de tipo simple'/
 }
 
 class NotOperation {
@@ -46,7 +47,7 @@ class NotOperation {
 }
 
 class MinusOperation {
-    operator: String
+    operator: String    /'TODO comprobar si de verdad hace falta'/
     expression: Expression
 }
 
@@ -56,7 +57,7 @@ class LogicOperation {
     rightExpression: Expression
 }
 
-class ComparissonOperation {
+class ComparisonOperation {
     operator: String
     leftExpression: Expression
     rightExpression: Expression
