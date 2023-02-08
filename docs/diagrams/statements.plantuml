@@ -10,10 +10,15 @@ interface ASTNode {
 
 interface Statement
 
+/'
+Una sentencia condicional se define usando la palabra clave if seguida de una condición.
+El cuerpo de dicha sentencia estará comprendido entre do y end.
+Se podrá usar la palabra clave else.
+'/
 class If {
     condition: Expression
     ifBody: List<Statement>
-    elseBody: List<Statement>
+    elseBody: List<Statement>   /'puede no haber else, la lista estaría vacía'/
 }
 
 class While {
@@ -21,22 +26,40 @@ class While {
     body: List<Statement>
 }
 
+' El return debe estar seguido obligatoriamente de una expresión
 class Return {
-    returnType: Expression
+    returnExpression: Expression    /''/
 }
 
-class Write
-class Read
-class Assignment
+/'
+"Una escritura se compone por la palabra reservada puts y una lista de expresiones separadas por comas"
+    Write no tiene una lista de Expression, se genera un Write para cada Expression
+'/
+class Write {
+    expression: Expression
+}
+
+class Read {
+    variableName: String
+}
+
+' Una asignación está compuesta por dos expresiones separadas por el operador =.
+' TODO: la parte derecha no es una expresión, ¿no?
+class Assignment {
+    name: String
+    value: Expression
+}
 
 ASTNode <|-- Statement
 Statement <|.. If
 Statement <|.. While
 Statement <|.. Return
+Statement <|.. Assignment
 
 If o-- "1" Expression
 While o-- "1" Expression
 Return o-- "1" Expression
+Assignment o-- "1" Expression
 
 If o-- "0..n" Statement
 While o-- "0..n" Statement

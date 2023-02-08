@@ -42,12 +42,12 @@ class Cast {
 }
 
 class NotOperation {
-    operator: String
+    ' No necesita especificar el operador
     expression: Expression
 }
 
 class MinusOperation {
-    operator: String    /'TODO comprobar si de verdad hace falta'/
+    ' No necesita especificar el operador
     expression: Expression
 }
 
@@ -68,12 +68,12 @@ class Invocation {
 }
 
 class Indexing {
-    array: Expression
+    array: Expression       /'TODO qué tipo es'/
     index: Expression
 }
 
 class FieldAccess {
-    struct: Expression
+    struct: Expression      /'TODO qué tipo es'/
     field: String
 }
 

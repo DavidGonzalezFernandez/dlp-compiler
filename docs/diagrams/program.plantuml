@@ -8,27 +8,41 @@ interface ASTNode {
     getColumn(): int
 }
 
-class Program
+/'Un programa está compuesto por una secuencia de definiciones de
+variables y definiciones de funciones.
+'/
 
 ASTNode <|.. Program
-Program o-- "0..n" Definition
-Definition <|.. VarDefinition
-Definition <|.. FunctionDefinition
+
+class Program
 
 interface Definition {
     type: Type
 }
 
+Program o-- "0..n" Definition
+
+'La definición de una variable es un identificador seguido de :: y su respectivo tipo
 class VarDefinition {
     name: String
     type: Type
 }
 
+'TODO pendiente de terminar
+/' Una función se define usando:
+    la palabra def,
+    el identificador de la función,
+    seguido de una lista de parámetros  comprendidos por ( y ) y separados por ,,
+    después de los parámetros, y separado por ::, se debe especificar el tipo de  retorno.
+'/
 class FunctionDefinition {
     name: String
     varDefinitions: List<VarDefinition>
     statements: List<Statement>
     type: FuncType
 }
+
+Definition <|.. VarDefinition
+Definition <|.. FunctionDefinition
 
 @enduml

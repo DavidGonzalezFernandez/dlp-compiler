@@ -11,12 +11,17 @@ interface Type
 
 ASTNode <|-- Type
 
+'Los tipos simples son: int, double, char
 class IntType
 class DoubleType
 class CharType
+
+' Los tipos complejos son Arrays y Structs
 class Array
 class Struct
 
+/' Los arrays pueden ser creados usando [] para construir un tipo nuevo,
+debiendo especificar el tamaño del array, previo a su tipo, en su construcción '/
 class Array {
     size: int
     type: Type
@@ -27,13 +32,16 @@ class StructField {
     type: Type
 }
 
+' Un registro se puede crear usando la palabra clave defstruct y definiendo una secuencia de variables
 class Struct {
+    ' TODO ¿por qué este tipo concreto?
     fields: List<StructField>
 }
 
 class FuncType {
     params: VarDefinition
-    returnType: SimpleType
+    returnType: Type    /'Sólo se devuelven tipos simples'/
+    'TODO ¿qué pasa si el tipo de retorno es VOID?
 }
 
 Type <|.. FuncType
