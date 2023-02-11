@@ -11,85 +11,96 @@ interface ASTNode {
 interface Expression {
     type: Type
 }
+ASTNode <|-- Expression
+
 
 class IntLiteral {
     value: int
 }
+Expression <|.. IntLiteral
+
 
 class DoubleLiteral {
     value: double
 }
+Expression <|.. DoubleLiteral
+
+
+class CharLiteral {
+    value: char
+}
+Expression <|.. CharLiteral
+
 
 class Variable {
     name: String
     definition: VarDefinition
 }
+Expression <|.. Variable
+
 
 class ArithmeticOperation {
     operator: String
     leftExpression: Expression
     rightExpression: Expression
 }
+Expression <|.. ArithmeticOperation
+ArithmeticOperation o-- "2" Expression
 
-class CharLiteral {
-    value: char
-}
 
 ' La conversión explícita a tipos simples se podrá realizar usando la palabra clave as
 class Cast {
     variableName: String
     newType: Type   /'Tiene que ser de tipo simple'/
 }
+Expression <|.. Cast
 
+
+' Las operaciones NOT y MINUS no se ponen en la misma clase
 class NotOperation {
     ' No necesita especificar el operador
     expression: Expression
 }
+Expression <|.. NotOperation
 
 class MinusOperation {
     ' No necesita especificar el operador
     expression: Expression
 }
+Expression <|.. MinusOperation
 
+' Operaciones de comparación y lógicas no son iguales
 class LogicOperation {
     operator: String
     leftExpression: Expression
     rightExpression: Expression
 }
+Expression <|.. LogicOperation
 
 class ComparisonOperation {
     operator: String
     leftExpression: Expression
     rightExpression: Expression
 }
+Expression <|.. ComparisonOperation
 
 class Invocation {
     arguments: LIst<Expression>
 }
+Expression <|.. Invocation
 
-class Indexing {
+
+class ArrayIndexing {
     array: Expression       /'TODO qué tipo es'/
     index: Expression
 }
+Expression <|.. ArrayIndexing
 
 class FieldAccess {
     struct: Expression      /'TODO qué tipo es'/
     field: String
 }
-
-ASTNode <|-- Expression
-Expression <|.. IntLiteral
-Expression <|.. DoubleLiteral
-Expression <|.. CharLiteral
-Expression <|.. Variable
-Expression <|.. NotOperation
-Expression <|.. MinusOperation
-Expression <|.. LogicOperation
-Expression <|.. ArithmeticOperation
-Expression <|.. Invocation
-Expression <|.. Cast
-
-ArithmeticOperation o-- "2" Expression
+Expression <|.. FieldAccess
 
 
 @enduml
