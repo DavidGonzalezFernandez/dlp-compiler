@@ -20,6 +20,7 @@ class IfElse {
     ifBody: List<Statement>
     elseBody: List<Statement>   /'puede no haber else, la lista estaría vacía'/
 }
+' TODO: comprobar composición
 Statement <|.. IfElse
 IfElse o-- "1" Expression
 IfElse o-- "0..n" Statement
@@ -28,46 +29,46 @@ class While {
     condition: Expression
     body: List<Statement>
 }
+' TODO: comprobar composición
 Statement <|.. While
 While o-- "1" Expression
 While o-- "0..n" Statement
 
 ' El return debe estar seguido obligatoriamente de una expresión
 class Return {
-    returnExpression: Expression    /'qué '/
+    returnExpression: Expression
 }
+' TODO: comprobar composición
 Statement <|.. Return
 Return o-- "1" Expression
 
 ' Return para cuando no se devuelve una expresión
 class ReturnVoid
+' TODO: comprobar composición
 Statement <|.. ReturnVoid
 ReturnVoid o-- "1" Expression
 
-/'  El print de toda la vida TODO: analizar si mantener el nombre
-    "Una escritura se compone por la palabra reservada puts y una lista de expresiones separadas por comas"
-    Write no tiene una lista de Expression, se genera un Write para cada Expression
-'/
-class Write {
+' Write no tiene una lista de Expression, se genera un Write para cada Expression
+class WriteStatement {
     expression: Expression
 }
-Statement <|.. Write
-Write o-- "1" Expression
+' TODO: comprobar composición
+Statement <|.. WriteStatement
+WriteStatement o-- "1" Expression
 
-/'
-    El input de toda la vida TODO: analizar si cambiar el nombre
-'/
-class Read {
-    variableName: String
-    'TODO ¿hay que añadir una expresión?
+
+class ReadStatement {
+    expression: Expression
 }
-Statement <|.. Read
+' TODO: comprobar composición
+Statement <|.. ReadStatement
 
 ' Una asignación está compuesta por dos expresiones separadas por el operador =.
 class Assignment {
     name: String
     value: Expression
 }
+' TODO: comprobar composición
 Statement <|.. Assignment
 Assignment o-- "1" Expression
 
