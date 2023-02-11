@@ -15,14 +15,14 @@ Una sentencia condicional se define usando la palabra clave if seguida de una co
 El cuerpo de dicha sentencia estará comprendido entre do y end.
 Se podrá usar la palabra clave else.
 '/
-class If {
+class IfElse {
     condition: Expression
     ifBody: List<Statement>
     elseBody: List<Statement>   /'puede no haber else, la lista estaría vacía'/
 }
-Statement <|.. If
-If o-- "1" Expression
-If o-- "0..n" Statement
+Statement <|.. IfElse
+IfElse o-- "1" Expression
+IfElse o-- "0..n" Statement
 
 class While {
     condition: Expression
@@ -39,7 +39,13 @@ class Return {
 Statement <|.. Return
 Return o-- "1" Expression
 
-/' "Una escritura se compone por la palabra reservada puts y una lista de expresiones separadas por comas"
+' Return para cuando no se devuelve una expresión
+class ReturnVoid
+Statement <|.. ReturnVoid
+ReturnVoid o-- "1" Expression
+
+/'  El print de toda la vida TODO: analizar si mantener el nombre
+    "Una escritura se compone por la palabra reservada puts y una lista de expresiones separadas por comas"
     Write no tiene una lista de Expression, se genera un Write para cada Expression
 '/
 class Write {
@@ -48,8 +54,12 @@ class Write {
 Statement <|.. Write
 Write o-- "1" Expression
 
+/'
+    El input de toda la vida TODO: analizar si cambiar el nombre
+'/
 class Read {
     variableName: String
+    'TODO ¿hay que añadir una expresión?
 }
 Statement <|.. Read
 
