@@ -12,12 +12,17 @@ interface Type
 ASTNode <|-- Type
 
 'Los tipos simples son: int, double, char
+Type <|.. IntType
 class IntType
+
 class DoubleType
+Type <|.. DoubleType
+
 class CharType
+Type <|.. CharType
+
 
 ' Los tipos complejos son Arrays y Structs
-
 
 /' Los arrays pueden ser creados usando [] para construir un tipo nuevo,
 debiendo especificar el tamaño del array, previo a su tipo, en su construcción '/
@@ -25,29 +30,33 @@ class ArrayType {
     size: int
     type: Type
 }
+Type <|.. ArrayType
+
 
 class StructField {
     name: String
     type: Type
 }
+Type <|.. StructField
+
 
 ' Un registro se puede crear usando la palabra clave defstruct y definiendo una secuencia de variables
 class StructType {
-    ' TODO ¿por qué este tipo concreto?
-    fields: List<StructField>
+    fields: List<StructField>   /'¿Por qué este tipo concreto?'/
 }
+Type <|.. StructType
 
-class FuncType {
+
+class FunctionType {
     params: VarDefinition
     returnType: Type    /'Sólo se devuelven tipos simples'/
-    'TODO ¿qué pasa si el tipo de retorno es VOID?
 }
+Type <|.. FunctionType
 
-Type <|.. FuncType
-Type <|.. IntType
-Type <|.. DoubleType
-Type <|.. CharType
-Type <|.. ArrayType
-Type <|.. StructType
+
+' Las funciones tienen un tipo de retorno, pero pueden no devolver nada
+' Se necesita el tipo Void
+class Void
+Type <|.. Void
 
 @enduml
