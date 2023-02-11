@@ -50,7 +50,7 @@ ArithmeticOperation o-- "2" Expression
 
 ' La conversión explícita a tipos simples se podrá realizar usando la palabra clave as
 class Cast {
-    variableName: String
+    variableName: String    /'TODO ¿es un String o una expresión?'/
     newType: Type   /'Tiene que ser de tipo simple'/
 }
 Expression <|.. Cast
@@ -63,11 +63,13 @@ class NotOperation {
 }
 Expression <|.. NotOperation
 
+
 class MinusOperation {
     ' No necesita especificar el operador
     expression: Expression
 }
 Expression <|.. MinusOperation
+
 
 ' Operaciones de comparación y lógicas no son iguales
 class LogicOperation {
@@ -77,6 +79,7 @@ class LogicOperation {
 }
 Expression <|.. LogicOperation
 
+
 class ComparisonOperation {
     operator: String
     leftExpression: Expression
@@ -84,10 +87,14 @@ class ComparisonOperation {
 }
 Expression <|.. ComparisonOperation
 
-class Invocation {
+
+' Una función puede no devolver nada, tiene tipo de retorno Void
+' Se puede invocar a una función y no almacenar lo que devuelve
+' Sea como sea, devuelve algo, así que es una expresión
+class FunctionInvocation {
     arguments: LIst<Expression>
 }
-Expression <|.. Invocation
+Expression <|.. FunctionInvocation
 
 
 class ArrayIndexing {
@@ -96,19 +103,12 @@ class ArrayIndexing {
 }
 Expression <|.. ArrayIndexing
 
+
 class FieldAccess {
     struct: Expression      /'TODO qué tipo es'/
     field: String
 }
 Expression <|.. FieldAccess
-
-' Una función puede no devolver nada, tiene tipo de retorno Void
-' Se puede invocar a una función y no almacenar lo que devuelve
-' Sea como sea, devuelve algo, así que es una expresión
-class FunctionInvocation {
-    'TODO ¿qué necesita dentro?
-}
-Expression <|.. FunctionInvocation
 
 
 @enduml
