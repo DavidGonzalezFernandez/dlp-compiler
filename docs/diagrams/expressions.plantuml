@@ -102,5 +102,13 @@ class FieldAccess {
 }
 Expression <|.. FieldAccess
 
+' Una función puede no devolver nada, tiene tipo de retorno Void
+' Se puede invocar a una función y no almacenar lo que devuelve
+' Sea como sea, devuelve algo, así que es una expresión
+class FunctionInvocation {
+    'TODO ¿qué necesita dentro?
+}
+Expression <|.. FunctionInvocation
+
 
 @enduml
