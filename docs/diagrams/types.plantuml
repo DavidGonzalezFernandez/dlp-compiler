@@ -17,12 +17,11 @@ class DoubleType
 class CharType
 
 ' Los tipos complejos son Arrays y Structs
-class Array
-class Struct
+
 
 /' Los arrays pueden ser creados usando [] para construir un tipo nuevo,
 debiendo especificar el tamaño del array, previo a su tipo, en su construcción '/
-class Array {
+class ArrayType {
     size: int
     type: Type
 }
@@ -33,7 +32,7 @@ class StructField {
 }
 
 ' Un registro se puede crear usando la palabra clave defstruct y definiendo una secuencia de variables
-class Struct {
+class StructType {
     ' TODO ¿por qué este tipo concreto?
     fields: List<StructField>
 }
@@ -48,7 +47,7 @@ Type <|.. FuncType
 Type <|.. IntType
 Type <|.. DoubleType
 Type <|.. CharType
-Type <|.. Array
-Type <|.. Struct
+Type <|.. ArrayType
+Type <|.. StructType
 
 @enduml
