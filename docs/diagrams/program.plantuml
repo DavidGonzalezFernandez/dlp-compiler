@@ -25,7 +25,6 @@ Program o-- "0..n" Definition
 'La definición de una variable es un identificador seguido de :: y su respectivo tipo
 class VarDefinition {
     name: String
-    type: Type
 }
 
 'TODO pendiente de terminar
@@ -39,7 +38,6 @@ class FunctionDefinition {
     name: String
     varDefinitions: List<VarDefinition>
     statements: List<Statement>
-    type: FuncType
 }
 
 Definition <|.. VarDefinition
