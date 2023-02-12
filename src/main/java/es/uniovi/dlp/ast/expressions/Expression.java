@@ -5,4 +5,6 @@ import es.uniovi.dlp.ast.types.Type;
 
 public interface Expression {
     public Type getType();
+
+    public Object getValue();
 }
