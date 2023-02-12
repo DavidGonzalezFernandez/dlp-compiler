@@ -5,17 +5,24 @@ import es.uniovi.dlp.ast.types.IntType;
 import es.uniovi.dlp.ast.types.Type;
 
 public class IntLiteral extends AbstractASTNode implements Expression {
+    private int value;
+    private Type type;
     public IntLiteral(int line, int column) {
         super(line, column);
+        this.type = new IntType(line, column);
     }
 
     @Override
     public Type getType() {
-        return null;
+        return this.type;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
     }
 
     @Override
     public Object getValue() {
-        return null;
+        return this.value;
     }
 }

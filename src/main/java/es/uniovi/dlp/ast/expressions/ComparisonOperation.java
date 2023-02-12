@@ -4,6 +4,9 @@ import es.uniovi.dlp.ast.AbstractASTNode;
 import es.uniovi.dlp.ast.types.Type;
 
 public class ComparisonOperation extends AbstractASTNode implements Expression {
+    private String operator;
+    private Expression leftExpression;
+    private Expression rightExpression;
     public ComparisonOperation(int line, int column) {
         super(line, column);
     }

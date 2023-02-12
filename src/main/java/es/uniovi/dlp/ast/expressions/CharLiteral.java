@@ -1,20 +1,28 @@
 package es.uniovi.dlp.ast.expressions;
 
 import es.uniovi.dlp.ast.AbstractASTNode;
+import es.uniovi.dlp.ast.types.CharType;
 import es.uniovi.dlp.ast.types.Type;
 
 public class CharLiteral extends AbstractASTNode implements Expression {
+    private char value;
+    private Type type;
     public CharLiteral(int line, int column) {
         super(line, column);
+        this.type = new CharType(line, column);
+    }
+
+    public void setValue(char value) {
+        this.value = value;
     }
 
     @Override
     public Type getType() {
-        return null;
+        return this.type;
     }
 
     @Override
     public Object getValue() {
-        return null;
+        return this.value;
     }
 }
