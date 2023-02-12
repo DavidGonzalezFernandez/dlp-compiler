@@ -9,7 +9,7 @@ public class IntLiteral extends AbstractASTNode implements Expression {
     private Type type;
     public IntLiteral(int line, int column) {
         super(line, column);
-        this.type = new IntType(line, column);
+        this.type = (Type) new IntType(line, column);   //FIXME: eliminar el cast
     }
 
     @Override

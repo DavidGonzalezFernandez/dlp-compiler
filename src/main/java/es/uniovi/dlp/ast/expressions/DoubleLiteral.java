@@ -9,7 +9,7 @@ public class DoubleLiteral extends AbstractASTNode implements Expression {
     private Type type;
     public DoubleLiteral(int line, int column) {
         super(line, column);
-        this.type = new DoubleType(line, column);
+        this.type = (Type) new DoubleType(line, column);        // FIXME: elimianr el cast
     }
 
     public void setChar(char value) {

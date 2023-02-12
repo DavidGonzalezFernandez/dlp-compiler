@@ -9,7 +9,7 @@ public class CharLiteral extends AbstractASTNode implements Expression {
     private Type type;
     public CharLiteral(int line, int column) {
         super(line, column);
-        this.type = new CharType(line, column);
+        this.type = (Type) new CharType(line, column);  // FIXME: elimianr el cast
     }
 
     public void setValue(char value) {
