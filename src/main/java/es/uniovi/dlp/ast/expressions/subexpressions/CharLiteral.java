@@ -1,10 +1,12 @@
-package es.uniovi.dlp.ast.expressions;
+package es.uniovi.dlp.ast.expressions.subexpressions;
 
 import es.uniovi.dlp.ast.AbstractASTNode;
-import es.uniovi.dlp.ast.types.CharType;
+import es.uniovi.dlp.ast.expressions.AbstractExpression;
+import es.uniovi.dlp.ast.expressions.Expression;
+import es.uniovi.dlp.ast.types.subtypes.CharType;
 import es.uniovi.dlp.ast.types.Type;
 
-public class CharLiteral extends AbstractASTNode implements Expression {
+public class CharLiteral extends AbstractExpression {
     private char value;
     private Type type;
     public CharLiteral(int line, int column) {

@@ -1,9 +1,11 @@
-package es.uniovi.dlp.ast.expressions;
+package es.uniovi.dlp.ast.expressions.subexpressions;
 
 import es.uniovi.dlp.ast.AbstractASTNode;
+import es.uniovi.dlp.ast.expressions.AbstractExpression;
+import es.uniovi.dlp.ast.expressions.Expression;
 import es.uniovi.dlp.ast.types.Type;
 
-public class LogicOperation extends AbstractASTNode implements Expression {
+public class LogicOperation extends AbstractExpression {
     private String operator;
     private Expression leftExpression;
     private Expression rightExpression;

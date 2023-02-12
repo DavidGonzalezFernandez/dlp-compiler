@@ -1,8 +1,7 @@
-package es.uniovi.dlp.ast.types;
+package es.uniovi.dlp.ast.types.subtypes;
 
-import es.uniovi.dlp.ast.AbstractASTNode;
+import es.uniovi.dlp.ast.types.AbstractType;
 
-import java.lang.reflect.Type;
 import java.util.List;
 
 public class StructType extends AbstractType {

@@ -1,11 +1,13 @@
-package es.uniovi.dlp.ast.expressions;
+package es.uniovi.dlp.ast.expressions.subexpressions;
 
 import es.uniovi.dlp.ast.AbstractASTNode;
+import es.uniovi.dlp.ast.expressions.AbstractExpression;
+import es.uniovi.dlp.ast.expressions.Expression;
 import es.uniovi.dlp.ast.types.Type;
 
 import java.util.List;
 
-public class FunctionInvocation extends AbstractASTNode implements Expression {
+public class FunctionInvocation extends AbstractExpression {
     private String name;
     private List<Expression> arguments;
 

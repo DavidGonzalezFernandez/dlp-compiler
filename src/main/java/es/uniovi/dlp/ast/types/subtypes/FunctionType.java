@@ -1,6 +1,8 @@
-package es.uniovi.dlp.ast.types;
+package es.uniovi.dlp.ast.types.subtypes;
 
 import es.uniovi.dlp.ast.program.VarDefinition;
+import es.uniovi.dlp.ast.types.AbstractType;
+import es.uniovi.dlp.ast.types.Type;
 
 import java.util.List;
 

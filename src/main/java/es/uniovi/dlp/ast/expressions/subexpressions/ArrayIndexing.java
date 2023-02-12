@@ -1,9 +1,11 @@
-package es.uniovi.dlp.ast.expressions;
+package es.uniovi.dlp.ast.expressions.subexpressions;
 
 import es.uniovi.dlp.ast.AbstractASTNode;
+import es.uniovi.dlp.ast.expressions.AbstractExpression;
+import es.uniovi.dlp.ast.expressions.Expression;
 import es.uniovi.dlp.ast.types.Type;
 
-public class ArrayIndexing extends AbstractASTNode implements Expression {
+public class ArrayIndexing extends AbstractExpression {
     private Expression array;
     private Expression index;
 

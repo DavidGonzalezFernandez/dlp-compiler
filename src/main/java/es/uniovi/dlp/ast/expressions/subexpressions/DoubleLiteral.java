@@ -1,10 +1,12 @@
-package es.uniovi.dlp.ast.expressions;
+package es.uniovi.dlp.ast.expressions.subexpressions;
 
 import es.uniovi.dlp.ast.AbstractASTNode;
-import es.uniovi.dlp.ast.types.DoubleType;
+import es.uniovi.dlp.ast.expressions.AbstractExpression;
+import es.uniovi.dlp.ast.expressions.Expression;
+import es.uniovi.dlp.ast.types.subtypes.DoubleType;
 import es.uniovi.dlp.ast.types.Type;
 
-public class DoubleLiteral extends AbstractASTNode implements Expression {
+public class DoubleLiteral extends AbstractExpression {
     private double value;
     private Type type;
     public DoubleLiteral(int line, int column) {
