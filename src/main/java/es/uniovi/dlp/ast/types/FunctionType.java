@@ -1,6 +1,6 @@
 package es.uniovi.dlp.ast.types;
 
-public class FunctionType extends Type {
+public class FunctionType extends AbstractType {
     public Object params; //TODO clase VarDefinition
     public Type returnType;
 

@@ -4,7 +4,7 @@ import es.uniovi.dlp.ast.AbstractASTNode;
 
 import java.lang.reflect.Type;
 
-public class DoubleType extends AbstractASTNode implements Type {
+public class DoubleType extends AbstractType {
     public DoubleType(int line, int column) {
         super(line, column);
     }

@@ -4,7 +4,7 @@ import es.uniovi.dlp.ast.AbstractASTNode;
 
 import java.lang.reflect.Type;
 
-public class ArrayType extends AbstractASTNode implements Type {
+public class ArrayType extends AbstractType {
     private int size;
     private Type type;
 
