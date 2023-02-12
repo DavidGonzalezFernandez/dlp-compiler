@@ -56,7 +56,7 @@ Type <|.. FunctionType
 
 ' Las funciones tienen un tipo de retorno, pero pueden no devolver nada
 ' Se necesita el tipo Void
-class Void
-Type <|.. Void
+class VoidType
+Type <|.. VoidType
 
 @enduml
