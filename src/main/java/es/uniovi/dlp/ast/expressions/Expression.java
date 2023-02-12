@@ -1,9 +1,8 @@
 package es.uniovi.dlp.ast.expressions;
 
 import es.uniovi.dlp.ast.AbstractASTNode;
+import es.uniovi.dlp.ast.types.Type;
 
-public class Expression extends AbstractASTNode {
-    public Expression(int line, int column) {
-        super(line, column);
-    }
+public interface Expression {
+    public Type getType();
 }
