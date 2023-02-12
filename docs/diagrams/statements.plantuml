@@ -64,7 +64,7 @@ ReadStatement o-- "1" Expression
 
 ' Una asignación está compuesta por dos expresiones separadas por el operador =.
 class Assignment {
-    name: Expression
+    leftExpression: Expression
     value: Expression
 }
 Statement <|.. Assignment
