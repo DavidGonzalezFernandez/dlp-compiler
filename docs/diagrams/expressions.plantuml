@@ -92,7 +92,8 @@ Expression <|.. ComparisonOperation
 ' Se puede invocar a una función y no almacenar lo que devuelve
 ' Sea como sea, devuelve algo, así que es una expresión
 class FunctionInvocation {
-    arguments: LIst<Expression>
+    name: String
+    arguments: List<Expression>
 }
 Expression <|.. FunctionInvocation
 
