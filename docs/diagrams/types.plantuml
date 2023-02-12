@@ -29,7 +29,6 @@ debiendo especificar el tamaño del array, previo a su tipo, en su construcción
 class ArrayType {
     size: int
     type: Type
-    items: List<T>
 }
 Type <|.. ArrayType
 
