@@ -2,6 +2,7 @@
 
 package es.uniovi.dlp.parser;
 
+import java.util.List;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -16,7 +17,13 @@ public class XanaParser extends Parser {
 
   protected static final DFA[] _decisionToDFA;
   protected static final PredictionContextCache _sharedContextCache = new PredictionContextCache();
-  public static final int INT_CONSTANT = 1;
+  public static final int OMMIT = 1,
+      LINE_COMMENT = 2,
+      MULTI_LINE_COMMENT = 3,
+      INT_CONSTANT = 4,
+      ID = 5,
+      REAL_CONSTANT = 6,
+      CHAR_CONSTANT = 7;
   public static final int RULE_program = 0;
 
   private static String[] makeRuleNames() {
@@ -32,7 +39,16 @@ public class XanaParser extends Parser {
   private static final String[] _LITERAL_NAMES = makeLiteralNames();
 
   private static String[] makeSymbolicNames() {
-    return new String[] {null, "INT_CONSTANT"};
+    return new String[] {
+      null,
+      "OMMIT",
+      "LINE_COMMENT",
+      "MULTI_LINE_COMMENT",
+      "INT_CONSTANT",
+      "ID",
+      "REAL_CONSTANT",
+      "CHAR_CONSTANT"
+    };
   }
 
   private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -95,8 +111,36 @@ public class XanaParser extends Parser {
 
   @SuppressWarnings("CheckReturnValue")
   public static class ProgramContext extends ParserRuleContext {
-    public TerminalNode INT_CONSTANT() {
-      return getToken(XanaParser.INT_CONSTANT, 0);
+    public List<TerminalNode> ID() {
+      return getTokens(XanaParser.ID);
+    }
+
+    public TerminalNode ID(int i) {
+      return getToken(XanaParser.ID, i);
+    }
+
+    public List<TerminalNode> INT_CONSTANT() {
+      return getTokens(XanaParser.INT_CONSTANT);
+    }
+
+    public TerminalNode INT_CONSTANT(int i) {
+      return getToken(XanaParser.INT_CONSTANT, i);
+    }
+
+    public List<TerminalNode> REAL_CONSTANT() {
+      return getTokens(XanaParser.REAL_CONSTANT);
+    }
+
+    public TerminalNode REAL_CONSTANT(int i) {
+      return getToken(XanaParser.REAL_CONSTANT, i);
+    }
+
+    public List<TerminalNode> CHAR_CONSTANT() {
+      return getTokens(XanaParser.CHAR_CONSTANT);
+    }
+
+    public TerminalNode CHAR_CONSTANT(int i) {
+      return getToken(XanaParser.CHAR_CONSTANT, i);
     }
 
     public ProgramContext(ParserRuleContext parent, int invokingState) {
@@ -112,11 +156,31 @@ public class XanaParser extends Parser {
   public final ProgramContext program() throws RecognitionException {
     ProgramContext _localctx = new ProgramContext(_ctx, getState());
     enterRule(_localctx, 0, RULE_program);
+    int _la;
     try {
       enterOuterAlt(_localctx, 1);
       {
-        setState(2);
-        match(INT_CONSTANT);
+        setState(5);
+        _errHandler.sync(this);
+        _la = _input.LA(1);
+        while (((_la) & ~0x3f) == 0 && ((1L << _la) & 240L) != 0) {
+          {
+            {
+              setState(2);
+              _la = _input.LA(1);
+              if (!(((_la) & ~0x3f) == 0 && ((1L << _la) & 240L) != 0)) {
+                _errHandler.recoverInline(this);
+              } else {
+                if (_input.LA(1) == Token.EOF) matchedEOF = true;
+                _errHandler.reportMatch(this);
+                consume();
+              }
+            }
+          }
+          setState(7);
+          _errHandler.sync(this);
+          _la = _input.LA(1);
+        }
       }
     } catch (RecognitionException re) {
       _localctx.exception = re;
@@ -129,10 +193,13 @@ public class XanaParser extends Parser {
   }
 
   public static final String _serializedATN =
-      "\u0004\u0001\u0001\u0005\u0002\u0000\u0007\u0000\u0001\u0000\u0001\u0000"
-          + "\u0001\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0003\u0000\u0002\u0001"
-          + "\u0000\u0000\u0000\u0002\u0003\u0005\u0001\u0000\u0000\u0003\u0001\u0001"
-          + "\u0000\u0000\u0000\u0000";
+      "\u0004\u0001\u0007\t\u0002\u0000\u0007\u0000\u0001\u0000\u0005\u0000\u0004"
+          + "\b\u0000\n\u0000\f\u0000\u0007\t\u0000\u0001\u0000\u0000\u0000\u0001\u0000"
+          + "\u0000\u0001\u0001\u0000\u0004\u0007\b\u0000\u0005\u0001\u0000\u0000\u0000"
+          + "\u0002\u0004\u0007\u0000\u0000\u0000\u0003\u0002\u0001\u0000\u0000\u0000"
+          + "\u0004\u0007\u0001\u0000\u0000\u0000\u0005\u0003\u0001\u0000\u0000\u0000"
+          + "\u0005\u0006\u0001\u0000\u0000\u0000\u0006\u0001\u0001\u0000\u0000\u0000"
+          + "\u0007\u0005\u0001\u0000\u0000\u0000\u0001\u0005";
   public static final ATN _ATN = new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 
   static {

@@ -1,30 +1,29 @@
 package es.uniovi.dlp.ast.expressions.subexpressions;
 
-import es.uniovi.dlp.ast.AbstractASTNode;
 import es.uniovi.dlp.ast.expressions.AbstractExpression;
-import es.uniovi.dlp.ast.expressions.Expression;
-import es.uniovi.dlp.ast.types.subtypes.DoubleType;
 import es.uniovi.dlp.ast.types.Type;
+import es.uniovi.dlp.ast.types.subtypes.DoubleType;
 
 public class DoubleLiteral extends AbstractExpression {
-    private double value;
-    private Type type;
-    public DoubleLiteral(int line, int column) {
-        super(line, column);
-        this.type = new DoubleType(line, column);
-    }
+  private double value;
+  private Type type;
 
-    public void setChar(char value) {
-        this.value = value;
-    }
+  public DoubleLiteral(int line, int column) {
+    super(line, column);
+    this.type = new DoubleType(line, column);
+  }
 
-    @Override
-    public Type getType() {
-        return this.type;
-    }
+  public void setChar(char value) {
+    this.value = value;
+  }
 
-    @Override
-    public Object getValue() {
-        return this.value;
-    }
+  @Override
+  public Type getType() {
+    return this.type;
+  }
+
+  @Override
+  public Object getValue() {
+    return this.value;
+  }
 }
