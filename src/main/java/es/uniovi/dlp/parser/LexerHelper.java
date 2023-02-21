@@ -20,16 +20,23 @@ public class LexerHelper {
   }
 
   public static char lexemeToChar(String lexeme) {
-    if (lexeme == null) return Character.MIN_VALUE;
+    if (lexeme == null) throw new IllegalArgumentException();
 
-    if (lexeme == "\n") return '\n';
-    if (lexeme == "\t") return '\t';
-    if (lexeme == "\r") return '\r';
-
-    if (lexeme.length() == 1) {
-      return lexeme.charAt(0);
-    } else {
-      return (char) Integer.parseInt(lexeme.substring(1));
+    if (lexeme.length() == 3) {
+      return lexeme.charAt(1);
     }
+
+    if ('\\' == lexeme.charAt(1)) {
+      switch (lexeme.charAt(2)) {
+        case 'n':
+          return '\n';
+        case 't':
+          return '\t';
+        case 'r':
+          return '\r';
+      }
+      return (char) Integer.parseInt(lexeme.substring(2, lexeme.length() - 1));
+    }
+    throw new IllegalArgumentException();
   }
 }
