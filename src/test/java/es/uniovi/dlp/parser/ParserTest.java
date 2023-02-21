@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 public class ParserTest {
-
   /** The program should not be valid if there is no main function */
   @Test
   void testEmptyFile() {
