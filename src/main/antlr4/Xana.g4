@@ -2,9 +2,15 @@ grammar Xana;
 
 
 @header {
-package es.uniovi.dlp.parser;
-import es.uniovi.dlp.ast;
-import es.uniovi.dlp.ast.*;
+    package es.uniovi.dlp.parser;
+    import es.uniovi.dlp.ast.*;
+    import es.uniovi.dlp.ast.expressions.*;
+    import es.uniovi.dlp.ast.expressions.subexpressions.*;
+    import es.uniovi.dlp.ast.program.*;
+    import es.uniovi.dlp.ast.statement.substatements.*;
+    import es.uniovi.dlp.ast.statement.*;
+    import es.uniovi.dlp.ast.types.*;
+    import es.uniovi.dlp.ast.types.subtypes.*;
 }
 
 program: (var_def | func_def)* main_def;
@@ -21,43 +27,85 @@ func_body: DO (var_def | statement)* END;
 param_list: (var_def (',' var_def)*)?;
 
 // Variable definitions
-var_def: ID (COMMA ID)* DOS_PUNTOS var_type_def;
-var_type_def: simple_type | array_def_type | struct_def_type;
-simple_type: 'int' | 'double' | 'char';
+var_def
+    : ID (COMMA ID)* DOS_PUNTOS var_type_def;
+var_type_def
+    : simple_type | array_def_type | struct_def_type;
+
+simple_type returns [Type my_type]
+    : t='int'    { $my_type = new IntType($t.getLine(), $t.getCharPositionInLine()+1); }
+    | t='double' { $my_type = new DoubleType($t.getLine(), $t.getCharPositionInLine()+1); }
+    | t='char'   { $my_type = new CharType($t.getLine(), $t.getCharPositionInLine()+1); }
+    ;
+
+
 array_def_type: ABRE_CORCHETE INT_CONSTANT DOS_PUNTOS var_type_def CIERRA_CORCHETE;
 struct_def_type: DEFSTRUCT DO (var_def)* END;
 
 
 // Statements
-statement: func_invocation | if_else | while | assignment | puts | in | return;
-func_invocation: ID ABRE_PARENTESIS argument_list CIERRA_PARENTESIS;
-argument_list: (expression (COMMA expression)*)?;
-if_else: IF condition DO (statement)* (ELSE (statement)*)? END;
-while: WHILE condition DO (statement)* END;
-condition: expression;
-assignment: expression IGUAL (expression);
-puts: PUTS expression (COMMA expression)*;
-in: IN expression (COMMA expression)*;
-return: RETURN expression?;
+statement
+    : func_invocation
+    | if_else
+    | while
+    | assignment
+    | puts
+    | in
+    | return
+    ;
+
+
+func_invocation:
+    ID ABRE_PARENTESIS argument_list CIERRA_PARENTESIS;
+
+argument_list:
+    (expression (COMMA expression)*)?;
+
+
+if_else: IF expression DO (statement)* (ELSE (statement)*)? END;
+
+
+while: WHILE expression DO (statement)* END;
+
+
+assignment
+    : leftExp=expression IGUAL rightExp=expression;
+
+
+puts
+    : PUTS expression (COMMA expression)*;
+
+
+in
+    : IN expression (COMMA expression)*;
+
+
+return
+    : RETURN expression?;
 
 
 // Expressions
-expression: simple_value                                                      |
-            ID                                                                |
-            func_invocation                                                   |
-            ABRE_PARENTESIS expression CIERRA_PARENTESIS                      |
-            ABRE_CORCHETE expression CIERRA_CORCHETE                          |
-            expression ABRE_CORCHETE expression CIERRA_CORCHETE (expression?) |
-            expression DOT expression                                         |
-            expression AS simple_type                                         |
-            MINUS expression                                                  |
-            NOT expression                                                    |
-            expression ('*' | '/' | '%') expression                           |
-            expression ('+' | MINUS) expression                               |
-            expression ('>' | '>=' | '<' | '<=' | '!=' | '==') expression     |
-            expression ('&&' | '||') expression                               ;
+expression
+    : simple_value
+    | ID
+    | func_invocation
+    | ABRE_PARENTESIS expression CIERRA_PARENTESIS
+    | ABRE_CORCHETE expression CIERRA_CORCHETE
+    | expression ABRE_CORCHETE expression CIERRA_CORCHETE (expression?)
+    | expression DOT expression
+    | expression AS simple_type
+    | MINUS expression
+    | NOT expression
+    | leftExpresion=expression ('*' | '/' | '%') rightExpression=expression
+    | leftExpresion=expression ('+' | MINUS) rightExpression=expression
+    | leftExpresion=expression ('>' | '>=' | '<' | '<=' | '!=' | '==') rightExpression=expression
+    | leftExpresion=expression ('&&' | '||') rightExpression=expression
+;
 
-simple_value: INT_CONSTANT | CHAR_CONSTANT | REAL_CONSTANT;
+simple_value:
+    INT_CONSTANT |
+    CHAR_CONSTANT |
+    REAL_CONSTANT;
 
 // TOKENS
 MINUS: '-';
