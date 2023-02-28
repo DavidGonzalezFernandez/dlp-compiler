@@ -3,6 +3,8 @@ grammar Xana;
 
 @header {
 package es.uniovi.dlp.parser;
+import es.uniovi.dlp.ast;
+import es.uniovi.dlp.ast.*;
 }
 
 program: (var_def | func_def)* main_def;

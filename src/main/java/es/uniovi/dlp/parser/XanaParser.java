@@ -2,6 +2,7 @@
 
 package es.uniovi.dlp.parser;
 
+import es.uniovi.dlp.ast.*;
 import java.util.List;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.atn.*;
