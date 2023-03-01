@@ -26,29 +26,30 @@ func_body: DO (var_def | statement)* END;
 param_list: (var_def (',' var_def)*)?;
 
 // Variable definitions
-var_def
-    : ID (COMMA ID)* DOS_PUNTOS var_type_def;
-
-var_type_def returns [Type myType]
-    : simple_type { $myType = $simple_type.myType; }
-    | array_def_type { $myType = $array_def_type.myType; }
-    | struct_def_type { $myType = $struct_def_type.myType; }
+var_def returns [VarDefinition ast]
+    : ID (COMMA ID)* DOS_PUNTOS var_type_def {$ast = new VarDefinition($ID.getLine(), $ID.getCharPositionInLine()+1);}
     ;
 
-simple_type returns [Type myType]
-    : t='int'    { $myType = new IntType($t.getLine(), $t.getCharPositionInLine()+1); }
-    | t='double' { $myType = new DoubleType($t.getLine(), $t.getCharPositionInLine()+1); }
-    | t='char'   { $myType = new CharType($t.getLine(), $t.getCharPositionInLine()+1); }
+var_type_def returns [Type ast]
+    : simple_type { $ast = $simple_type.ast; }
+    | array_def_type { $ast = $array_def_type.ast; }
+    | struct_def_type { $ast = $struct_def_type.ast; }
     ;
 
-
-array_def_type returns [Type myType]
-    : ABRE_CORCHETE INT_CONSTANT DOS_PUNTOS var_type_def CIERRA_CORCHETE {$myType = new ArrayType($ABRE_CORCHETE.getLine(), $ABRE_CORCHETE.getCharPositionInLine()+1);}
+simple_type returns [Type ast]
+    : t='int'    { $ast = new IntType($t.getLine(), $t.getCharPositionInLine()+1); }
+    | t='double' { $ast = new DoubleType($t.getLine(), $t.getCharPositionInLine()+1); }
+    | t='char'   { $ast = new CharType($t.getLine(), $t.getCharPositionInLine()+1); }
     ;
 
 
-struct_def_type returns [Type myType]
-    : DEFSTRUCT DO (var_def)* END {$myType = new StructType($DEFSTRUCT.getLine(), $DEFSTRUCT.getCharPositionInLine()+1);}
+array_def_type returns [Type ast]
+    : ABRE_CORCHETE INT_CONSTANT DOS_PUNTOS var_type_def CIERRA_CORCHETE {$ast = new ArrayType($ABRE_CORCHETE.getLine(), $ABRE_CORCHETE.getCharPositionInLine()+1);}
+    ;
+
+
+struct_def_type returns [Type ast]
+    : DEFSTRUCT DO (var_def)* END {$ast = new StructType($DEFSTRUCT.getLine(), $DEFSTRUCT.getCharPositionInLine()+1);}
     ;
 
 
