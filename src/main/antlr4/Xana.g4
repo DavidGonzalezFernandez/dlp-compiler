@@ -42,11 +42,9 @@ simple_type returns [Type ast]
     | t='char'   { $ast = new CharType($t.getLine(), $t.getCharPositionInLine()+1); }
     ;
 
-
 array_def_type returns [Type ast]
     : ABRE_CORCHETE INT_CONSTANT DOS_PUNTOS var_type_def CIERRA_CORCHETE {$ast = new ArrayType($ABRE_CORCHETE.getLine(), $ABRE_CORCHETE.getCharPositionInLine()+1);}
     ;
-
 
 struct_def_type returns [Type ast]
     : DEFSTRUCT DO (var_def)* END {$ast = new StructType($DEFSTRUCT.getLine(), $DEFSTRUCT.getCharPositionInLine()+1);}
@@ -96,7 +94,7 @@ return
 
 // Expressions
 expression
-    : simple_value
+    : simple_constant
     | ID
     | func_invocation
     | ABRE_PARENTESIS expression CIERRA_PARENTESIS
@@ -112,10 +110,11 @@ expression
     | leftExpresion=expression ('&&' | '||') rightExpression=expression
 ;
 
-simple_value:
-    INT_CONSTANT |
-    CHAR_CONSTANT |
-    REAL_CONSTANT;
+simple_constant returns [Expression ast]
+    : INT_CONSTANT { $ast = new IntLiteral($INT_CONSTANT.getLine(), $INT_CONSTANT.getCharPositionInLine()+1);}
+    | CHAR_CONSTANT { $ast = new IntLiteral($CHAR_CONSTANT.getLine(), $CHAR_CONSTANT.getCharPositionInLine()+1);}
+    | REAL_CONSTANT { $ast = new IntLiteral($REAL_CONSTANT.getLine(), $REAL_CONSTANT.getCharPositionInLine()+1);}
+    ;
 
 // TOKENS
 MINUS: '-';

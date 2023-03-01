@@ -92,7 +92,7 @@ public class XanaParser extends Parser {
       RULE_in = 19,
       RULE_return = 20,
       RULE_expression = 21,
-      RULE_simple_value = 22;
+      RULE_simple_constant = 22;
 
   private static String[] makeRuleNames() {
     return new String[] {
@@ -118,7 +118,7 @@ public class XanaParser extends Parser {
       "in",
       "return",
       "expression",
-      "simple_value"
+      "simple_constant"
     };
   }
 
@@ -1820,8 +1820,8 @@ public class XanaParser extends Parser {
     public ExpressionContext leftExpresion;
     public ExpressionContext rightExpression;
 
-    public Simple_valueContext simple_value() {
-      return getRuleContext(Simple_valueContext.class, 0);
+    public Simple_constantContext simple_constant() {
+      return getRuleContext(Simple_constantContext.class, 0);
     }
 
     public TerminalNode ID() {
@@ -1908,7 +1908,7 @@ public class XanaParser extends Parser {
           case 1:
             {
               setState(234);
-              simple_value();
+              simple_constant();
             }
             break;
           case 2:
@@ -2128,7 +2128,12 @@ public class XanaParser extends Parser {
   }
 
   @SuppressWarnings("CheckReturnValue")
-  public static class Simple_valueContext extends ParserRuleContext {
+  public static class Simple_constantContext extends ParserRuleContext {
+    public Expression ast;
+    public Token INT_CONSTANT;
+    public Token CHAR_CONSTANT;
+    public Token REAL_CONSTANT;
+
     public TerminalNode INT_CONSTANT() {
       return getToken(XanaParser.INT_CONSTANT, 0);
     }
@@ -2141,32 +2146,58 @@ public class XanaParser extends Parser {
       return getToken(XanaParser.REAL_CONSTANT, 0);
     }
 
-    public Simple_valueContext(ParserRuleContext parent, int invokingState) {
+    public Simple_constantContext(ParserRuleContext parent, int invokingState) {
       super(parent, invokingState);
     }
 
     @Override
     public int getRuleIndex() {
-      return RULE_simple_value;
+      return RULE_simple_constant;
     }
   }
 
-  public final Simple_valueContext simple_value() throws RecognitionException {
-    Simple_valueContext _localctx = new Simple_valueContext(_ctx, getState());
-    enterRule(_localctx, 44, RULE_simple_value);
-    int _la;
+  public final Simple_constantContext simple_constant() throws RecognitionException {
+    Simple_constantContext _localctx = new Simple_constantContext(_ctx, getState());
+    enterRule(_localctx, 44, RULE_simple_constant);
     try {
-      enterOuterAlt(_localctx, 1);
-      {
-        setState(281);
-        _la = _input.LA(1);
-        if (!(((_la) & ~0x3f) == 0 && ((1L << _la) & 30786325577728L) != 0)) {
-          _errHandler.recoverInline(this);
-        } else {
-          if (_input.LA(1) == Token.EOF) matchedEOF = true;
-          _errHandler.reportMatch(this);
-          consume();
-        }
+      setState(287);
+      _errHandler.sync(this);
+      switch (_input.LA(1)) {
+        case INT_CONSTANT:
+          enterOuterAlt(_localctx, 1);
+          {
+            setState(281);
+            ((Simple_constantContext) _localctx).INT_CONSTANT = match(INT_CONSTANT);
+            ((Simple_constantContext) _localctx).ast =
+                new IntLiteral(
+                    ((Simple_constantContext) _localctx).INT_CONSTANT.getLine(),
+                    ((Simple_constantContext) _localctx).INT_CONSTANT.getCharPositionInLine() + 1);
+          }
+          break;
+        case CHAR_CONSTANT:
+          enterOuterAlt(_localctx, 2);
+          {
+            setState(283);
+            ((Simple_constantContext) _localctx).CHAR_CONSTANT = match(CHAR_CONSTANT);
+            ((Simple_constantContext) _localctx).ast =
+                new IntLiteral(
+                    ((Simple_constantContext) _localctx).CHAR_CONSTANT.getLine(),
+                    ((Simple_constantContext) _localctx).CHAR_CONSTANT.getCharPositionInLine() + 1);
+          }
+          break;
+        case REAL_CONSTANT:
+          enterOuterAlt(_localctx, 3);
+          {
+            setState(285);
+            ((Simple_constantContext) _localctx).REAL_CONSTANT = match(REAL_CONSTANT);
+            ((Simple_constantContext) _localctx).ast =
+                new IntLiteral(
+                    ((Simple_constantContext) _localctx).REAL_CONSTANT.getLine(),
+                    ((Simple_constantContext) _localctx).REAL_CONSTANT.getCharPositionInLine() + 1);
+          }
+          break;
+        default:
+          throw new NoViableAltException(this);
       }
     } catch (RecognitionException re) {
       _localctx.exception = re;
@@ -2207,7 +2238,7 @@ public class XanaParser extends Parser {
   }
 
   public static final String _serializedATN =
-      "\u0004\u0001-\u011c\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"
+      "\u0004\u0001-\u0122\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"
           + "\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004\u0002"
           + "\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0002\u0007\u0007\u0007\u0002"
           + "\b\u0007\b\u0002\t\u0007\t\u0002\n\u0007\n\u0002\u000b\u0007\u000b\u0002"
@@ -2250,10 +2281,11 @@ public class XanaParser extends Parser {
           + "\u0001\u0015\u0001\u0015\u0001\u0015\u0001\u0015\u0001\u0015\u0001\u0015"
           + "\u0001\u0015\u0001\u0015\u0003\u0015\u0110\b\u0015\u0001\u0015\u0001\u0015"
           + "\u0001\u0015\u0005\u0015\u0115\b\u0015\n\u0015\f\u0015\u0118\t\u0015\u0001"
-          + "\u0016\u0001\u0016\u0001\u0016\u0000\u0001*\u0017\u0000\u0002\u0004\u0006"
-          + "\b\n\f\u000e\u0010\u0012\u0014\u0016\u0018\u001a\u001c\u001e \"$&(*,\u0000"
-          + "\u0005\u0001\u0000\u0004\u0006\u0002\u0000\u0007\u0007\u0010\u0010\u0001"
-          + "\u0000\b\r\u0001\u0000\u000e\u000f\u0001\u0000*,\u0130\u00002\u0001\u0000"
+          + "\u0016\u0001\u0016\u0001\u0016\u0001\u0016\u0001\u0016\u0001\u0016\u0003"
+          + "\u0016\u0120\b\u0016\u0001\u0016\u0000\u0001*\u0017\u0000\u0002\u0004"
+          + "\u0006\b\n\f\u000e\u0010\u0012\u0014\u0016\u0018\u001a\u001c\u001e \""
+          + "$&(*,\u0000\u0004\u0001\u0000\u0004\u0006\u0002\u0000\u0007\u0007\u0010"
+          + "\u0010\u0001\u0000\b\r\u0001\u0000\u000e\u000f\u0138\u00002\u0001\u0000"
           + "\u0000\u0000\u00027\u0001\u0000\u0000\u0000\u0004C\u0001\u0000\u0000\u0000"
           + "\u0006F\u0001\u0000\u0000\u0000\bI\u0001\u0000\u0000\u0000\nS\u0001\u0000"
           + "\u0000\u0000\fe\u0001\u0000\u0000\u0000\u000eg\u0001\u0000\u0000\u0000"
@@ -2263,7 +2295,7 @@ public class XanaParser extends Parser {
           + "\u00ae\u0001\u0000\u0000\u0000\u001e\u00b0\u0001\u0000\u0000\u0000 \u00c4"
           + "\u0001\u0000\u0000\u0000\"\u00cf\u0001\u0000\u0000\u0000$\u00d3\u0001"
           + "\u0000\u0000\u0000&\u00dc\u0001\u0000\u0000\u0000(\u00e5\u0001\u0000\u0000"
-          + "\u0000*\u00f9\u0001\u0000\u0000\u0000,\u0119\u0001\u0000\u0000\u0000."
+          + "\u0000*\u00f9\u0001\u0000\u0000\u0000,\u011f\u0001\u0000\u0000\u0000."
           + "1\u0003\u000e\u0007\u0000/1\u0003\u0006\u0003\u00000.\u0001\u0000\u0000"
           + "\u00000/\u0001\u0000\u0000\u000014\u0001\u0000\u0000\u000020\u0001\u0000"
           + "\u0000\u000023\u0001\u0000\u0000\u000035\u0001\u0000\u0000\u000042\u0001"
@@ -2386,9 +2418,13 @@ public class XanaParser extends Parser {
           + "\u0111\u0001\u0000\u0000\u0000\u0115\u0118\u0001\u0000\u0000\u0000\u0116"
           + "\u0114\u0001\u0000\u0000\u0000\u0116\u0117\u0001\u0000\u0000\u0000\u0117"
           + "+\u0001\u0000\u0000\u0000\u0118\u0116\u0001\u0000\u0000\u0000\u0119\u011a"
-          + "\u0007\u0004\u0000\u0000\u011a-\u0001\u0000\u0000\u0000\u001b02ACQVXb"
+          + "\u0005*\u0000\u0000\u011a\u0120\u0006\u0016\uffff\uffff\u0000\u011b\u011c"
+          + "\u0005,\u0000\u0000\u011c\u0120\u0006\u0016\uffff\uffff\u0000\u011d\u011e"
+          + "\u0005+\u0000\u0000\u011e\u0120\u0006\u0016\uffff\uffff\u0000\u011f\u0119"
+          + "\u0001\u0000\u0000\u0000\u011f\u011b\u0001\u0000\u0000\u0000\u011f\u011d"
+          + "\u0001\u0000\u0000\u0000\u0120-\u0001\u0000\u0000\u0000\u001c02ACQVXb"
           + "el|\u0084\u0092\u009f\u00ab\u00ae\u00b6\u00bd\u00c0\u00ca\u00d9\u00e2"
-          + "\u00e7\u00f9\u010f\u0114\u0116";
+          + "\u00e7\u00f9\u010f\u0114\u0116\u011f";
   public static final ATN _ATN = new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 
   static {
