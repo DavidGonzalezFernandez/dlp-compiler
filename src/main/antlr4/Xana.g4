@@ -101,17 +101,16 @@ expression
     | ID
     | func_invocation
     | ABRE_PARENTESIS expression CIERRA_PARENTESIS
-    | ABRE_CORCHETE expression CIERRA_CORCHETE
     | expression ABRE_CORCHETE expression CIERRA_CORCHETE (expression?)
     | expression DOT expression
     | expression AS simple_type
     | MINUS expression
     | NOT expression
-    | leftExpresion=expression ('*' | '/' | '%') rightExpression=expression
-    | leftExpresion=expression ('+' | MINUS) rightExpression=expression
-    | leftExpresion=expression ('>' | '>=' | '<' | '<=' | '!=' | '==') rightExpression=expression
-    | leftExpresion=expression ('&&' | '||') rightExpression=expression
-;
+    | leftExpresion=expression op=('*' | '/' | '%') rightExpression=expression
+    | leftExpresion=expression op=('+' | MINUS) rightExpression=expression
+    | leftExpresion=expression op=('>' | '>=' | '<' | '<=' | '!=' | '==') rightExpression=expression
+    | leftExpresion=expression op=('&&' | '||') rightExpression=expression
+    ;
 
 simple_constant returns [Expression ast]
     : INT_CONSTANT { $ast = new IntLiteral($INT_CONSTANT.getLine(), $INT_CONSTANT.getCharPositionInLine()+1);}
