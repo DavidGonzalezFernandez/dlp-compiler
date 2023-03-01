@@ -1,6 +1,5 @@
 grammar Xana;
 
-
 @header {
     package es.uniovi.dlp.parser;
     import es.uniovi.dlp.ast.*;
@@ -29,18 +28,28 @@ param_list: (var_def (',' var_def)*)?;
 // Variable definitions
 var_def
     : ID (COMMA ID)* DOS_PUNTOS var_type_def;
-var_type_def
-    : simple_type | array_def_type | struct_def_type;
 
-simple_type returns [Type my_type]
-    : t='int'    { $my_type = new IntType($t.getLine(), $t.getCharPositionInLine()+1); }
-    | t='double' { $my_type = new DoubleType($t.getLine(), $t.getCharPositionInLine()+1); }
-    | t='char'   { $my_type = new CharType($t.getLine(), $t.getCharPositionInLine()+1); }
+var_type_def returns [Type myType]
+    : simple_type { $myType = $simple_type.myType; }
+    | array_def_type { $myType = $array_def_type.myType; }
+    | struct_def_type { $myType = $struct_def_type.myType; }
+    ;
+
+simple_type returns [Type myType]
+    : t='int'    { $myType = new IntType($t.getLine(), $t.getCharPositionInLine()+1); }
+    | t='double' { $myType = new DoubleType($t.getLine(), $t.getCharPositionInLine()+1); }
+    | t='char'   { $myType = new CharType($t.getLine(), $t.getCharPositionInLine()+1); }
     ;
 
 
-array_def_type: ABRE_CORCHETE INT_CONSTANT DOS_PUNTOS var_type_def CIERRA_CORCHETE;
-struct_def_type: DEFSTRUCT DO (var_def)* END;
+array_def_type returns [Type myType]
+    : ABRE_CORCHETE INT_CONSTANT DOS_PUNTOS var_type_def CIERRA_CORCHETE {$myType = new ArrayType($ABRE_CORCHETE.getLine(), $ABRE_CORCHETE.getCharPositionInLine()+1);}
+    ;
+
+
+struct_def_type returns [Type myType]
+    : DEFSTRUCT DO (var_def)* END {$myType = new StructType($DEFSTRUCT.getLine(), $DEFSTRUCT.getCharPositionInLine()+1);}
+    ;
 
 
 // Statements
