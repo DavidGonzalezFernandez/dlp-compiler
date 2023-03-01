@@ -26,8 +26,10 @@ func_body: DO (var_def | statement)* END;
 param_list: (var_def (',' var_def)*)?;
 
 // Variable definitions
-var_def returns [VarDefinition ast]
-    : ID (COMMA ID)* DOS_PUNTOS var_type_def {$ast = new VarDefinition($ID.getLine(), $ID.getCharPositionInLine()+1);}
+var_def returns [List<VarDefinition> ast = new ArrayList<VarDefinition>();]
+    : v1=ID {$ast.add(new VarDefinition($v1.getLine(), $v1.getCharPositionInLine()+1, $v1.text));}
+      (COMMA v2=ID {$ast.add(new VarDefinition($v2.getLine(), $v2.getCharPositionInLine()+1, $v2.text));})*
+      DOS_PUNTOS var_type_def { for (VarDefinition v : $ast) v.setType($var_type_def.ast); }
     ;
 
 var_type_def returns [Type ast]
@@ -64,7 +66,8 @@ statement
 
 
 func_invocation:
-    ID ABRE_PARENTESIS argument_list CIERRA_PARENTESIS;
+    ID ABRE_PARENTESIS argument_list CIERRA_PARENTESIS
+    ;
 
 argument_list:
     (expression (COMMA expression)*)?;
