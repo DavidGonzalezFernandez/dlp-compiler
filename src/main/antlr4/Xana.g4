@@ -12,18 +12,32 @@ grammar Xana;
     import es.uniovi.dlp.ast.types.subtypes.*;
 }
 
-program: (var_def | func_def)* main_def;
+program     //TODO pendiente
+    : (var_def | func_def)* main_def
+    ;
 
 // Main definition
-main_def: DEF MAIN ABRE_PARENTESIS CIERRA_PARENTESIS DO main_body  END;
-main_body: (var_def | statement)*;
+main_def        //TODO pendiente
+    : DEF MAIN ABRE_PARENTESIS CIERRA_PARENTESIS DO main_body  END
+    ;
+main_body       //TODO pendiente
+    : (var_def | statement)*
+    ;
 
 // Function definitions
-func_def: func_heading func_body;
-func_heading: DEF ID ABRE_PARENTESIS param_list CIERRA_PARENTESIS DOS_PUNTOS (simple_type | VOID);
-func_body: DO (var_def | statement)* END;
+func_def        //TODO pendiente
+    : func_heading func_body
+    ;
+func_heading        //TODO pendiente
+    : DEF ID ABRE_PARENTESIS param_list CIERRA_PARENTESIS DOS_PUNTOS (simple_type | VOID)
+    ;
+func_body       //TODO pendiente
+    : DO (var_def | statement)* END
+    ;
 
-param_list: (var_def (',' var_def)*)?;
+param_list      //TODO pendiente
+    : (var_def (',' var_def)*)?
+    ;
 
 // Variable definitions
 var_def returns [List<VarDefinition> ast = new ArrayList<VarDefinition>();]
@@ -54,7 +68,7 @@ struct_def_type returns [Type ast]
 
 
 // Statements
-statement
+statement       //TODO pendiente
     : func_invocation
     | if_else
     | while
@@ -65,43 +79,52 @@ statement
     ;
 
 
-func_invocation:
-    ID ABRE_PARENTESIS argument_list CIERRA_PARENTESIS
+func_invocation     //TODO pendiente
+    : ID ABRE_PARENTESIS argument_list CIERRA_PARENTESIS
     ;
 
-argument_list:
-    (expression (COMMA expression)*)?;
+argument_list       //TODO pendiente
+    : (expression (COMMA expression)*)?
+    ;
 
 
-if_else: IF expression DO (statement)* (ELSE (statement)*)? END;
+if_else     //TODO pendiente
+    : IF expression DO (statement)* (ELSE (statement)*)? END
+    ;
 
 
-while: WHILE expression DO (statement)* END;
+while       //TODO pendiente
+    : WHILE expression DO (statement)* END
+    ;
 
 
-assignment
-    : leftExp=expression IGUAL rightExp=expression;
+assignment      //TODO pendiente
+    : leftExp=expression IGUAL rightExp=expression
+    ;
 
 
-puts
-    : PUTS expression (COMMA expression)*;
+puts        //TODO pendiente
+    : PUTS expression (COMMA expression)*
+    ;
 
 
-in
-    : IN expression (COMMA expression)*;
+in      //TODO pendiente
+    : IN expression (COMMA expression)*
+    ;
 
 
-return
-    : RETURN expression?;
+return      //TODO pendiente
+    : RETURN expression?
+    ;
 
 
 // Expressions
-expression
+expression      //TODO pendiente
     : simple_constant
     | ID
     | func_invocation
     | ABRE_PARENTESIS expression CIERRA_PARENTESIS
-    | expression ABRE_CORCHETE expression CIERRA_CORCHETE (expression?)
+    | expression ABRE_CORCHETE expression CIERRA_CORCHETE
     | expression DOT expression
     | expression AS simple_type
     | MINUS expression
@@ -113,9 +136,12 @@ expression
     ;
 
 simple_constant returns [Expression ast]
-    : INT_CONSTANT { $ast = new IntLiteral($INT_CONSTANT.getLine(), $INT_CONSTANT.getCharPositionInLine()+1);}
-    | CHAR_CONSTANT { $ast = new CharLiteral($CHAR_CONSTANT.getLine(), $CHAR_CONSTANT.getCharPositionInLine()+1);}
-    | REAL_CONSTANT { $ast = new DoubleLiteral($REAL_CONSTANT.getLine(), $REAL_CONSTANT.getCharPositionInLine()+1);}
+    : INT_CONSTANT
+        { $ast = new IntLiteral($INT_CONSTANT.getLine(), $INT_CONSTANT.getCharPositionInLine()+1);}
+    | CHAR_CONSTANT
+        { $ast = new CharLiteral($CHAR_CONSTANT.getLine(), $CHAR_CONSTANT.getCharPositionInLine()+1);}
+    | REAL_CONSTANT
+        { $ast = new DoubleLiteral($REAL_CONSTANT.getLine(), $REAL_CONSTANT.getCharPositionInLine()+1, Double.parseDouble($REAL_CONSTANT.text));}
     ;
 
 // TOKENS

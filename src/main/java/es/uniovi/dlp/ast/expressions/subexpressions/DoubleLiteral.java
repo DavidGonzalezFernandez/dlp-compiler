@@ -8,9 +8,10 @@ public class DoubleLiteral extends AbstractExpression {
   private double value;
   private Type type;
 
-  public DoubleLiteral(int line, int column) {
+  public DoubleLiteral(int line, int column, double value) {
     super(line, column);
     this.type = new DoubleType(line, column);
+    this.value = value;
   }
 
   public void setChar(char value) {
