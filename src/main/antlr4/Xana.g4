@@ -79,8 +79,9 @@ statement       //TODO pendiente
     ;
 
 
-func_invocation     //TODO pendiente
+func_invocation returns [FunctionInvocation ast]
     : ID ABRE_PARENTESIS argument_list CIERRA_PARENTESIS
+    {$ast = new FunctionInvocation($ID.getLine(), $ID.getCharPositionInLine()+1);}
     ;
 
 argument_list       //TODO pendiente
@@ -123,9 +124,9 @@ expression      //TODO pendiente
     : simple_constant
     | ID
     | func_invocation
-    | ABRE_PARENTESIS expression CIERRA_PARENTESIS
-    | expression ABRE_CORCHETE expression CIERRA_CORCHETE
-    | expression DOT expression
+    | '(' expression ')'
+    | array=expression '[' index=expression ']'
+    | struct=expression DOT field=expression
     | expression AS simple_type
     | MINUS expression
     | NOT expression
