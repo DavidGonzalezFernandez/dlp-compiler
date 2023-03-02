@@ -8,9 +8,10 @@ public class IntLiteral extends AbstractExpression {
   private int value;
   private Type type;
 
-  public IntLiteral(int line, int column) {
+  public IntLiteral(int line, int column, int value) {
     super(line, column);
     this.type = new IntType(line, column);
+    this.value = value;
   }
 
   @Override

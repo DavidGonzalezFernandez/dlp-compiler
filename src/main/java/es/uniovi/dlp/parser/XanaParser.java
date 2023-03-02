@@ -2170,7 +2170,11 @@ public class XanaParser extends Parser {
             ((Simple_constantContext) _localctx).ast =
                 new IntLiteral(
                     ((Simple_constantContext) _localctx).INT_CONSTANT.getLine(),
-                    ((Simple_constantContext) _localctx).INT_CONSTANT.getCharPositionInLine() + 1);
+                    ((Simple_constantContext) _localctx).INT_CONSTANT.getCharPositionInLine() + 1,
+                    Integer.parseInt(
+                        (((Simple_constantContext) _localctx).INT_CONSTANT != null
+                            ? ((Simple_constantContext) _localctx).INT_CONSTANT.getText()
+                            : null)));
           }
           break;
         case CHAR_CONSTANT:
