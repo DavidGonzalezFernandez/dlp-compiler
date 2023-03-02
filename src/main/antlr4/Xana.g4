@@ -126,7 +126,7 @@ expression      //TODO pendiente
     | func_invocation
     | '(' expression ')'
     | array=expression '[' index=expression ']'
-    | struct=expression DOT field=expression
+    | struct=expression DOT field=ID
     | expression AS simple_type
     | MINUS expression
     | NOT expression

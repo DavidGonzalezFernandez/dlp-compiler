@@ -1843,10 +1843,10 @@ public class XanaParser extends Parser {
     public ExpressionContext array;
     public ExpressionContext struct;
     public ExpressionContext leftExpresion;
-    public ExpressionContext field;
     public Token op;
     public ExpressionContext rightExpression;
     public ExpressionContext index;
+    public Token field;
 
     public Simple_constantContext simple_constant() {
       return getRuleContext(Simple_constantContext.class, 0);
@@ -1884,16 +1884,16 @@ public class XanaParser extends Parser {
       return getToken(XanaParser.NOT, 0);
     }
 
-    public TerminalNode DOT() {
-      return getToken(XanaParser.DOT, 0);
-    }
-
     public TerminalNode ABRE_CORCHETE() {
       return getToken(XanaParser.ABRE_CORCHETE, 0);
     }
 
     public TerminalNode CIERRA_CORCHETE() {
       return getToken(XanaParser.CIERRA_CORCHETE, 0);
+    }
+
+    public TerminalNode DOT() {
+      return getToken(XanaParser.DOT, 0);
     }
 
     public TerminalNode AS() {
@@ -1993,26 +1993,12 @@ public class XanaParser extends Parser {
                 case 1:
                   {
                     _localctx = new ExpressionContext(_parentctx, _parentState);
-                    _localctx.struct = _prevctx;
-                    pushNewRecursionContext(_localctx, _startState, RULE_expression);
-                    setState(250);
-                    if (!(precpred(_ctx, 8)))
-                      throw new FailedPredicateException(this, "precpred(_ctx, 8)");
-                    setState(251);
-                    match(DOT);
-                    setState(252);
-                    ((ExpressionContext) _localctx).field = expression(9);
-                  }
-                  break;
-                case 2:
-                  {
-                    _localctx = new ExpressionContext(_parentctx, _parentState);
                     _localctx.leftExpresion = _prevctx;
                     pushNewRecursionContext(_localctx, _startState, RULE_expression);
-                    setState(253);
+                    setState(250);
                     if (!(precpred(_ctx, 4)))
                       throw new FailedPredicateException(this, "precpred(_ctx, 4)");
-                    setState(254);
+                    setState(251);
                     ((ExpressionContext) _localctx).op = _input.LT(1);
                     _la = _input.LA(1);
                     if (!(((_la) & ~0x3f) == 0 && ((1L << _la) & 112L) != 0)) {
@@ -2022,19 +2008,19 @@ public class XanaParser extends Parser {
                       _errHandler.reportMatch(this);
                       consume();
                     }
-                    setState(255);
+                    setState(252);
                     ((ExpressionContext) _localctx).rightExpression = expression(5);
                   }
                   break;
-                case 3:
+                case 2:
                   {
                     _localctx = new ExpressionContext(_parentctx, _parentState);
                     _localctx.leftExpresion = _prevctx;
                     pushNewRecursionContext(_localctx, _startState, RULE_expression);
-                    setState(256);
+                    setState(253);
                     if (!(precpred(_ctx, 3)))
                       throw new FailedPredicateException(this, "precpred(_ctx, 3)");
-                    setState(257);
+                    setState(254);
                     ((ExpressionContext) _localctx).op = _input.LT(1);
                     _la = _input.LA(1);
                     if (!(_la == T__6 || _la == MINUS)) {
@@ -2044,19 +2030,19 @@ public class XanaParser extends Parser {
                       _errHandler.reportMatch(this);
                       consume();
                     }
-                    setState(258);
+                    setState(255);
                     ((ExpressionContext) _localctx).rightExpression = expression(4);
                   }
                   break;
-                case 4:
+                case 3:
                   {
                     _localctx = new ExpressionContext(_parentctx, _parentState);
                     _localctx.leftExpresion = _prevctx;
                     pushNewRecursionContext(_localctx, _startState, RULE_expression);
-                    setState(259);
+                    setState(256);
                     if (!(precpred(_ctx, 2)))
                       throw new FailedPredicateException(this, "precpred(_ctx, 2)");
-                    setState(260);
+                    setState(257);
                     ((ExpressionContext) _localctx).op = _input.LT(1);
                     _la = _input.LA(1);
                     if (!(((_la) & ~0x3f) == 0 && ((1L << _la) & 16128L) != 0)) {
@@ -2066,19 +2052,19 @@ public class XanaParser extends Parser {
                       _errHandler.reportMatch(this);
                       consume();
                     }
-                    setState(261);
+                    setState(258);
                     ((ExpressionContext) _localctx).rightExpression = expression(3);
                   }
                   break;
-                case 5:
+                case 4:
                   {
                     _localctx = new ExpressionContext(_parentctx, _parentState);
                     _localctx.leftExpresion = _prevctx;
                     pushNewRecursionContext(_localctx, _startState, RULE_expression);
-                    setState(262);
+                    setState(259);
                     if (!(precpred(_ctx, 1)))
                       throw new FailedPredicateException(this, "precpred(_ctx, 1)");
-                    setState(263);
+                    setState(260);
                     ((ExpressionContext) _localctx).op = _input.LT(1);
                     _la = _input.LA(1);
                     if (!(_la == T__13 || _la == T__14)) {
@@ -2088,24 +2074,38 @@ public class XanaParser extends Parser {
                       _errHandler.reportMatch(this);
                       consume();
                     }
-                    setState(264);
+                    setState(261);
                     ((ExpressionContext) _localctx).rightExpression = expression(2);
+                  }
+                  break;
+                case 5:
+                  {
+                    _localctx = new ExpressionContext(_parentctx, _parentState);
+                    _localctx.array = _prevctx;
+                    pushNewRecursionContext(_localctx, _startState, RULE_expression);
+                    setState(262);
+                    if (!(precpred(_ctx, 9)))
+                      throw new FailedPredicateException(this, "precpred(_ctx, 9)");
+                    setState(263);
+                    match(ABRE_CORCHETE);
+                    setState(264);
+                    ((ExpressionContext) _localctx).index = expression(0);
+                    setState(265);
+                    match(CIERRA_CORCHETE);
                   }
                   break;
                 case 6:
                   {
                     _localctx = new ExpressionContext(_parentctx, _parentState);
-                    _localctx.array = _prevctx;
+                    _localctx.struct = _prevctx;
                     pushNewRecursionContext(_localctx, _startState, RULE_expression);
-                    setState(265);
-                    if (!(precpred(_ctx, 9)))
-                      throw new FailedPredicateException(this, "precpred(_ctx, 9)");
-                    setState(266);
-                    match(ABRE_CORCHETE);
                     setState(267);
-                    ((ExpressionContext) _localctx).index = expression(0);
+                    if (!(precpred(_ctx, 8)))
+                      throw new FailedPredicateException(this, "precpred(_ctx, 8)");
                     setState(268);
-                    match(CIERRA_CORCHETE);
+                    match(DOT);
+                    setState(269);
+                    ((ExpressionContext) _localctx).field = match(ID);
                   }
                   break;
                 case 7:
@@ -2240,17 +2240,17 @@ public class XanaParser extends Parser {
   private boolean expression_sempred(ExpressionContext _localctx, int predIndex) {
     switch (predIndex) {
       case 0:
-        return precpred(_ctx, 8);
-      case 1:
         return precpred(_ctx, 4);
-      case 2:
+      case 1:
         return precpred(_ctx, 3);
-      case 3:
+      case 2:
         return precpred(_ctx, 2);
-      case 4:
+      case 3:
         return precpred(_ctx, 1);
-      case 5:
+      case 4:
         return precpred(_ctx, 9);
+      case 5:
+        return precpred(_ctx, 8);
       case 6:
         return precpred(_ctx, 7);
     }
@@ -2418,30 +2418,30 @@ public class XanaParser extends Parser {
           + "\u00ec\u0001\u0000\u0000\u0000\u00f8\u00ee\u0001\u0000\u0000\u0000\u00f8"
           + "\u00ef\u0001\u0000\u0000\u0000\u00f8\u00f0\u0001\u0000\u0000\u0000\u00f8"
           + "\u00f4\u0001\u0000\u0000\u0000\u00f8\u00f6\u0001\u0000\u0000\u0000\u00f9"
-          + "\u0113\u0001\u0000\u0000\u0000\u00fa\u00fb\n\b\u0000\u0000\u00fb\u00fc"
-          + "\u0005\u0017\u0000\u0000\u00fc\u0112\u0003*\u0015\t\u00fd\u00fe\n\u0004"
-          + "\u0000\u0000\u00fe\u00ff\u0007\u0000\u0000\u0000\u00ff\u0112\u0003*\u0015"
-          + "\u0005\u0100\u0101\n\u0003\u0000\u0000\u0101\u0102\u0007\u0001\u0000\u0000"
-          + "\u0102\u0112\u0003*\u0015\u0004\u0103\u0104\n\u0002\u0000\u0000\u0104"
-          + "\u0105\u0007\u0002\u0000\u0000\u0105\u0112\u0003*\u0015\u0003\u0106\u0107"
-          + "\n\u0001\u0000\u0000\u0107\u0108\u0007\u0003\u0000\u0000\u0108\u0112\u0003"
-          + "*\u0015\u0002\u0109\u010a\n\t\u0000\u0000\u010a\u010b\u0005\u0012\u0000"
-          + "\u0000\u010b\u010c\u0003*\u0015\u0000\u010c\u010d\u0005\u0013\u0000\u0000"
-          + "\u010d\u0112\u0001\u0000\u0000\u0000\u010e\u010f\n\u0007\u0000\u0000\u010f"
-          + "\u0110\u0005\u0018\u0000\u0000\u0110\u0112\u0003\u0012\t\u0000\u0111\u00fa"
-          + "\u0001\u0000\u0000\u0000\u0111\u00fd\u0001\u0000\u0000\u0000\u0111\u0100"
-          + "\u0001\u0000\u0000\u0000\u0111\u0103\u0001\u0000\u0000\u0000\u0111\u0106"
-          + "\u0001\u0000\u0000\u0000\u0111\u0109\u0001\u0000\u0000\u0000\u0111\u010e"
-          + "\u0001\u0000\u0000\u0000\u0112\u0115\u0001\u0000\u0000\u0000\u0113\u0111"
-          + "\u0001\u0000\u0000\u0000\u0113\u0114\u0001\u0000\u0000\u0000\u0114+\u0001"
-          + "\u0000\u0000\u0000\u0115\u0113\u0001\u0000\u0000\u0000\u0116\u0117\u0005"
-          + "*\u0000\u0000\u0117\u011d\u0006\u0016\uffff\uffff\u0000\u0118\u0119\u0005"
-          + ",\u0000\u0000\u0119\u011d\u0006\u0016\uffff\uffff\u0000\u011a\u011b\u0005"
-          + "+\u0000\u0000\u011b\u011d\u0006\u0016\uffff\uffff\u0000\u011c\u0116\u0001"
-          + "\u0000\u0000\u0000\u011c\u0118\u0001\u0000\u0000\u0000\u011c\u011a\u0001"
-          + "\u0000\u0000\u0000\u011d-\u0001\u0000\u0000\u0000\u001b02ACQVXben~\u0086"
-          + "\u0094\u00a1\u00ae\u00b1\u00b9\u00c0\u00c3\u00cd\u00dc\u00e5\u00ea\u00f8"
-          + "\u0111\u0113\u011c";
+          + "\u0113\u0001\u0000\u0000\u0000\u00fa\u00fb\n\u0004\u0000\u0000\u00fb\u00fc"
+          + "\u0007\u0000\u0000\u0000\u00fc\u0112\u0003*\u0015\u0005\u00fd\u00fe\n"
+          + "\u0003\u0000\u0000\u00fe\u00ff\u0007\u0001\u0000\u0000\u00ff\u0112\u0003"
+          + "*\u0015\u0004\u0100\u0101\n\u0002\u0000\u0000\u0101\u0102\u0007\u0002"
+          + "\u0000\u0000\u0102\u0112\u0003*\u0015\u0003\u0103\u0104\n\u0001\u0000"
+          + "\u0000\u0104\u0105\u0007\u0003\u0000\u0000\u0105\u0112\u0003*\u0015\u0002"
+          + "\u0106\u0107\n\t\u0000\u0000\u0107\u0108\u0005\u0012\u0000\u0000\u0108"
+          + "\u0109\u0003*\u0015\u0000\u0109\u010a\u0005\u0013\u0000\u0000\u010a\u0112"
+          + "\u0001\u0000\u0000\u0000\u010b\u010c\n\b\u0000\u0000\u010c\u010d\u0005"
+          + "\u0017\u0000\u0000\u010d\u0112\u0005-\u0000\u0000\u010e\u010f\n\u0007"
+          + "\u0000\u0000\u010f\u0110\u0005\u0018\u0000\u0000\u0110\u0112\u0003\u0012"
+          + "\t\u0000\u0111\u00fa\u0001\u0000\u0000\u0000\u0111\u00fd\u0001\u0000\u0000"
+          + "\u0000\u0111\u0100\u0001\u0000\u0000\u0000\u0111\u0103\u0001\u0000\u0000"
+          + "\u0000\u0111\u0106\u0001\u0000\u0000\u0000\u0111\u010b\u0001\u0000\u0000"
+          + "\u0000\u0111\u010e\u0001\u0000\u0000\u0000\u0112\u0115\u0001\u0000\u0000"
+          + "\u0000\u0113\u0111\u0001\u0000\u0000\u0000\u0113\u0114\u0001\u0000\u0000"
+          + "\u0000\u0114+\u0001\u0000\u0000\u0000\u0115\u0113\u0001\u0000\u0000\u0000"
+          + "\u0116\u0117\u0005*\u0000\u0000\u0117\u011d\u0006\u0016\uffff\uffff\u0000"
+          + "\u0118\u0119\u0005,\u0000\u0000\u0119\u011d\u0006\u0016\uffff\uffff\u0000"
+          + "\u011a\u011b\u0005+\u0000\u0000\u011b\u011d\u0006\u0016\uffff\uffff\u0000"
+          + "\u011c\u0116\u0001\u0000\u0000\u0000\u011c\u0118\u0001\u0000\u0000\u0000"
+          + "\u011c\u011a\u0001\u0000\u0000\u0000\u011d-\u0001\u0000\u0000\u0000\u001b"
+          + "02ACQVXben~\u0086\u0094\u00a1\u00ae\u00b1\u00b9\u00c0\u00c3\u00cd\u00dc"
+          + "\u00e5\u00ea\u00f8\u0111\u0113\u011c";
   public static final ATN _ATN = new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 
   static {
