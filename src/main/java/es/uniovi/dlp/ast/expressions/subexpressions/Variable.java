@@ -8,8 +8,9 @@ public class Variable extends AbstractExpression {
   private String name;
   private VarDefinition definition;
 
-  public Variable(int line, int column) {
+  public Variable(int line, int column, String name) {
     super(line, column);
+    this.name = name;
   }
 
   @Override

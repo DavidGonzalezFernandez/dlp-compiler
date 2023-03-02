@@ -7,8 +7,9 @@ import es.uniovi.dlp.ast.types.Type;
 public class MinusOperation extends AbstractExpression {
   private Expression expression;
 
-  public MinusOperation(int line, int column) {
+  public MinusOperation(int line, int column, Expression expression) {
     super(line, column);
+    this.expression = expression;
   }
 
   @Override

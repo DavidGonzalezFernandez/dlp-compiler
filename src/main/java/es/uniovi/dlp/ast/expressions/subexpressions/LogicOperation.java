@@ -9,8 +9,11 @@ public class LogicOperation extends AbstractExpression {
   private Expression leftExpression;
   private Expression rightExpression;
 
-  public LogicOperation(int line, int column) {
+  public LogicOperation(int line, int column, Expression left, String operator, Expression right) {
     super(line, column);
+    this.leftExpression = left;
+    this.rightExpression = right;
+    this.operator = operator;
   }
 
   @Override

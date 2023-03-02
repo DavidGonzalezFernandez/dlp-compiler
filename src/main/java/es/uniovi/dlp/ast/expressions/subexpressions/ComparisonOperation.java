@@ -9,8 +9,12 @@ public class ComparisonOperation extends AbstractExpression {
   private Expression leftExpression;
   private Expression rightExpression;
 
-  public ComparisonOperation(int line, int column) {
+  public ComparisonOperation(
+      int line, int column, Expression left, String operator, Expression right) {
     super(line, column);
+    this.leftExpression = left;
+    this.rightExpression = right;
+    this.operator = operator;
   }
 
   @Override

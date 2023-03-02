@@ -8,8 +8,10 @@ public class FieldAccess extends AbstractExpression {
   private String fieldName;
   private Expression struct;
 
-  public FieldAccess(int line, int column) {
+  public FieldAccess(int line, int column, Expression struct, String fieldName) {
     super(line, column);
+    this.struct = struct;
+    this.fieldName = fieldName;
   }
 
   @Override

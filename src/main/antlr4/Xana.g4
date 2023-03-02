@@ -120,20 +120,33 @@ return      //TODO pendiente
 
 
 // Expressions
-expression      //TODO pendiente
-    : simple_constant
-    | ID
-    | func_invocation
-    | '(' expression ')'
+expression returns [Expression ast]
+    : '(' expression ')'
+        {$ast = $expression.ast;}
     | array=expression '[' index=expression ']'
+        {$ast = new ArrayIndexing($start.getLine(), $start.getCharPositionInLine()+1, $array.ast, $index.ast);}
     | struct=expression DOT field=ID
-    | expression AS simple_type
+        {$ast = new FieldAccess($start.getLine(), $start.getCharPositionInLine()+1, $struct.ast, $field.text);}
+    | expr=expression AS new_type=simple_type
+        {$ast = new Cast($start.getLine(), $start.getCharPositionInLine()+1, $expr.ast, $new_type.ast);}
     | MINUS expression
+        {$ast = new MinusOperation($MINUS.getLine(), $MINUS.getCharPositionInLine()+1, $expression.ast);}
     | NOT expression
-    | leftExpresion=expression op=('*' | '/' | '%') rightExpression=expression
-    | leftExpresion=expression op=('+' | MINUS) rightExpression=expression
-    | leftExpresion=expression op=('>' | '>=' | '<' | '<=' | '!=' | '==') rightExpression=expression
-    | leftExpresion=expression op=('&&' | '||') rightExpression=expression
+        {$ast = new NotOperation($NOT.getLine(), $NOT.getCharPositionInLine()+1, $expression.ast);}
+    | leftExpression=expression op=('*' | '/' | '%') rightExpression=expression
+        {$ast = new ArithmeticOperation($start.getLine(), $start.getCharPositionInLine()+1, $leftExpression.ast, $op.text, $rightExpression.ast);}
+    | leftExpression=expression op=('+' | MINUS) rightExpression=expression
+        {$ast = new ArithmeticOperation($start.getLine(), $start.getCharPositionInLine()+1, $leftExpression.ast, $op.text, $rightExpression.ast);}
+    | leftExpression=expression op=('>' | '>=' | '<' | '<=' | '!=' | '==') rightExpression=expression
+        {$ast = new ComparisonOperation($start.getLine(), $start.getCharPositionInLine()+1, $leftExpression.ast, $op.text, $rightExpression.ast);}
+    | leftExpression=expression op=('&&' | '||') rightExpression=expression
+        {$ast = new LogicOperation($start.getLine(), $start.getCharPositionInLine()+1, $leftExpression.ast, $op.text, $rightExpression.ast);}
+    | func_invocation
+        {$ast = $func_invocation.ast;}
+    | ID
+        {$ast = new Variable($ID.getLine(), $ID.getCharPositionInLine()+1, $ID.text);}
+    | simple_constant
+        {$ast = $simple_constant.ast;}
     ;
 
 simple_constant returns [Expression ast]

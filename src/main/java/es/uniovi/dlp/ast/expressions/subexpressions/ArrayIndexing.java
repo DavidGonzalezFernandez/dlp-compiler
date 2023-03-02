@@ -8,8 +8,10 @@ public class ArrayIndexing extends AbstractExpression {
   private Expression array;
   private Expression index;
 
-  public ArrayIndexing(int line, int column) {
+  public ArrayIndexing(int line, int column, Expression array, Expression index) {
     super(line, column);
+    this.array = array;
+    this.index = index;
   }
 
   @Override
