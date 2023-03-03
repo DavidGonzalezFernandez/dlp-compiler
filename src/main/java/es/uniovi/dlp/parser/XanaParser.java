@@ -2435,7 +2435,10 @@ public class XanaParser extends Parser {
             ((Simple_constantContext) _localctx).ast =
                 new CharLiteral(
                     ((Simple_constantContext) _localctx).CHAR_CONSTANT.getLine(),
-                    ((Simple_constantContext) _localctx).CHAR_CONSTANT.getCharPositionInLine() + 1);
+                    ((Simple_constantContext) _localctx).CHAR_CONSTANT.getCharPositionInLine() + 1,
+                    (((Simple_constantContext) _localctx).CHAR_CONSTANT != null
+                        ? ((Simple_constantContext) _localctx).CHAR_CONSTANT.getText()
+                        : null));
           }
           break;
         case REAL_CONSTANT:

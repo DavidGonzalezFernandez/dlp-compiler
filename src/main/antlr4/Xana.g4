@@ -20,6 +20,7 @@ program     //TODO pendiente
 main_def        //TODO pendiente
     : DEF MAIN ABRE_PARENTESIS CIERRA_PARENTESIS DO main_body  END
     ;
+
 main_body       //TODO pendiente
     : (var_def | statement)*
     ;
@@ -28,9 +29,11 @@ main_body       //TODO pendiente
 func_def        //TODO pendiente
     : func_heading func_body
     ;
+
 func_heading        //TODO pendiente
     : DEF ID ABRE_PARENTESIS param_list CIERRA_PARENTESIS DOS_PUNTOS return_type
     ;
+
 func_body       //TODO pendiente
     : DO (var_def | statement)* END
     ;
@@ -39,7 +42,6 @@ return_type     // TODO_pendiente
     : simple_type
     | VOID
     ;
-
 
 param_list      //TODO pendiente
     : (var_def (',' var_def)*)?
@@ -86,7 +88,6 @@ statement returns [List<Statement> ast = new ArrayList<>();]
     | in                {$ast.addAll($in.ast);}
     | return_statement  {$ast.add($return_statement.ast);}
     ;
-
 
 func_invocation returns [FunctionInvocation ast]
     : ID ABRE_PARENTESIS argument_list CIERRA_PARENTESIS
@@ -168,7 +169,7 @@ simple_constant returns [Expression ast]
     : INT_CONSTANT
         { $ast = new IntLiteral($INT_CONSTANT.getLine(), $INT_CONSTANT.getCharPositionInLine()+1, Integer.parseInt($INT_CONSTANT.text));}
     | CHAR_CONSTANT
-        { $ast = new CharLiteral($CHAR_CONSTANT.getLine(), $CHAR_CONSTANT.getCharPositionInLine()+1);}
+        { $ast = new CharLiteral($CHAR_CONSTANT.getLine(), $CHAR_CONSTANT.getCharPositionInLine()+1, $CHAR_CONSTANT.text);}
     | REAL_CONSTANT
         { $ast = new DoubleLiteral($REAL_CONSTANT.getLine(), $REAL_CONSTANT.getCharPositionInLine()+1, Double.parseDouble($REAL_CONSTANT.text));}
     ;
