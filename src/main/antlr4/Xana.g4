@@ -43,8 +43,10 @@ return_type returns [CompilerType ast]
     | VOID {$ast = new VoidType($VOID.getLine(), $VOID.getCharPositionInLine()+1);}
     ;
 
-param_list      //TODO pendiente
-    : (var_def (',' var_def)*)?
+param_list returns [List<VarDefinition> ast = new ArrayList<>();]
+    : (v1=var_def {$ast.addAll($v1.ast);}
+        (',' v2=var_def {$ast.addAll($v2.ast);})*
+      )?
     ;
 
 // Variable definitions
