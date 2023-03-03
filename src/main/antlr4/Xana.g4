@@ -18,11 +18,7 @@ program     //TODO pendiente
 
 // Main definition
 main_def        //TODO pendiente
-    : DEF MAIN ABRE_PARENTESIS CIERRA_PARENTESIS DO main_body  END
-    ;
-
-main_body       //TODO pendiente
-    : (var_def | statement)*
+    : DEF MAIN ABRE_PARENTESIS CIERRA_PARENTESIS func_body
     ;
 
 // Function definitions
