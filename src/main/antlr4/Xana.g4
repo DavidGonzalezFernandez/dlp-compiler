@@ -77,15 +77,14 @@ struct_def_type returns [StructType ast]
 
 
 // Statements
-statement //returns [List<Statement> ast]
-    locals [List<Statement> ast = new ArrayList<>();]
-    : func_invocation//   {$ast = new ArrayList<Statement>($func_invocation.ast);}
-    | if_else          // {$ast = new ArrayList<Statement>($if_else.ast);}
-    | while            // {$ast = new ArrayList<Statement>($while.ast);}
-    | assignment       // {$ast = new ArrayList<Statement>($assignment.ast);}
-    | puts              {$ast = $puts.ast;}
-    | in                {$ast = $in.ast;}
-    | return_statement           // {$ast.add($return.ast);}
+statement returns [List<Statement> ast = new ArrayList<>();]
+    : func_invocation   {$ast.add($func_invocation.ast);}
+    | if_else           {$ast.add($if_else.ast);}
+    | while_statement   {$ast.add($while_statement.ast);}
+    | assignment        {$ast.add($assignment.ast);}
+    | puts              {$ast.addAll($puts.ast);}
+    | in                {$ast.addAll($in.ast);}
+    | return_statement  {$ast.add($return_statement.ast);}
     ;
 
 
@@ -98,28 +97,25 @@ argument_list returns [List<Expression> ast = new ArrayList<Expression>();]
     : (expr1=expression {$ast.add($expr1.ast);} (COMMA expr2=expression {$ast.add($expr2.ast);})*)?
     ;
 
-if_else //returns [IfElse ast]
-    //locals [List<Statement> ifBody = new ArrayList<Statement>(),
-    //    List<Statement> elseBody = new ArrayList<Statement>()]
-    : IF expression DO (st1=statement
-    //{$ifBody.addAll($st1.ast);}
-    )* (ELSE (st2=statement
-     //{$elseBody.addAll($st2.ast);}
-     )*)? END
-    //{$ast = new IfElse($IF.getLine(), $IF.getCharPositionInLine()+1, $expression.ast, $ifBody, $elseBody);}
+if_else returns [IfElse ast]
+    locals [List<Statement> ifBody = new ArrayList<Statement>(),
+        List<Statement> elseBody = new ArrayList<Statement>()]
+    : IF expression DO
+    (st1=statement {$ifBody.addAll($st1.ast);})*
+    (ELSE (st2=statement {$elseBody.addAll($st2.ast);})*)?
+    END
+    {$ast = new IfElse($IF.getLine(), $IF.getCharPositionInLine()+1, $expression.ast, $ifBody, $elseBody);}
     ;
 
-while //returns [While ast]
-    //locals [List<Statement> whileBody = new ArrayList<Statement>();]
-    : WHILE expression DO (statement
-     //{$whileBody.addAll($statement.ast);}
-     )* END
-    //{$ast = new While($WHILE.getLine(), $WHILE.getCharPositionInLine()+1, $expression.ast, $whileBody);}
+while_statement returns [While ast]
+    locals [List<Statement> whileBody = new ArrayList<Statement>();]
+    : WHILE expression DO (statement {$whileBody.addAll($statement.ast);})* END
+    {$ast = new While($WHILE.getLine(), $WHILE.getCharPositionInLine()+1, $expression.ast, $whileBody);}
     ;
 
-assignment //returns [Assignment ast]
+assignment returns [Assignment ast]
     : leftExp=expression IGUAL rightExp=expression
-    //{ $ast = new Assignment($start.getLine(), $start.getCharPositionInLine()+1, $leftExp.ast, $rightExp.ast); }
+    { $ast = new Assignment($start.getLine(), $start.getCharPositionInLine()+1, $leftExp.ast, $rightExp.ast); }
     ;
 
 puts returns [List<Statement> ast = new ArrayList<Statement>();]

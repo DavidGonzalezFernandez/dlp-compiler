@@ -2,10 +2,11 @@ package es.uniovi.dlp.ast.expressions.subexpressions;
 
 import es.uniovi.dlp.ast.expressions.AbstractExpression;
 import es.uniovi.dlp.ast.expressions.Expression;
+import es.uniovi.dlp.ast.statement.Statement;
 import es.uniovi.dlp.ast.types.CompilerType;
 import java.util.List;
 
-public class FunctionInvocation extends AbstractExpression {
+public class FunctionInvocation extends AbstractExpression implements Statement {
   private String name;
   private List<Expression> arguments;
 
