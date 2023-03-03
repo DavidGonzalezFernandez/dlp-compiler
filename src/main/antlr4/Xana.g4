@@ -38,9 +38,9 @@ func_body       //TODO pendiente
     : DO (var_def | statement)* END
     ;
 
-return_type     // TODO_pendiente
-    : simple_type
-    | VOID
+return_type returns [CompilerType ast]
+    : simple_type {$ast = $simple_type.ast;}
+    | VOID {$ast = new VoidType($VOID.getLine(), $VOID.getCharPositionInLine()+1);}
     ;
 
 param_list      //TODO pendiente
