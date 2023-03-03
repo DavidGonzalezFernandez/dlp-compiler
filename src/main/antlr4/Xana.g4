@@ -167,11 +167,11 @@ expression returns [Expression ast]
 
 simple_constant returns [Expression ast]
     : INT_CONSTANT
-        { $ast = new IntLiteral($INT_CONSTANT.getLine(), $INT_CONSTANT.getCharPositionInLine()+1, Integer.parseInt($INT_CONSTANT.text));}
+        { $ast = new IntLiteral($INT_CONSTANT.getLine(), $INT_CONSTANT.getCharPositionInLine()+1, $INT_CONSTANT.text);}
     | CHAR_CONSTANT
         { $ast = new CharLiteral($CHAR_CONSTANT.getLine(), $CHAR_CONSTANT.getCharPositionInLine()+1, $CHAR_CONSTANT.text);}
     | REAL_CONSTANT
-        { $ast = new DoubleLiteral($REAL_CONSTANT.getLine(), $REAL_CONSTANT.getCharPositionInLine()+1, Double.parseDouble($REAL_CONSTANT.text));}
+        { $ast = new DoubleLiteral($REAL_CONSTANT.getLine(), $REAL_CONSTANT.getCharPositionInLine()+1, $REAL_CONSTANT.text);}
     ;
 
 // TOKENS
