@@ -1,12 +1,12 @@
 package es.uniovi.dlp.ast.expressions.subexpressions;
 
 import es.uniovi.dlp.ast.expressions.AbstractExpression;
-import es.uniovi.dlp.ast.types.Type;
+import es.uniovi.dlp.ast.types.CompilerType;
 import es.uniovi.dlp.ast.types.subtypes.IntType;
 
 public class IntLiteral extends AbstractExpression {
   private int value;
-  private Type type;
+  private CompilerType type;
 
   public IntLiteral(int line, int column, int value) {
     super(line, column);
@@ -15,7 +15,7 @@ public class IntLiteral extends AbstractExpression {
   }
 
   @Override
-  public Type getType() {
+  public CompilerType getType() {
     return this.type;
   }
 

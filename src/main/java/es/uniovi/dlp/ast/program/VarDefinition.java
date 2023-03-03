@@ -1,13 +1,13 @@
 package es.uniovi.dlp.ast.program;
 
 import es.uniovi.dlp.ast.AbstractASTNode;
-import es.uniovi.dlp.ast.types.Type;
+import es.uniovi.dlp.ast.types.CompilerType;
 
 public class VarDefinition extends AbstractASTNode implements Definition {
-  private Type type;
+  private CompilerType type;
   private String name;
 
-  public VarDefinition(int line, int column, Type type, String name) {
+  public VarDefinition(int line, int column, CompilerType type, String name) {
     super(line, column);
     this.type = type;
     this.name = name;
@@ -18,12 +18,12 @@ public class VarDefinition extends AbstractASTNode implements Definition {
     this.name = name;
   }
 
-  public void setType(Type type) {
+  public void setType(CompilerType type) {
     this.type = type;
   }
 
   @Override
-  public Type getType() {
+  public CompilerType getType() {
     return this.type;
   }
 }

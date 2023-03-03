@@ -2,7 +2,7 @@ package es.uniovi.dlp.ast.expressions.subexpressions;
 
 import es.uniovi.dlp.ast.expressions.AbstractExpression;
 import es.uniovi.dlp.ast.expressions.Expression;
-import es.uniovi.dlp.ast.types.Type;
+import es.uniovi.dlp.ast.types.CompilerType;
 
 public class NotOperation extends AbstractExpression {
   private Expression expression;
@@ -13,7 +13,7 @@ public class NotOperation extends AbstractExpression {
   }
 
   @Override
-  public Type getType() {
+  public CompilerType getType() {
     return null;
   } // TODO: pendiente de implementar
 

@@ -1,12 +1,12 @@
 package es.uniovi.dlp.ast.expressions.subexpressions;
 
 import es.uniovi.dlp.ast.expressions.AbstractExpression;
-import es.uniovi.dlp.ast.types.Type;
+import es.uniovi.dlp.ast.types.CompilerType;
 import es.uniovi.dlp.ast.types.subtypes.CharType;
 
 public class CharLiteral extends AbstractExpression {
   private char value;
-  private Type type;
+  private CompilerType type;
 
   public CharLiteral(int line, int column) {
     super(line, column);
@@ -18,7 +18,7 @@ public class CharLiteral extends AbstractExpression {
   }
 
   @Override
-  public Type getType() {
+  public CompilerType getType() {
     return this.type;
   }
 

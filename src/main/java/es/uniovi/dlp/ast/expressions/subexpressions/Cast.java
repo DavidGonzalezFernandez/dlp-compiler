@@ -2,20 +2,20 @@ package es.uniovi.dlp.ast.expressions.subexpressions;
 
 import es.uniovi.dlp.ast.expressions.AbstractExpression;
 import es.uniovi.dlp.ast.expressions.Expression;
-import es.uniovi.dlp.ast.types.Type;
+import es.uniovi.dlp.ast.types.CompilerType;
 
 public class Cast extends AbstractExpression {
   private Expression expression;
-  private Type newType;
+  private CompilerType newType;
 
-  public Cast(int line, int column, Expression expression, Type newType) {
+  public Cast(int line, int column, Expression expression, CompilerType newType) {
     super(line, column);
     this.expression = expression;
     this.newType = newType;
   }
 
   @Override
-  public Type getType() {
+  public CompilerType getType() {
     return null;
   }
 

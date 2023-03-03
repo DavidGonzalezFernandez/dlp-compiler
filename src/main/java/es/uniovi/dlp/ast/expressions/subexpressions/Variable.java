@@ -2,7 +2,7 @@ package es.uniovi.dlp.ast.expressions.subexpressions;
 
 import es.uniovi.dlp.ast.expressions.AbstractExpression;
 import es.uniovi.dlp.ast.program.VarDefinition;
-import es.uniovi.dlp.ast.types.Type;
+import es.uniovi.dlp.ast.types.CompilerType;
 
 public class Variable extends AbstractExpression {
   private String name;
@@ -14,7 +14,7 @@ public class Variable extends AbstractExpression {
   }
 
   @Override
-  public Type getType() {
+  public CompilerType getType() {
     return null;
   }
 

@@ -1,7 +1,7 @@
 package es.uniovi.dlp.ast.program;
 
 import es.uniovi.dlp.ast.AbstractASTNode;
-import es.uniovi.dlp.ast.types.Type;
+import es.uniovi.dlp.ast.types.CompilerType;
 
 public class FunctionDefinition extends AbstractASTNode implements Definition {
   public FunctionDefinition(int line, int column) {
@@ -9,7 +9,7 @@ public class FunctionDefinition extends AbstractASTNode implements Definition {
   }
 
   @Override
-  public Type getType() {
+  public CompilerType getType() {
     return null;
   }
 }

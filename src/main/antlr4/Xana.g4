@@ -29,11 +29,17 @@ func_def        //TODO pendiente
     : func_heading func_body
     ;
 func_heading        //TODO pendiente
-    : DEF ID ABRE_PARENTESIS param_list CIERRA_PARENTESIS DOS_PUNTOS (simple_type | VOID)
+    : DEF ID ABRE_PARENTESIS param_list CIERRA_PARENTESIS DOS_PUNTOS return_type
     ;
 func_body       //TODO pendiente
     : DO (var_def | statement)* END
     ;
+
+return_type     // TODO_pendiente
+    : simple_type
+    | VOID
+    ;
+
 
 param_list      //TODO pendiente
     : (var_def (',' var_def)*)?
@@ -46,76 +52,89 @@ var_def returns [List<VarDefinition> ast = new ArrayList<VarDefinition>();]
       DOS_PUNTOS var_type_def { for (VarDefinition v : $ast) v.setType($var_type_def.ast); }
     ;
 
-var_type_def returns [Type ast]
+var_type_def returns [CompilerType ast]
     : simple_type { $ast = $simple_type.ast; }
     | array_def_type { $ast = $array_def_type.ast; }
     | struct_def_type { $ast = $struct_def_type.ast; }
     ;
 
-simple_type returns [Type ast]
+simple_type returns [CompilerType ast]
     : t='int'    { $ast = new IntType($t.getLine(), $t.getCharPositionInLine()+1); }
     | t='double' { $ast = new DoubleType($t.getLine(), $t.getCharPositionInLine()+1); }
     | t='char'   { $ast = new CharType($t.getLine(), $t.getCharPositionInLine()+1); }
     ;
 
-array_def_type returns [Type ast]
-    : ABRE_CORCHETE INT_CONSTANT DOS_PUNTOS var_type_def CIERRA_CORCHETE {$ast = new ArrayType($ABRE_CORCHETE.getLine(), $ABRE_CORCHETE.getCharPositionInLine()+1);}
+array_def_type returns [ArrayType ast]
+    : ABRE_CORCHETE INT_CONSTANT DOS_PUNTOS var_type_def CIERRA_CORCHETE
+    {$ast = new ArrayType($ABRE_CORCHETE.getLine(), $ABRE_CORCHETE.getCharPositionInLine()+1, Integer.parseInt($INT_CONSTANT.text), $var_type_def.ast);}
     ;
 
-struct_def_type returns [Type ast]
-    : DEFSTRUCT DO (var_def)* END {$ast = new StructType($DEFSTRUCT.getLine(), $DEFSTRUCT.getCharPositionInLine()+1);}
+struct_def_type returns [StructType ast]
+    locals [List<StructField> definitions = new ArrayList<>();]     //TODO rellenar
+    : DEFSTRUCT DO (var_def)* END
+    {$ast = new StructType($DEFSTRUCT.getLine(), $DEFSTRUCT.getCharPositionInLine()+1, $definitions);}
     ;
 
 
 // Statements
-statement       //TODO pendiente
-    : func_invocation
-    | if_else
-    | while
-    | assignment
-    | puts
-    | in
-    | return
+statement //returns [List<Statement> ast]
+    locals [List<Statement> ast = new ArrayList<>();]
+    : func_invocation//   {$ast = new ArrayList<Statement>($func_invocation.ast);}
+    | if_else          // {$ast = new ArrayList<Statement>($if_else.ast);}
+    | while            // {$ast = new ArrayList<Statement>($while.ast);}
+    | assignment       // {$ast = new ArrayList<Statement>($assignment.ast);}
+    | puts              {$ast = $puts.ast;}
+    | in                {$ast = $in.ast;}
+    | return_statement           // {$ast.add($return.ast);}
     ;
 
 
 func_invocation returns [FunctionInvocation ast]
     : ID ABRE_PARENTESIS argument_list CIERRA_PARENTESIS
-    {$ast = new FunctionInvocation($ID.getLine(), $ID.getCharPositionInLine()+1);}
+    {$ast = new FunctionInvocation($ID.getLine(), $ID.getCharPositionInLine()+1, $ID.text, $argument_list.ast);}
     ;
 
-argument_list       //TODO pendiente
-    : (expression (COMMA expression)*)?
+argument_list returns [List<Expression> ast = new ArrayList<Expression>();]
+    : (expr1=expression {$ast.add($expr1.ast);} (COMMA expr2=expression {$ast.add($expr2.ast);})*)?
     ;
 
-
-if_else     //TODO pendiente
-    : IF expression DO (statement)* (ELSE (statement)*)? END
+if_else //returns [IfElse ast]
+    //locals [List<Statement> ifBody = new ArrayList<Statement>(),
+    //    List<Statement> elseBody = new ArrayList<Statement>()]
+    : IF expression DO (st1=statement
+    //{$ifBody.addAll($st1.ast);}
+    )* (ELSE (st2=statement
+     //{$elseBody.addAll($st2.ast);}
+     )*)? END
+    //{$ast = new IfElse($IF.getLine(), $IF.getCharPositionInLine()+1, $expression.ast, $ifBody, $elseBody);}
     ;
 
-
-while       //TODO pendiente
-    : WHILE expression DO (statement)* END
+while //returns [While ast]
+    //locals [List<Statement> whileBody = new ArrayList<Statement>();]
+    : WHILE expression DO (statement
+     //{$whileBody.addAll($statement.ast);}
+     )* END
+    //{$ast = new While($WHILE.getLine(), $WHILE.getCharPositionInLine()+1, $expression.ast, $whileBody);}
     ;
 
-
-assignment      //TODO pendiente
+assignment //returns [Assignment ast]
     : leftExp=expression IGUAL rightExp=expression
+    //{ $ast = new Assignment($start.getLine(), $start.getCharPositionInLine()+1, $leftExp.ast, $rightExp.ast); }
     ;
 
-
-puts        //TODO pendiente
-    : PUTS expression (COMMA expression)*
+puts returns [List<Statement> ast = new ArrayList<Statement>();]
+    : PUTS expr1=expression {$ast.add(new WriteStatement($start.getLine(), $start.getCharPositionInLine()+1, $expr1.ast));}
+    (COMMA expr2=expression {$ast.add(new WriteStatement($start.getLine(), $start.getCharPositionInLine()+1, $expr2.ast));})*
     ;
 
-
-in      //TODO pendiente
-    : IN expression (COMMA expression)*
+in returns [List<Statement> ast = new ArrayList<Statement>();]
+    : IN expr1=expression {$ast.add(new ReadStatement($start.getLine(), $start.getCharPositionInLine()+1, $expr1.ast));}
+    (COMMA expr2=expression {$ast.add(new ReadStatement($start.getLine(), $start.getCharPositionInLine()+1, $expr2.ast));})*
     ;
 
-
-return      //TODO pendiente
-    : RETURN expression?
+return_statement returns [ReturnStatement ast]
+    : RETURN expression
+    {$ast = new ReturnStatement($RETURN.getLine(), $RETURN.getCharPositionInLine()+1, $expression.ast);}
     ;
 
 

@@ -1,7 +1,7 @@
 package es.uniovi.dlp.ast.expressions;
 
 import es.uniovi.dlp.ast.AbstractASTNode;
-import es.uniovi.dlp.ast.types.Type;
+import es.uniovi.dlp.ast.types.CompilerType;
 
 public abstract class AbstractExpression extends AbstractASTNode implements Expression {
   public AbstractExpression(int line, int column) {
@@ -9,7 +9,7 @@ public abstract class AbstractExpression extends AbstractASTNode implements Expr
   }
 
   @Override
-  public abstract Type getType();
+  public abstract CompilerType getType();
 
   @Override
   public abstract Object getValue();

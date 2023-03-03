@@ -1,10 +1,10 @@
 package es.uniovi.dlp.ast.expressions;
 
 import es.uniovi.dlp.ast.ASTNode;
-import es.uniovi.dlp.ast.types.Type;
+import es.uniovi.dlp.ast.types.CompilerType;
 
 public interface Expression extends ASTNode {
-  public Type getType();
+  public CompilerType getType();
 
   public Object getValue();
 }
