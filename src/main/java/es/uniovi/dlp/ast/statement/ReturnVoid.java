@@ -1,6 +1,5 @@
-package es.uniovi.dlp.ast.statement.substatements;
+package es.uniovi.dlp.ast.statement;
 
-import es.uniovi.dlp.ast.statement.AbstractStatement;
 
 public class ReturnVoid extends AbstractStatement {
   public ReturnVoid(int line, int column) {

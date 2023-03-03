@@ -1,7 +1,5 @@
-package es.uniovi.dlp.ast.types.subtypes;
+package es.uniovi.dlp.ast.types;
 
-import es.uniovi.dlp.ast.types.AbstractType;
-import es.uniovi.dlp.ast.types.CompilerType;
 
 public class StructField extends AbstractType {
   private String name;

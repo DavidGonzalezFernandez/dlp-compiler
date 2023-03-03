@@ -1,6 +1,5 @@
-package es.uniovi.dlp.ast.expressions.subexpressions;
+package es.uniovi.dlp.ast.expressions;
 
-import es.uniovi.dlp.ast.expressions.AbstractExpression;
 import es.uniovi.dlp.ast.program.VarDefinition;
 import es.uniovi.dlp.ast.types.CompilerType;
 

@@ -1,7 +1,6 @@
-package es.uniovi.dlp.ast.statement.substatements;
+package es.uniovi.dlp.ast.statement;
 
 import es.uniovi.dlp.ast.expressions.Expression;
-import es.uniovi.dlp.ast.statement.AbstractStatement;
 
 public class ReadStatement extends AbstractStatement {
   private Expression expression;

@@ -4,34 +4,44 @@ grammar Xana;
     package es.uniovi.dlp.parser;
     import es.uniovi.dlp.ast.*;
     import es.uniovi.dlp.ast.expressions.*;
-    import es.uniovi.dlp.ast.expressions.subexpressions.*;
     import es.uniovi.dlp.ast.program.*;
-    import es.uniovi.dlp.ast.statement.substatements.*;
     import es.uniovi.dlp.ast.statement.*;
     import es.uniovi.dlp.ast.types.*;
-    import es.uniovi.dlp.ast.types.subtypes.*;
 }
 
-program     //TODO pendiente
-    : (var_def | func_def)* main_def
+program returns [Program ast]
+    locals [List<Definition> definitions = new ArrayList<>()]
+    : (var_def {$definitions.addAll($var_def.ast);} | func_def {$definitions.add($func_def.ast);})*
+        main_def {$definitions.add($main_def.ast);}
+        {$ast = new Program(0, 0, $definitions);}
     ;
 
 // Main definition
-main_def        //TODO pendiente
+main_def returns [FunctionDefinition ast]
     : DEF MAIN ABRE_PARENTESIS CIERRA_PARENTESIS func_body
+    {$ast = new FunctionDefinition(
+        $DEF.getLine(),
+        $DEF.getCharPositionInLine()+1,
+        $MAIN.text,
+        new FunctionType($DEF.getLine(), $DEF.getCharPositionInLine()+1, new VoidType($DEF.getLine(), $DEF.getCharPositionInLine()+1)),
+        $func_body.ast
+    );}
     ;
 
 // Function definitions
-func_def        //TODO pendiente
-    : func_heading func_body
+func_def returns [FunctionDefinition ast]
+    : DEF ID ABRE_PARENTESIS param_list CIERRA_PARENTESIS DOS_PUNTOS return_type func_body
+    {$ast = new FunctionDefinition(
+        $DEF.getLine(),
+        $DEF.getCharPositionInLine()+1,
+        $ID.text,
+        new FunctionType($DEF.getLine(), $DEF.getCharPositionInLine()+1, $param_list.ast, $return_type.ast),
+        $func_body.ast
+    );}
     ;
 
-func_heading        //TODO pendiente
-    : DEF ID ABRE_PARENTESIS param_list CIERRA_PARENTESIS DOS_PUNTOS return_type
-    ;
-
-func_body       //TODO pendiente
-    : DO (var_def | statement)* END
+func_body returns [List<Object> ast = new ArrayList<>();]
+    : DO (var_def {$ast.addAll($var_def.ast);} | statement {$ast.addAll($statement.ast);})* END
     ;
 
 return_type returns [CompilerType ast]
@@ -70,7 +80,8 @@ array_def_type returns [ArrayType ast]
     ;
 
 struct_def_type returns [StructType ast]
-    locals [List<StructField> definitions = new ArrayList<>();]     //TODO rellenar
+    //TODO rellenar
+    locals [List<StructField> definitions = new ArrayList<>();]
     : DEFSTRUCT DO (var_def)* END
     {$ast = new StructType($DEFSTRUCT.getLine(), $DEFSTRUCT.getCharPositionInLine()+1, $definitions);}
     ;

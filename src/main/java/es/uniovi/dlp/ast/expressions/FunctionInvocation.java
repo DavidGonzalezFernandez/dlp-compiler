@@ -1,7 +1,5 @@
-package es.uniovi.dlp.ast.expressions.subexpressions;
+package es.uniovi.dlp.ast.expressions;
 
-import es.uniovi.dlp.ast.expressions.AbstractExpression;
-import es.uniovi.dlp.ast.expressions.Expression;
 import es.uniovi.dlp.ast.statement.Statement;
 import es.uniovi.dlp.ast.types.CompilerType;
 import java.util.List;

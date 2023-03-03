@@ -1,13 +1,11 @@
-package es.uniovi.dlp.ast.expressions.subexpressions;
+package es.uniovi.dlp.ast.expressions;
 
-import es.uniovi.dlp.ast.expressions.AbstractExpression;
-import es.uniovi.dlp.ast.expressions.Expression;
 import es.uniovi.dlp.ast.types.CompilerType;
 
-public class MinusOperation extends AbstractExpression {
+public class NotOperation extends AbstractExpression {
   private Expression expression;
 
-  public MinusOperation(int line, int column, Expression expression) {
+  public NotOperation(int line, int column, Expression expression) {
     super(line, column);
     this.expression = expression;
   }

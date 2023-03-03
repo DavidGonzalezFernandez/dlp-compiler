@@ -1,8 +1,7 @@
-package es.uniovi.dlp.ast.expressions.subexpressions;
+package es.uniovi.dlp.ast.expressions;
 
-import es.uniovi.dlp.ast.expressions.AbstractExpression;
 import es.uniovi.dlp.ast.types.CompilerType;
-import es.uniovi.dlp.ast.types.subtypes.DoubleType;
+import es.uniovi.dlp.ast.types.DoubleType;
 import es.uniovi.dlp.parser.LexerHelper;
 
 public class DoubleLiteral extends AbstractExpression {

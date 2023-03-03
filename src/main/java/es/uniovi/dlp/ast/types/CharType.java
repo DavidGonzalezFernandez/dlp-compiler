@@ -1,6 +1,5 @@
-package es.uniovi.dlp.ast.types.subtypes;
+package es.uniovi.dlp.ast.types;
 
-import es.uniovi.dlp.ast.types.AbstractType;
 
 public class CharType extends AbstractType {
   public CharType(int line, int column) {

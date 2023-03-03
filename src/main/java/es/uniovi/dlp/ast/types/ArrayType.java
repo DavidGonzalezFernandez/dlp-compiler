@@ -1,7 +1,4 @@
-package es.uniovi.dlp.ast.types.subtypes;
-
-import es.uniovi.dlp.ast.types.AbstractType;
-import es.uniovi.dlp.ast.types.CompilerType;
+package es.uniovi.dlp.ast.types;
 
 public class ArrayType extends AbstractType {
   private int size;

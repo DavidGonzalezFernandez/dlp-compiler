@@ -1,6 +1,5 @@
-package es.uniovi.dlp.ast.types.subtypes;
+package es.uniovi.dlp.ast.types;
 
-import es.uniovi.dlp.ast.types.AbstractType;
 
 public class VoidType extends AbstractType {
   public VoidType(int line, int column) {

@@ -1,15 +1,14 @@
-package es.uniovi.dlp.ast.expressions.subexpressions;
+package es.uniovi.dlp.ast.expressions;
 
-import es.uniovi.dlp.ast.expressions.AbstractExpression;
-import es.uniovi.dlp.ast.expressions.Expression;
 import es.uniovi.dlp.ast.types.CompilerType;
 
-public class LogicOperation extends AbstractExpression {
+public class ArithmeticOperation extends AbstractExpression {
   private String operator;
   private Expression leftExpression;
   private Expression rightExpression;
 
-  public LogicOperation(int line, int column, Expression left, String operator, Expression right) {
+  public ArithmeticOperation(
+      int line, int column, Expression left, String operator, Expression right) {
     super(line, column);
     this.leftExpression = left;
     this.rightExpression = right;
