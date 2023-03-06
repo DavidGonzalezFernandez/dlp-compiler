@@ -3,6 +3,8 @@ package es.uniovi.dlp.ast.program;
 import es.uniovi.dlp.ast.AbstractASTNode;
 import es.uniovi.dlp.ast.types.CompilerType;
 import es.uniovi.dlp.ast.types.FunctionType;
+
+import javax.lang.model.type.NullType;
 import java.util.List;
 
 public class FunctionDefinition extends AbstractASTNode implements Definition {

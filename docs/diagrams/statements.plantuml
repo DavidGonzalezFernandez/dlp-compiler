@@ -43,11 +43,6 @@ Statement <|.. Return
 Return o-- "1" Expression
 
 
-' Return para cuando no se devuelve una expresión
-class ReturnVoid
-Statement <|.. ReturnVoid
-
-
 ' Write no tiene una lista de Expression, se genera un Write para cada Expression
 class WriteStatement {
     expression: Expression

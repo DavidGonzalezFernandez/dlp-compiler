@@ -26,4 +26,8 @@ public class VarDefinition extends AbstractASTNode implements Definition {
   public CompilerType getType() {
     return this.type;
   }
+
+  public String getName() {
+    return this.name;
+  }
 }

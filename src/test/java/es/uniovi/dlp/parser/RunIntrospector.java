@@ -1,5 +1,8 @@
 package es.uniovi.dlp.parser;
 
+import es.uniovi.dlp.ast.program.Program;
+import introspector.model.IntrospectorModel;
+import introspector.view.IntrospectorTree;
 import java.io.IOException;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
@@ -8,20 +11,17 @@ import org.antlr.v4.runtime.CommonTokenStream;
 public class RunIntrospector {
 
   public static void main(String... args) throws IOException {
-    if (args.length < 1) {
-      System.err.println("Please, pass me the input file.");
-      return;
-    }
+    var fileName = "examples/basic.xana";
 
-    CharStream input = CharStreams.fromFileName(args[0]);
+    CharStream input = CharStreams.fromFileName(fileName);
     XanaLexer lexer = new XanaLexer(input);
 
     CommonTokenStream tokens = new CommonTokenStream(lexer);
     XanaParser parser = new XanaParser(tokens);
 
-    // Program ast = parser.program().ast;
+    Program ast = parser.program().ast;
 
-    // IntrospectorModel model = new IntrospectorModel("Program", ast);
-    // new IntrospectorTree("Introspector", model);
+    IntrospectorModel model = new IntrospectorModel("Program", ast);
+    new IntrospectorTree("Introspector", model);
   }
 }

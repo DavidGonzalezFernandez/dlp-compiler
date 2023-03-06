@@ -16,19 +16,21 @@ program returns [Program ast]
         {$ast = new Program(0, 0, $definitions);}
     ;
 
-// Main definition
 main_def returns [FunctionDefinition ast]
     : DEF MAIN ABRE_PARENTESIS CIERRA_PARENTESIS func_body
     {$ast = new FunctionDefinition(
         $DEF.getLine(),
         $DEF.getCharPositionInLine()+1,
         $MAIN.text,
-        new FunctionType($DEF.getLine(), $DEF.getCharPositionInLine()+1, new VoidType($DEF.getLine(), $DEF.getCharPositionInLine()+1)),
+        new FunctionType(
+            $DEF.getLine(),
+            $DEF.getCharPositionInLine()+1,
+            new VoidType($DEF.getLine(), $DEF.getCharPositionInLine()+1)
+        ),
         $func_body.ast
     );}
     ;
 
-// Function definitions
 func_def returns [FunctionDefinition ast]
     : DEF ID ABRE_PARENTESIS param_list CIERRA_PARENTESIS DOS_PUNTOS return_type func_body
     {$ast = new FunctionDefinition(
@@ -40,6 +42,7 @@ func_def returns [FunctionDefinition ast]
     );}
     ;
 
+// TODO: comprobar si está bien hacer una única lista de Object
 func_body returns [List<Object> ast = new ArrayList<>();]
     : DO (var_def {$ast.addAll($var_def.ast);} | statement {$ast.addAll($statement.ast);})* END
     ;
@@ -76,13 +79,21 @@ simple_type returns [CompilerType ast]
 
 array_def_type returns [ArrayType ast]
     : ABRE_CORCHETE INT_CONSTANT DOS_PUNTOS var_type_def CIERRA_CORCHETE
-    {$ast = new ArrayType($ABRE_CORCHETE.getLine(), $ABRE_CORCHETE.getCharPositionInLine()+1, Integer.parseInt($INT_CONSTANT.text), $var_type_def.ast);}
+    {$ast = new ArrayType(
+        $ABRE_CORCHETE.getLine(),
+        $ABRE_CORCHETE.getCharPositionInLine()+1,
+        Integer.parseInt($INT_CONSTANT.text),
+        $var_type_def.ast);
+    }
     ;
 
 struct_def_type returns [StructType ast]
-    //TODO rellenar
     locals [List<StructField> definitions = new ArrayList<>();]
-    : DEFSTRUCT DO (var_def)* END
+    : DEFSTRUCT DO (var_def
+        { for (VarDefinition v : $var_def.ast)
+            $definitions.add(new StructField(v.getLine(), v.getColumn(), v.getName(), v.getType()));
+        }
+    )* END
     {$ast = new StructType($DEFSTRUCT.getLine(), $DEFSTRUCT.getCharPositionInLine()+1, $definitions);}
     ;
 
@@ -129,13 +140,19 @@ assignment returns [Assignment ast]
     ;
 
 puts returns [List<Statement> ast = new ArrayList<Statement>();]
-    : PUTS expr1=expression {$ast.add(new WriteStatement($start.getLine(), $start.getCharPositionInLine()+1, $expr1.ast));}
-    (COMMA expr2=expression {$ast.add(new WriteStatement($start.getLine(), $start.getCharPositionInLine()+1, $expr2.ast));})*
+    : PUTS expr1=expression
+        {$ast.add(new WriteStatement($start.getLine(), $start.getCharPositionInLine()+1, $expr1.ast));}
+    (COMMA expr2=expression
+        {$ast.add(new WriteStatement($start.getLine(), $start.getCharPositionInLine()+1, $expr2.ast));}
+    )*
     ;
 
 in returns [List<Statement> ast = new ArrayList<Statement>();]
-    : IN expr1=expression {$ast.add(new ReadStatement($start.getLine(), $start.getCharPositionInLine()+1, $expr1.ast));}
-    (COMMA expr2=expression {$ast.add(new ReadStatement($start.getLine(), $start.getCharPositionInLine()+1, $expr2.ast));})*
+    : IN expr1=expression
+        {$ast.add(new ReadStatement($start.getLine(), $start.getCharPositionInLine()+1, $expr1.ast));}
+    (COMMA expr2=expression
+        {$ast.add(new ReadStatement($start.getLine(), $start.getCharPositionInLine()+1, $expr2.ast));}
+    )*
     ;
 
 return_statement returns [ReturnStatement ast]
@@ -158,8 +175,8 @@ expression returns [Expression ast]
         {$ast = new MinusOperation($MINUS.getLine(), $MINUS.getCharPositionInLine()+1, $expression.ast);}
     | NOT expression
         {$ast = new NotOperation($NOT.getLine(), $NOT.getCharPositionInLine()+1, $expression.ast);}
-    | leftExpression=expression op=('*' | '/' | '%') rightExpression=expression
-        {$ast = new ArithmeticOperation($start.getLine(), $start.getCharPositionInLine()+1, $leftExpression.ast, $op.text, $rightExpression.ast);}
+    | left=expression op=('*' | '/' | '%') right=expression
+        {$ast = new ArithmeticOperation($start.getLine(), $start.getCharPositionInLine()+1, $left.ast, $op.text, $right.ast);}
     | leftExpression=expression op=('+' | MINUS) rightExpression=expression
         {$ast = new ArithmeticOperation($start.getLine(), $start.getCharPositionInLine()+1, $leftExpression.ast, $op.text, $rightExpression.ast);}
     | leftExpression=expression op=('>' | '>=' | '<' | '<=' | '!=' | '==') rightExpression=expression
@@ -175,12 +192,12 @@ expression returns [Expression ast]
     ;
 
 simple_constant returns [Expression ast]
-    : INT_CONSTANT
-        { $ast = new IntLiteral($INT_CONSTANT.getLine(), $INT_CONSTANT.getCharPositionInLine()+1, $INT_CONSTANT.text);}
-    | CHAR_CONSTANT
-        { $ast = new CharLiteral($CHAR_CONSTANT.getLine(), $CHAR_CONSTANT.getCharPositionInLine()+1, $CHAR_CONSTANT.text);}
-    | REAL_CONSTANT
-        { $ast = new DoubleLiteral($REAL_CONSTANT.getLine(), $REAL_CONSTANT.getCharPositionInLine()+1, $REAL_CONSTANT.text);}
+    : i=INT_CONSTANT
+        { $ast = new IntLiteral($i.getLine(), $i.getCharPositionInLine()+1, $i.text);}
+    | c=CHAR_CONSTANT
+        { $ast = new CharLiteral($c.getLine(), $c.getCharPositionInLine()+1, $c.text);}
+    | r=REAL_CONSTANT
+        { $ast = new DoubleLiteral($r.getLine(), $r.getCharPositionInLine()+1, $r.text);}
     ;
 
 // TOKENS

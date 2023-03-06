@@ -7,19 +7,19 @@ interface ASTNode {
     getColumn(): int
 }
 
-interface Type
+interface CompilerType
 
-ASTNode <|-- Type
+ASTNode <|-- CompilerType
 
 'Los tipos simples son: int, double, char
-Type <|.. IntType
+CompilerType <|.. IntType
 class IntType
 
 class DoubleType
-Type <|.. DoubleType
+CompilerType <|.. DoubleType
 
 class CharType
-Type <|.. CharType
+CompilerType <|.. CharType
 
 
 ' Los tipos complejos son Arrays y Structs
@@ -28,38 +28,36 @@ Type <|.. CharType
 debiendo especificar el tamaño del array, previo a su tipo, en su construcción '/
 class ArrayType {
     size: int
-    type: Type
-    ' Un array no necesita guardar una lista de sus elementos, se guardan en memoria
-    ' TODO: ¿es correcto lo que digo?
+    type: CompilerType
 }
-Type <|.. ArrayType
+CompilerType <|.. ArrayType
 
 
 class StructField {
     name: String
-    type: Type
+    type: CompilerType
 }
-Type <|.. StructField
+CompilerType <|.. StructField
 
 
 ' Un registro se puede crear usando la palabra clave defstruct y definiendo una secuencia de variables
 class StructType {
     fields: List<StructField>   /'¿Por qué este tipo concreto?'/
 }
-Type <|.. StructType
+CompilerType <|.. StructType
 StructType o-- "0-n" StructField
 
 
 class FunctionType {
     params: VarDefinition
-    returnType: Type    /'Sólo se devuelven tipos simples'/
+    returnType: CompilerType    /'Sólo se devuelven tipos simples'/
 }
-Type <|.. FunctionType
+CompilerType <|.. FunctionType
 
 
 ' Las funciones tienen un tipo de retorno, pero pueden no devolver nada
 ' Se necesita el tipo Void
 class VoidType
-Type <|.. VoidType
+CompilerType <|.. VoidType
 
 @enduml

@@ -1,6 +1,5 @@
 package es.uniovi.dlp.ast.types;
 
-
 public class StructField extends AbstractType {
   private String name;
   private CompilerType type;

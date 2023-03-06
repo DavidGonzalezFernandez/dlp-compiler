@@ -51,7 +51,7 @@ ArithmeticOperation o-- "2" Expression
 ' La conversión explícita a tipos simples se podrá realizar usando la palabra clave as
 class Cast {
     expression: Expression
-    newType: Type   /'Tiene que ser de tipo simple'/
+    newType: CompilerType   /'Tiene que ser de tipo simple'/
 }
 Expression <|.. Cast
 
