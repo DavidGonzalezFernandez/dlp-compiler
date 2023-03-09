@@ -355,7 +355,7 @@ public class XanaParser extends Parser {
         setState(55);
         ((ProgramContext) _localctx).main_def = main_def();
         _localctx.definitions.add(((ProgramContext) _localctx).main_def.ast);
-        ((ProgramContext) _localctx).ast = new Program(0, 0, _localctx.definitions);
+        ((ProgramContext) _localctx).ast = new Program(1, 1, _localctx.definitions);
       }
     } catch (RecognitionException re) {
       _localctx.exception = re;
@@ -433,7 +433,8 @@ public class XanaParser extends Parser {
                     new VoidType(
                         ((Main_defContext) _localctx).DEF.getLine(),
                         ((Main_defContext) _localctx).DEF.getCharPositionInLine() + 1)),
-                ((Main_defContext) _localctx).func_body.ast);
+                ((Main_defContext) _localctx).func_body.definitions,
+                ((Main_defContext) _localctx).func_body.statements);
       }
     } catch (RecognitionException re) {
       _localctx.exception = re;
@@ -530,7 +531,8 @@ public class XanaParser extends Parser {
                     ((Func_defContext) _localctx).DEF.getCharPositionInLine() + 1,
                     ((Func_defContext) _localctx).param_list.ast,
                     ((Func_defContext) _localctx).return_type.ast),
-                ((Func_defContext) _localctx).func_body.ast);
+                ((Func_defContext) _localctx).func_body.definitions,
+                ((Func_defContext) _localctx).func_body.statements);
       }
     } catch (RecognitionException re) {
       _localctx.exception = re;
@@ -544,8 +546,8 @@ public class XanaParser extends Parser {
 
   @SuppressWarnings("CheckReturnValue")
   public static class Func_bodyContext extends ParserRuleContext {
-    public List<Object> ast = new ArrayList<>();
-    ;
+    public List<VarDefinition> definitions = new ArrayList<>();
+    public List<Statement> statements = new ArrayList<>();
     public Var_defContext var_def;
     public StatementContext statement;
 
@@ -604,14 +606,14 @@ public class XanaParser extends Parser {
                 {
                   setState(77);
                   ((Func_bodyContext) _localctx).var_def = var_def();
-                  _localctx.ast.addAll(((Func_bodyContext) _localctx).var_def.ast);
+                  _localctx.definitions.addAll(((Func_bodyContext) _localctx).var_def.ast);
                 }
                 break;
               case 2:
                 {
                   setState(80);
                   ((Func_bodyContext) _localctx).statement = statement();
-                  _localctx.ast.addAll(((Func_bodyContext) _localctx).statement.ast);
+                  _localctx.statements.addAll(((Func_bodyContext) _localctx).statement.ast);
                 }
                 break;
             }
@@ -1150,10 +1152,9 @@ public class XanaParser extends Parser {
             {
               setState(152);
               ((Struct_def_typeContext) _localctx).var_def = var_def();
-              for (VarDefinition v : ((Struct_def_typeContext) _localctx).var_def.ast) {
+              for (VarDefinition v : ((Struct_def_typeContext) _localctx).var_def.ast)
                 _localctx.definitions.add(
                     new StructField(v.getLine(), v.getColumn(), v.getName(), v.getType()));
-              }
             }
           }
           setState(159);
@@ -1352,9 +1353,12 @@ public class XanaParser extends Parser {
             new FunctionInvocation(
                 ((Func_invocationContext) _localctx).ID.getLine(),
                 ((Func_invocationContext) _localctx).ID.getCharPositionInLine() + 1,
-                (((Func_invocationContext) _localctx).ID != null
-                    ? ((Func_invocationContext) _localctx).ID.getText()
-                    : null),
+                new Variable(
+                    ((Func_invocationContext) _localctx).ID.getLine(),
+                    ((Func_invocationContext) _localctx).ID.getCharPositionInLine() + 1,
+                    (((Func_invocationContext) _localctx).ID != null
+                        ? ((Func_invocationContext) _localctx).ID.getText()
+                        : null)),
                 ((Func_invocationContext) _localctx).argument_list.ast);
       }
     } catch (RecognitionException re) {
@@ -1939,6 +1943,7 @@ public class XanaParser extends Parser {
     public ExpressionContext array;
     public ExpressionContext struct;
     public ExpressionContext expr;
+    public ExpressionContext left;
     public ExpressionContext leftExpression;
     public ExpressionContext expression;
     public Token MINUS;
@@ -1947,6 +1952,7 @@ public class XanaParser extends Parser {
     public Token ID;
     public Simple_constantContext simple_constant;
     public Token op;
+    public ExpressionContext right;
     public ExpressionContext rightExpression;
     public ExpressionContext index;
     public Token field;
@@ -2119,7 +2125,7 @@ public class XanaParser extends Parser {
                 case 1:
                   {
                     _localctx = new ExpressionContext(_parentctx, _parentState);
-                    _localctx.leftExpression = _prevctx;
+                    _localctx.left = _prevctx;
                     pushNewRecursionContext(_localctx, _startState, RULE_expression);
                     setState(301);
                     if (!(precpred(_ctx, 7)))
@@ -2135,17 +2141,17 @@ public class XanaParser extends Parser {
                       consume();
                     }
                     setState(303);
-                    ((ExpressionContext) _localctx).rightExpression =
+                    ((ExpressionContext) _localctx).right =
                         ((ExpressionContext) _localctx).expression = expression(8);
                     ((ExpressionContext) _localctx).ast =
                         new ArithmeticOperation(
                             _localctx.start.getLine(),
                             _localctx.start.getCharPositionInLine() + 1,
-                            ((ExpressionContext) _localctx).leftExpression.ast,
+                            ((ExpressionContext) _localctx).left.ast,
                             (((ExpressionContext) _localctx).op != null
                                 ? ((ExpressionContext) _localctx).op.getText()
                                 : null),
-                            ((ExpressionContext) _localctx).rightExpression.ast);
+                            ((ExpressionContext) _localctx).right.ast);
                   }
                   break;
                 case 2:
@@ -2330,9 +2336,9 @@ public class XanaParser extends Parser {
   @SuppressWarnings("CheckReturnValue")
   public static class Simple_constantContext extends ParserRuleContext {
     public Expression ast;
-    public Token INT_CONSTANT;
-    public Token CHAR_CONSTANT;
-    public Token REAL_CONSTANT;
+    public Token i;
+    public Token c;
+    public Token r;
 
     public TerminalNode INT_CONSTANT() {
       return getToken(XanaParser.INT_CONSTANT, 0);
@@ -2367,13 +2373,13 @@ public class XanaParser extends Parser {
           enterOuterAlt(_localctx, 1);
           {
             setState(341);
-            ((Simple_constantContext) _localctx).INT_CONSTANT = match(INT_CONSTANT);
+            ((Simple_constantContext) _localctx).i = match(INT_CONSTANT);
             ((Simple_constantContext) _localctx).ast =
                 new IntLiteral(
-                    ((Simple_constantContext) _localctx).INT_CONSTANT.getLine(),
-                    ((Simple_constantContext) _localctx).INT_CONSTANT.getCharPositionInLine() + 1,
-                    (((Simple_constantContext) _localctx).INT_CONSTANT != null
-                        ? ((Simple_constantContext) _localctx).INT_CONSTANT.getText()
+                    ((Simple_constantContext) _localctx).i.getLine(),
+                    ((Simple_constantContext) _localctx).i.getCharPositionInLine() + 1,
+                    (((Simple_constantContext) _localctx).i != null
+                        ? ((Simple_constantContext) _localctx).i.getText()
                         : null));
           }
           break;
@@ -2381,13 +2387,13 @@ public class XanaParser extends Parser {
           enterOuterAlt(_localctx, 2);
           {
             setState(343);
-            ((Simple_constantContext) _localctx).CHAR_CONSTANT = match(CHAR_CONSTANT);
+            ((Simple_constantContext) _localctx).c = match(CHAR_CONSTANT);
             ((Simple_constantContext) _localctx).ast =
                 new CharLiteral(
-                    ((Simple_constantContext) _localctx).CHAR_CONSTANT.getLine(),
-                    ((Simple_constantContext) _localctx).CHAR_CONSTANT.getCharPositionInLine() + 1,
-                    (((Simple_constantContext) _localctx).CHAR_CONSTANT != null
-                        ? ((Simple_constantContext) _localctx).CHAR_CONSTANT.getText()
+                    ((Simple_constantContext) _localctx).c.getLine(),
+                    ((Simple_constantContext) _localctx).c.getCharPositionInLine() + 1,
+                    (((Simple_constantContext) _localctx).c != null
+                        ? ((Simple_constantContext) _localctx).c.getText()
                         : null));
           }
           break;
@@ -2395,13 +2401,13 @@ public class XanaParser extends Parser {
           enterOuterAlt(_localctx, 3);
           {
             setState(345);
-            ((Simple_constantContext) _localctx).REAL_CONSTANT = match(REAL_CONSTANT);
+            ((Simple_constantContext) _localctx).r = match(REAL_CONSTANT);
             ((Simple_constantContext) _localctx).ast =
                 new DoubleLiteral(
-                    ((Simple_constantContext) _localctx).REAL_CONSTANT.getLine(),
-                    ((Simple_constantContext) _localctx).REAL_CONSTANT.getCharPositionInLine() + 1,
-                    (((Simple_constantContext) _localctx).REAL_CONSTANT != null
-                        ? ((Simple_constantContext) _localctx).REAL_CONSTANT.getText()
+                    ((Simple_constantContext) _localctx).r.getLine(),
+                    ((Simple_constantContext) _localctx).r.getCharPositionInLine() + 1,
+                    (((Simple_constantContext) _localctx).r != null
+                        ? ((Simple_constantContext) _localctx).r.getText()
                         : null));
           }
           break;
