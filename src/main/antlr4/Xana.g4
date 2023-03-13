@@ -13,7 +13,7 @@ program returns [Program ast]
     locals [List<Definition> definitions = new ArrayList<>()]
     : (var_def {$definitions.addAll($var_def.ast);} | func_def {$definitions.add($func_def.ast);})*
         main_def {$definitions.add($main_def.ast);}
-        {$ast = new Program(0, 0, $definitions);}
+        {$ast = new Program(1, 1, $definitions);}
     ;
 
 main_def returns [FunctionDefinition ast]
@@ -27,7 +27,8 @@ main_def returns [FunctionDefinition ast]
             $DEF.getCharPositionInLine()+1,
             new VoidType($DEF.getLine(), $DEF.getCharPositionInLine()+1)
         ),
-        $func_body.ast
+        $func_body.definitions,
+        $func_body.statements
     );}
     ;
 
@@ -38,13 +39,16 @@ func_def returns [FunctionDefinition ast]
         $DEF.getCharPositionInLine()+1,
         $ID.text,
         new FunctionType($DEF.getLine(), $DEF.getCharPositionInLine()+1, $param_list.ast, $return_type.ast),
-        $func_body.ast
+        $func_body.definitions,
+        $func_body.statements
     );}
     ;
 
 // TODO: comprobar si está bien hacer una única lista de Object
-func_body returns [List<Object> ast = new ArrayList<>();]
-    : DO (var_def {$ast.addAll($var_def.ast);} | statement {$ast.addAll($statement.ast);})* END
+func_body returns [List<VarDefinition> definitions = new ArrayList<>(),
+    List<Statement> statements = new ArrayList<>()
+]
+    : DO (var_def {$definitions.addAll($var_def.ast);} | statement {$statements.addAll($statement.ast);})* END
     ;
 
 return_type returns [CompilerType ast]
@@ -111,7 +115,12 @@ statement returns [List<Statement> ast = new ArrayList<>();]
 
 func_invocation returns [FunctionInvocation ast]
     : ID ABRE_PARENTESIS argument_list CIERRA_PARENTESIS
-    {$ast = new FunctionInvocation($ID.getLine(), $ID.getCharPositionInLine()+1, $ID.text, $argument_list.ast);}
+    {$ast = new FunctionInvocation(
+        $ID.getLine(),
+        $ID.getCharPositionInLine()+1,
+        new Variable($ID.getLine(), $ID.getCharPositionInLine()+1, $ID.text),
+        $argument_list.ast
+    );}
     ;
 
 argument_list returns [List<Expression> ast = new ArrayList<Expression>();]

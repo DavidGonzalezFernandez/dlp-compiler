@@ -1,25 +1,29 @@
 package es.uniovi.dlp.ast.program;
 
 import es.uniovi.dlp.ast.AbstractASTNode;
+import es.uniovi.dlp.ast.statement.Statement;
 import es.uniovi.dlp.ast.types.CompilerType;
 import es.uniovi.dlp.ast.types.FunctionType;
-
-import javax.lang.model.type.NullType;
 import java.util.List;
 
 public class FunctionDefinition extends AbstractASTNode implements Definition {
   private String name;
-  private FunctionType functionType;
-  private List<Object>
-      body; // hago una única lista para poder mantener el orden de las definiciones y los
-  // statements
+  private FunctionType type;
+  private List<VarDefinition> definitions;
+  private List<Statement> statements;
 
   public FunctionDefinition(
-      int line, int column, String name, FunctionType functionType, List<Object> body) {
+      int line,
+      int column,
+      String name,
+      FunctionType type,
+      List<VarDefinition> definitions,
+      List<Statement> statements) {
     super(line, column);
     this.name = name;
-    this.functionType = functionType;
-    this.body = body;
+    this.type = type;
+    this.definitions = definitions;
+    this.statements = statements;
   }
 
   @Override
