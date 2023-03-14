@@ -1,6 +1,7 @@
 package es.uniovi.dlp.ast.expressions;
 
 import es.uniovi.dlp.ast.types.CompilerType;
+import es.uniovi.dlp.visitor.AbstractVisitor;
 
 public class LogicOperation extends AbstractExpression {
   private String operator;
@@ -12,6 +13,7 @@ public class LogicOperation extends AbstractExpression {
     this.leftExpression = left;
     this.rightExpression = right;
     this.operator = operator;
+    super.setLValue(false);
   }
 
   @Override
@@ -21,6 +23,11 @@ public class LogicOperation extends AbstractExpression {
 
   @Override
   public Object getValue() {
+    return null;
+  }
+
+  @Override
+  public <ReturnType, ParamType> ReturnType accept(AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
     return null;
   }
 }

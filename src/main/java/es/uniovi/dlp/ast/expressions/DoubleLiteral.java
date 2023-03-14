@@ -3,6 +3,7 @@ package es.uniovi.dlp.ast.expressions;
 import es.uniovi.dlp.ast.types.CompilerType;
 import es.uniovi.dlp.ast.types.DoubleType;
 import es.uniovi.dlp.parser.LexerHelper;
+import es.uniovi.dlp.visitor.AbstractVisitor;
 
 public class DoubleLiteral extends AbstractExpression {
   private double value;
@@ -12,6 +13,7 @@ public class DoubleLiteral extends AbstractExpression {
     super(line, column);
     this.type = new DoubleType(line, column);
     this.value = LexerHelper.lexemeToReal(value);
+    super.setLValue(false);
   }
 
   public void setChar(char value) {
@@ -26,5 +28,10 @@ public class DoubleLiteral extends AbstractExpression {
   @Override
   public Object getValue() {
     return this.value;
+  }
+
+  @Override
+  public <ReturnType, ParamType> ReturnType accept(AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
+    return null;
   }
 }

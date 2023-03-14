@@ -2,6 +2,8 @@ package es.uniovi.dlp.ast.expressions;
 
 import es.uniovi.dlp.ast.statement.Statement;
 import es.uniovi.dlp.ast.types.CompilerType;
+import es.uniovi.dlp.visitor.AbstractVisitor;
+
 import java.util.List;
 
 public class FunctionInvocation extends AbstractExpression implements Statement {
@@ -12,6 +14,7 @@ public class FunctionInvocation extends AbstractExpression implements Statement 
     super(line, column);
     this.name = name;
     this.arguments = arguments; // Siempre existe, pero puede estar vacío
+    super.setLValue(false);
   }
 
   @Override
@@ -21,6 +24,11 @@ public class FunctionInvocation extends AbstractExpression implements Statement 
 
   @Override
   public Object getValue() {
+    return null;
+  }
+
+  @Override
+  public <ReturnType, ParamType> ReturnType accept(AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
     return null;
   }
 }

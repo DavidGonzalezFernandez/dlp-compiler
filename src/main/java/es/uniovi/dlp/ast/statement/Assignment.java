@@ -1,6 +1,7 @@
 package es.uniovi.dlp.ast.statement;
 
 import es.uniovi.dlp.ast.expressions.Expression;
+import es.uniovi.dlp.visitor.AbstractVisitor;
 
 public class Assignment extends AbstractStatement {
   private Expression leftPart;
@@ -10,5 +11,10 @@ public class Assignment extends AbstractStatement {
     super(line, column);
     this.leftPart = leftPart;
     this.value = value;
+  }
+
+  @Override
+  public <ReturnType, ParamType> ReturnType accept(AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
+    return null;
   }
 }

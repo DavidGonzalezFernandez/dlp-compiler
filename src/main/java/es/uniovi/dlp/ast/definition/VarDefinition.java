@@ -1,7 +1,8 @@
-package es.uniovi.dlp.ast.program;
+package es.uniovi.dlp.ast.definition;
 
 import es.uniovi.dlp.ast.AbstractASTNode;
 import es.uniovi.dlp.ast.types.CompilerType;
+import es.uniovi.dlp.visitor.AbstractVisitor;
 
 public class VarDefinition extends AbstractASTNode implements Definition {
   private CompilerType type;
@@ -29,5 +30,10 @@ public class VarDefinition extends AbstractASTNode implements Definition {
 
   public String getName() {
     return this.name;
+  }
+
+  @Override
+  public <ReturnType, ParamType> ReturnType accept(AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
+    return null;
   }
 }

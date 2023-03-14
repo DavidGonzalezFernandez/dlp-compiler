@@ -4,6 +4,8 @@ import es.uniovi.dlp.error.Error;
 import es.uniovi.dlp.error.ErrorManager;
 import es.uniovi.dlp.error.ErrorReason;
 import es.uniovi.dlp.error.Location;
+import es.uniovi.dlp.visitor.AbstractVisitor;
+
 import java.util.HashSet;
 import java.util.List;
 
@@ -27,5 +29,10 @@ public class StructType extends AbstractType {
                     ErrorReason.FIELD_ALREADY_DECLARED));
       }
     }
+  }
+
+  @Override
+  public <ReturnType, ParamType> ReturnType accept(AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
+    return null;
   }
 }

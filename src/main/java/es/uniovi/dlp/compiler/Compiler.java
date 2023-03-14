@@ -1,11 +1,11 @@
 package es.uniovi.dlp.compiler;
 
-import es.uniovi.dlp.ast.program.Program;
+import es.uniovi.dlp.ast.Program;
 import es.uniovi.dlp.error.ErrorManager;
 import es.uniovi.dlp.parser.XanaLexer;
 import es.uniovi.dlp.parser.XanaParser;
-import java.io.IOException;
 import es.uniovi.dlp.visitor.semantic.TypeCheckingVisitor;
+import java.io.IOException;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -22,6 +22,7 @@ public class Compiler {
   public void run() throws IOException {
     ErrorManager.getInstance().clearErrors();
     program = parse(filename);
+    assignType();
     checkErrors();
   }
 
@@ -35,18 +36,9 @@ public class Compiler {
     }
   }
 
-<<<<<<< HEAD
   public Program getProgram() {
     return program;
   }
-=======
-    public void run() throws IOException {
-        ErrorManager.getInstance().clearErrors();
-        program = parse(filename);
-        assignType();
-        checkErrors();
-    }
->>>>>>> upstream/main
 
   private Program parse(String file) throws IOException {
     CharStream input = CharStreams.fromFileName(file);
@@ -58,28 +50,12 @@ public class Compiler {
     return parser.program().ast;
   }
 
-<<<<<<< HEAD
+  private void assignType() {
+    TypeCheckingVisitor typeCheckingVisitor = new TypeCheckingVisitor();
+    typeCheckingVisitor.visit(program, null);
+  }
+
   public void setReportErrors(boolean reportErrors) {
     this.reportErrors = reportErrors;
   }
-=======
-    private Program parse(String file) throws IOException {
-        CharStream input = CharStreams.fromFileName(file);
-        XanaLexer lexer = new XanaLexer(input);
-
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        XanaParser parser = new XanaParser(tokens);
-
-        return parser.program().ast;
-    }
-
-    private void assignType() {
-        TypeCheckingVisitor typeCheckingVisitor = new TypeCheckingVisitor();
-        typeCheckingVisitor.visit(program, null);
-    }
-
-    public void setReportErrors(boolean reportErrors) {
-        this.reportErrors = reportErrors;
-    }
->>>>>>> upstream/main
 }

@@ -1,5 +1,7 @@
 package es.uniovi.dlp.ast.types;
 
+import es.uniovi.dlp.visitor.AbstractVisitor;
+
 public class StructField extends AbstractType {
   private String name;
   private CompilerType type;
@@ -12,5 +14,10 @@ public class StructField extends AbstractType {
 
   public String getName() {
     return this.name;
+  }
+
+  @Override
+  public <ReturnType, ParamType> ReturnType accept(AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
+    return null;
   }
 }

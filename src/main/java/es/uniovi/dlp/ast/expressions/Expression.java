@@ -7,4 +7,6 @@ public interface Expression extends ASTNode {
   public CompilerType getType();
 
   public Object getValue();
+
+  public boolean getLValue();
 }
