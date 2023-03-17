@@ -1,6 +1,5 @@
 package es.uniovi.dlp.ast.expressions;
 
-import es.uniovi.dlp.ast.types.CompilerType;
 import es.uniovi.dlp.visitor.AbstractVisitor;
 
 public class ArithmeticOperation extends AbstractExpression {
@@ -18,17 +17,16 @@ public class ArithmeticOperation extends AbstractExpression {
   }
 
   @Override
-  public CompilerType getType() {
-    return null;
+  public <ReturnType, ParamType> ReturnType accept(
+      AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
+    return visitor.visit(this, param);
   }
 
-  @Override
-  public Object getValue() {
-    return null;
+  public Expression getLeftExpression() {
+    return this.leftExpression;
   }
 
-  @Override
-  public <ReturnType, ParamType> ReturnType accept(AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
-    return null;
+  public Expression getRightExpression() {
+    return this.rightExpression;
   }
 }

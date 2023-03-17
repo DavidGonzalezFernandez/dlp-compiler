@@ -24,16 +24,18 @@ public class VarDefinition extends AbstractASTNode implements Definition {
   }
 
   @Override
-  public CompilerType getType() {
-    return this.type;
-  }
-
   public String getName() {
     return this.name;
   }
 
   @Override
-  public <ReturnType, ParamType> ReturnType accept(AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
-    return null;
+  public CompilerType getType() {
+    return this.type;
+  }
+
+  @Override
+  public <ReturnType, ParamType> ReturnType accept(
+      AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
+    return visitor.visit(this, param);
   }
 }

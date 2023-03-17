@@ -1,6 +1,5 @@
 package es.uniovi.dlp.ast.expressions;
 
-import es.uniovi.dlp.ast.types.CompilerType;
 import es.uniovi.dlp.visitor.AbstractVisitor;
 
 public class FieldAccess extends AbstractExpression {
@@ -15,17 +14,12 @@ public class FieldAccess extends AbstractExpression {
   }
 
   @Override
-  public CompilerType getType() {
-    return null;
+  public <ReturnType, ParamType> ReturnType accept(
+      AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
+    return visitor.visit(this, param);
   }
 
-  @Override
-  public Object getValue() {
-    return null;
-  }
-
-  @Override
-  public <ReturnType, ParamType> ReturnType accept(AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
-    return null;
+  public Expression getStruct() {
+    return this.struct;
   }
 }

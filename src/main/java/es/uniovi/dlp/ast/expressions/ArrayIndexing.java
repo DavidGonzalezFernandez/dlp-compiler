@@ -1,6 +1,5 @@
 package es.uniovi.dlp.ast.expressions;
 
-import es.uniovi.dlp.ast.types.CompilerType;
 import es.uniovi.dlp.visitor.AbstractVisitor;
 
 public class ArrayIndexing extends AbstractExpression {
@@ -15,17 +14,16 @@ public class ArrayIndexing extends AbstractExpression {
   }
 
   @Override
-  public CompilerType getType() {
-    return null;
+  public <ReturnType, ParamType> ReturnType accept(
+      AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
+    return visitor.visit(this, param);
   }
 
-  @Override
-  public Object getValue() {
-    return null;
+  public Expression getArray() {
+    return this.array;
   }
 
-  @Override
-  public <ReturnType, ParamType> ReturnType accept(AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
-    return null;
+  public Expression getIndex() {
+    return this.index;
   }
 }

@@ -17,17 +17,8 @@ public class IntLiteral extends AbstractExpression {
   }
 
   @Override
-  public CompilerType getType() {
-    return this.type;
-  }
-
-  @Override
-  public Object getValue() {
-    return this.value;
-  }
-
-  @Override
-  public <ReturnType, ParamType> ReturnType accept(AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
-    return null;
+  public <ReturnType, ParamType> ReturnType accept(
+      AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
+    return visitor.visit(this, param);
   }
 }

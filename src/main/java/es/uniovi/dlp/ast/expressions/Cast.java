@@ -15,17 +15,12 @@ public class Cast extends AbstractExpression {
   }
 
   @Override
-  public CompilerType getType() {
-    return null;
+  public <ReturnType, ParamType> ReturnType accept(
+      AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
+    return visitor.visit(this, param);
   }
 
-  @Override
-  public Object getValue() {
-    return null;
-  }
-
-  @Override
-  public <ReturnType, ParamType> ReturnType accept(AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
-    return null;
+  public Expression getExpression() {
+    return this.expression;
   }
 }

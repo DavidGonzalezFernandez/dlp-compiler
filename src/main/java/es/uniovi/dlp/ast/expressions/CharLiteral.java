@@ -12,25 +12,13 @@ public class CharLiteral extends AbstractExpression {
   public CharLiteral(int line, int column, String value) {
     super(line, column);
     this.type = new CharType(line, column);
+    this.value = LexerHelper.lexemeToChar(value);
     super.setLValue(false);
   }
 
-  private void setValue(String value) {
-    this.value = LexerHelper.lexemeToChar(value);
-  }
-
   @Override
-  public CompilerType getType() {
-    return this.type;
-  }
-
-  @Override
-  public Object getValue() {
-    return this.value;
-  }
-
-  @Override
-  public <ReturnType, ParamType> ReturnType accept(AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
-    return null;
+  public <ReturnType, ParamType> ReturnType accept(
+      AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
+    return visitor.visit(this, param);
   }
 }

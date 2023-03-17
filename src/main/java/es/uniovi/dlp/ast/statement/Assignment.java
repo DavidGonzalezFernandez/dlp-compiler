@@ -14,7 +14,16 @@ public class Assignment extends AbstractStatement {
   }
 
   @Override
-  public <ReturnType, ParamType> ReturnType accept(AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
-    return null;
+  public <ReturnType, ParamType> ReturnType accept(
+      AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
+    return visitor.visit(this, param);
+  }
+
+  public Expression getValue() {
+    return this.value;
+  }
+
+  public Expression getLeftPart() {
+    return this.leftPart;
   }
 }

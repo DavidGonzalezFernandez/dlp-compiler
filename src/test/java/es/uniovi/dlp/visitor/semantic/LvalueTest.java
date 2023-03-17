@@ -33,6 +33,6 @@ public class LvalueTest {
 
   private static void assertFoundErrors(List<Error> errors) {
     var foundErrors = ErrorManager.getInstance().getErrors();
-    assertIterableEquals(foundErrors, errors);
+    assertIterableEquals(errors, foundErrors);
   }
 }

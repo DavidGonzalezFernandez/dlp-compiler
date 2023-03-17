@@ -1,9 +1,8 @@
 package es.uniovi.dlp.ast.expressions;
 
 import es.uniovi.dlp.ast.statement.Statement;
-import es.uniovi.dlp.ast.types.CompilerType;
 import es.uniovi.dlp.visitor.AbstractVisitor;
-
+import java.util.ArrayList;
 import java.util.List;
 
 public class FunctionInvocation extends AbstractExpression implements Statement {
@@ -18,17 +17,16 @@ public class FunctionInvocation extends AbstractExpression implements Statement 
   }
 
   @Override
-  public CompilerType getType() {
-    return null;
+  public <ReturnType, ParamType> ReturnType accept(
+      AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
+    return visitor.visit(this, param);
   }
 
-  @Override
-  public Object getValue() {
-    return null;
+  public Expression getName() {
+    return this.name;
   }
 
-  @Override
-  public <ReturnType, ParamType> ReturnType accept(AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
-    return null;
+  public List<Expression> getArguments() {
+    return new ArrayList<>(this.arguments);
   }
 }

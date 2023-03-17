@@ -5,11 +5,11 @@ import es.uniovi.dlp.error.ErrorManager;
 import es.uniovi.dlp.error.ErrorReason;
 import es.uniovi.dlp.error.Location;
 import es.uniovi.dlp.visitor.AbstractVisitor;
-
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-public class StructType extends AbstractType {
+public class StructType extends AbstractCompilerType {
   private List<StructField> fields;
 
   public StructType(int line, int column, List<StructField> fields) {
@@ -32,7 +32,12 @@ public class StructType extends AbstractType {
   }
 
   @Override
-  public <ReturnType, ParamType> ReturnType accept(AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
-    return null;
+  public <ReturnType, ParamType> ReturnType accept(
+      AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
+    return visitor.visit(this, param);
+  }
+
+  public List<StructField> getFields() {
+    return new ArrayList<>(this.fields);
   }
 }

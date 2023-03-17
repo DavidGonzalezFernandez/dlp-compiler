@@ -2,7 +2,7 @@ package es.uniovi.dlp.ast.types;
 
 import es.uniovi.dlp.visitor.AbstractVisitor;
 
-public class ArrayType extends AbstractType {
+public class ArrayType extends AbstractCompilerType {
   private int size;
   private CompilerType type;
 
@@ -12,18 +12,13 @@ public class ArrayType extends AbstractType {
     this.type = type;
   }
 
-  public ArrayType setSize(int size) {
-    this.size = size;
-    return this;
-  }
-
-  public ArrayType setType() {
-    this.type = type;
-    return this;
-  }
-
   @Override
-  public <ReturnType, ParamType> ReturnType accept(AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
-    return null;
+  public <ReturnType, ParamType> ReturnType accept(
+      AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
+    return visitor.visit(this, param);
+  }
+
+  public CompilerType getType() {
+    return this.type;
   }
 }
