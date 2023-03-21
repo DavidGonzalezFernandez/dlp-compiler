@@ -1,0 +1,74 @@
+def suma(a :: int, b :: int) :: int do
+    return a + b
+end
+
+def main() do
+    """ Variables """
+    a :: int
+    b :: double
+    c :: char
+    d :: [5 :: int]
+    e :: [10 :: [10 :: int]]
+
+    index1, index2 :: int
+    index1 = 0
+    index2 = index1
+
+    a = (suma(index1, index2) as int)
+    b = (suma(index1, index2) as double)
+    c = (suma(index1, index2) as char)
+    in d[0], d[1], d[2], d[3], d[4]
+
+    while index1 < 10 do
+        index2 = 0
+        while index2 < 10 do
+            e[index1][index2] = suma(index1, index2)
+            index2 = index2 + 1
+        end
+        index1 = index1 + 1
+    end
+
+    """ Variables dentro de struct """
+    f :: defstruct do
+        a :: int
+        b :: double
+        c :: char
+        d :: [10 :: int]
+        e :: [10 :: [10 :: int]]
+    end
+
+    f.a = (suma(index1, index2) as int)
+    f.b = (suma(index1, index2) as double)
+    f.c = (suma(index1, index2) as char)
+    in f.d[0], f.d[1], f.d[2], f.d[3], f.d[4]
+
+    index0 = 0
+    while index1 < 10 do
+        index2 = 0
+        while index2 < 10 do
+            f.e[index1][index2] = suma(index1, index2)
+            index2 = index2 + 1
+        end
+        index1 = index1 + 1
+    end
+
+    """ Inválidos assignment """
+    index1 + index2 = 0.0
+    index1 > index2 = 0
+    index1 < index2 = 0
+    index1 || index2 = 0
+    index1 && index2 = 0
+    index1 as double = 0.00
+    '0' = '0'
+    0.0 = 0.0
+    0 = 0
+    suma(index1, index2) = 0
+    -index1 = 0
+    !index1 = 0
+
+    """ Inválidos in """
+    in index1 + index2, index1 > index2, index1 < index2, index1 || index2
+    in index1 && index2, index1 as double, '0', 0.0, 0
+    in suma(index1, index2), -index1, !index1
+
+end
