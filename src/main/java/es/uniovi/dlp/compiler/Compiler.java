@@ -22,6 +22,7 @@ public class Compiler {
   public void run() throws IOException {
     ErrorManager.getInstance().clearErrors();
     program = parse(filename);
+    assignScope();
     assignType();
     checkErrors();
   }
@@ -53,6 +54,10 @@ public class Compiler {
   private void assignType() {
     TypeCheckingVisitor typeCheckingVisitor = new TypeCheckingVisitor();
     typeCheckingVisitor.visit(program, null);
+  }
+
+  private void assignScope() {
+    // Run here your IdentificationVisitor
   }
 
   public void setReportErrors(boolean reportErrors) {
