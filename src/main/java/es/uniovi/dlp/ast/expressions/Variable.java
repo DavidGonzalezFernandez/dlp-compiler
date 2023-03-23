@@ -1,7 +1,6 @@
 package es.uniovi.dlp.ast.expressions;
 
 import es.uniovi.dlp.ast.definition.Definition;
-import es.uniovi.dlp.ast.definition.VarDefinition;
 import es.uniovi.dlp.visitor.AbstractVisitor;
 
 public class Variable extends AbstractExpression {
@@ -29,7 +28,6 @@ public class Variable extends AbstractExpression {
   }
 
   public void setDefinition(Definition definition) {
-    assert definition instanceof VarDefinition;
     assert this.name.equals(definition.getName());
 
     this.definition = definition;

@@ -29,6 +29,5 @@ public class ErrorManager {
   public void addError(Error newError) {
     if (newError == null) throw new IllegalArgumentException("Error cannot be null");
     this.errors.add(newError);
-
   }
 }

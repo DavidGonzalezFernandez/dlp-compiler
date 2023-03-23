@@ -32,11 +32,11 @@ public abstract class AbstractVisitor<ReturnType, ParamType>
   @Override
   public ReturnType visit(FunctionDefinition functionDefinition, ParamType param) {
     functionDefinition.getType().accept(this, param);
-    for (var statement : functionDefinition.getStatements()) {
-      statement.accept(this, param);
-    }
     for (var definition : functionDefinition.getDefinitions()) {
       definition.accept(this, param);
+    }
+    for (var statement : functionDefinition.getStatements()) {
+      statement.accept(this, param);
     }
     return null;
   }

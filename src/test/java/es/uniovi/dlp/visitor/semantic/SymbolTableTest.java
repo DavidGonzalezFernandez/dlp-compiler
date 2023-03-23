@@ -11,7 +11,7 @@ public class SymbolTableTest {
   void testInsert() {
     var st = new SymbolTable();
     VarDefinition definition = new VarDefinition(0, 0, null, "a");
-    VarDefinition definition2 = new VarDefinition(0, 0,null,  "a");
+    VarDefinition definition2 = new VarDefinition(0, 0, null, "a");
 
     assertTrue(st.insert(definition));
     assertEquals(definition.getScope(), 0);
@@ -54,7 +54,7 @@ public class SymbolTableTest {
   @Test
   void testFindInCurrentScope() {
     SymbolTable st = new SymbolTable();
-    VarDefinition definition = new VarDefinition(0, 0, null,  "a");
+    VarDefinition definition = new VarDefinition(0, 0, null, "a");
     VarDefinition definition2 = new VarDefinition(0, 0, null, "b");
 
     assertTrue(st.insert(definition));

@@ -15,7 +15,8 @@ public class TypeCheckingVisitor extends AbstractVisitor<CompilerType, CompilerT
       ErrorManager.getInstance()
           .addError(
               new Error(
-                  new Location(assignment.getLeftPart().getLine(), assignment.getLeftPart().getColumn()),
+                  new Location(
+                      assignment.getLeftPart().getLine(), assignment.getLeftPart().getColumn()),
                   ErrorReason.LVALUE_REQUIRED));
     }
 
@@ -27,7 +28,9 @@ public class TypeCheckingVisitor extends AbstractVisitor<CompilerType, CompilerT
       ErrorManager.getInstance()
           .addError(
               new Error(
-                  new Location(readStatement.getExpression().getLine(), readStatement.getExpression().getColumn()),
+                  new Location(
+                      readStatement.getExpression().getLine(),
+                      readStatement.getExpression().getColumn()),
                   ErrorReason.LVALUE_REQUIRED));
     }
 
