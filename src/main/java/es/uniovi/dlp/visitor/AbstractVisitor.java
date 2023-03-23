@@ -87,7 +87,7 @@ public abstract class AbstractVisitor<ReturnType, ParamType>
 
   @Override
   public ReturnType visit(FunctionInvocation functionInvocation, ParamType param) {
-    functionInvocation.getName().accept(this, param);
+    functionInvocation.getVariable().accept(this, param);
     for (Expression expression : functionInvocation.getArguments()) {
       expression.accept(this, param);
     }

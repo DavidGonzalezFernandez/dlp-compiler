@@ -10,27 +10,27 @@ import es.uniovi.dlp.error.Location;
 import es.uniovi.dlp.visitor.AbstractVisitor;
 
 public class TypeCheckingVisitor extends AbstractVisitor<CompilerType, CompilerType> {
-  public CompilerType visit(Assignment a, CompilerType param) {
-    if (!a.getLeftPart().getLValue()) {
+  public CompilerType visit(Assignment assignment, CompilerType param) {
+    if (!assignment.getLeftPart().getLValue()) {
       ErrorManager.getInstance()
           .addError(
               new Error(
-                  new Location(a.getLeftPart().getLine(), a.getLeftPart().getColumn()),
+                  new Location(assignment.getLeftPart().getLine(), assignment.getLeftPart().getColumn()),
                   ErrorReason.LVALUE_REQUIRED));
     }
 
-    return null;
+    return super.visit(assignment, param);
   }
 
-  public CompilerType visit(ReadStatement r, CompilerType param) {
-    if (!r.getExpression().getLValue()) {
+  public CompilerType visit(ReadStatement readStatement, CompilerType param) {
+    if (!readStatement.getExpression().getLValue()) {
       ErrorManager.getInstance()
           .addError(
               new Error(
-                  new Location(r.getExpression().getLine(), r.getExpression().getColumn()),
+                  new Location(readStatement.getExpression().getLine(), readStatement.getExpression().getColumn()),
                   ErrorReason.LVALUE_REQUIRED));
     }
 
-    return null;
+    return super.visit(readStatement, param);
   }
 }

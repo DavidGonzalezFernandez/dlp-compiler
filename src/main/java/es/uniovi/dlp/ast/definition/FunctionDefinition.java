@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FunctionDefinition extends AbstractASTNode implements Definition {
+  private int scope;
   private String name;
   private FunctionType type;
   private List<VarDefinition> definitions;
@@ -36,6 +37,16 @@ public class FunctionDefinition extends AbstractASTNode implements Definition {
   @Override
   public CompilerType getType() {
     return this.type;
+  }
+
+  @Override
+  public int getScope() {
+    return this.scope;
+  }
+
+  @Override
+  public void setScope(int scope) {
+    this.scope = scope;
   }
 
   public List<Statement> getStatements() {

@@ -6,12 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FunctionInvocation extends AbstractExpression implements Statement {
-  private Expression name;
+  private Variable variable;
   private List<Expression> arguments;
 
-  public FunctionInvocation(int line, int column, Expression name, List<Expression> arguments) {
+  public FunctionInvocation(int line, int column, Variable variable, List<Expression> arguments) {
     super(line, column);
-    this.name = name;
+    this.variable = variable;
     this.arguments = arguments; // Siempre existe, pero puede estar vacío
     super.setLValue(false);
   }
@@ -22,8 +22,12 @@ public class FunctionInvocation extends AbstractExpression implements Statement 
     return visitor.visit(this, param);
   }
 
-  public Expression getName() {
-    return this.name;
+  public Variable getVariable() {
+    return this.variable;
+  }
+
+  public String getName() {
+    return this.getVariable().getName();
   }
 
   public List<Expression> getArguments() {
