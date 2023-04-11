@@ -4,6 +4,8 @@ import es.uniovi.dlp.ast.Program;
 import introspector.model.IntrospectorModel;
 import introspector.view.IntrospectorTree;
 import java.io.IOException;
+
+import introspector.view.IntrospectorView;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -22,6 +24,6 @@ public class RunIntrospector {
     Program ast = parser.program().ast;
 
     IntrospectorModel model = new IntrospectorModel("Program", ast);
-    new IntrospectorTree("Introspector", model);
+    new IntrospectorView("Introspector", model);
   }
 }

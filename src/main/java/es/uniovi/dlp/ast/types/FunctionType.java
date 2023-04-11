@@ -56,7 +56,7 @@ public class FunctionType extends AbstractCompilerType {
     for (int i = 0; i < this.parameters.size(); i++) {
       CompilerType paramType = this.parameters.get(i).getType();
       CompilerType argType = arguments.get(i).getType();
-      if (paramType.getClass() != argType.getClass()) {
+      if (!argType.canPromoteTo(paramType)) {
         arguments.get(i).setType(ErrorType.getInstance());
         isCompletelyValid = false;
       }
