@@ -981,10 +981,7 @@ public class XanaParser extends Parser {
           {
             setState(135);
             ((Simple_typeContext) _localctx).t = match(T__0);
-            ((Simple_typeContext) _localctx).ast =
-                new IntType(
-                    ((Simple_typeContext) _localctx).t.getLine(),
-                    ((Simple_typeContext) _localctx).t.getCharPositionInLine() + 1);
+            ((Simple_typeContext) _localctx).ast = IntType.getInstance();
           }
           break;
         case T__1:
@@ -992,10 +989,7 @@ public class XanaParser extends Parser {
           {
             setState(137);
             ((Simple_typeContext) _localctx).t = match(T__1);
-            ((Simple_typeContext) _localctx).ast =
-                new DoubleType(
-                    ((Simple_typeContext) _localctx).t.getLine(),
-                    ((Simple_typeContext) _localctx).t.getCharPositionInLine() + 1);
+            ((Simple_typeContext) _localctx).ast = DoubleType.getInstance();
           }
           break;
         case T__2:
@@ -1003,10 +997,7 @@ public class XanaParser extends Parser {
           {
             setState(139);
             ((Simple_typeContext) _localctx).t = match(T__2);
-            ((Simple_typeContext) _localctx).ast =
-                new CharType(
-                    ((Simple_typeContext) _localctx).t.getLine(),
-                    ((Simple_typeContext) _localctx).t.getCharPositionInLine() + 1);
+            ((Simple_typeContext) _localctx).ast = CharType.getInstance();
           }
           break;
         default:
@@ -1924,7 +1915,13 @@ public class XanaParser extends Parser {
         ((Return_statementContext) _localctx).ast =
             new ReturnStatement(
                 ((Return_statementContext) _localctx).RETURN.getLine(),
-                ((Return_statementContext) _localctx).RETURN.getCharPositionInLine() + 1,
+                ((Return_statementContext) _localctx).RETURN.getCharPositionInLine()
+                    + 1
+                    + ((((Return_statementContext) _localctx).RETURN != null
+                                ? ((Return_statementContext) _localctx).RETURN.getText()
+                                : null)
+                            .length()
+                        + 1),
                 ((Return_statementContext) _localctx).expression.ast);
       }
     } catch (RecognitionException re) {
@@ -2145,8 +2142,8 @@ public class XanaParser extends Parser {
                         ((ExpressionContext) _localctx).expression = expression(8);
                     ((ExpressionContext) _localctx).ast =
                         new ArithmeticOperation(
-                            _localctx.start.getLine(),
-                            _localctx.start.getCharPositionInLine() + 1,
+                            ((ExpressionContext) _localctx).op.getLine(),
+                            ((ExpressionContext) _localctx).op.getCharPositionInLine() + 1,
                             ((ExpressionContext) _localctx).left.ast,
                             (((ExpressionContext) _localctx).op != null
                                 ? ((ExpressionContext) _localctx).op.getText()
@@ -2177,8 +2174,8 @@ public class XanaParser extends Parser {
                         ((ExpressionContext) _localctx).expression = expression(7);
                     ((ExpressionContext) _localctx).ast =
                         new ArithmeticOperation(
-                            _localctx.start.getLine(),
-                            _localctx.start.getCharPositionInLine() + 1,
+                            ((ExpressionContext) _localctx).op.getLine(),
+                            ((ExpressionContext) _localctx).op.getCharPositionInLine() + 1,
                             ((ExpressionContext) _localctx).leftExpression.ast,
                             (((ExpressionContext) _localctx).op != null
                                 ? ((ExpressionContext) _localctx).op.getText()
@@ -2209,8 +2206,8 @@ public class XanaParser extends Parser {
                         ((ExpressionContext) _localctx).expression = expression(6);
                     ((ExpressionContext) _localctx).ast =
                         new ComparisonOperation(
-                            _localctx.start.getLine(),
-                            _localctx.start.getCharPositionInLine() + 1,
+                            ((ExpressionContext) _localctx).op.getLine(),
+                            ((ExpressionContext) _localctx).op.getCharPositionInLine() + 1,
                             ((ExpressionContext) _localctx).leftExpression.ast,
                             (((ExpressionContext) _localctx).op != null
                                 ? ((ExpressionContext) _localctx).op.getText()
@@ -2241,8 +2238,8 @@ public class XanaParser extends Parser {
                         ((ExpressionContext) _localctx).expression = expression(5);
                     ((ExpressionContext) _localctx).ast =
                         new LogicOperation(
-                            _localctx.start.getLine(),
-                            _localctx.start.getCharPositionInLine() + 1,
+                            ((ExpressionContext) _localctx).op.getLine(),
+                            ((ExpressionContext) _localctx).op.getCharPositionInLine() + 1,
                             ((ExpressionContext) _localctx).leftExpression.ast,
                             (((ExpressionContext) _localctx).op != null
                                 ? ((ExpressionContext) _localctx).op.getText()

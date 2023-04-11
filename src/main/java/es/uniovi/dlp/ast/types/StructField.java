@@ -41,4 +41,8 @@ public class StructField implements ASTNode {
   public CompilerType getType() {
     return this.type;
   }
+
+  public int getNumberOfBytes() {
+    return this.type.getNumberOfBytes();
+  }
 }

@@ -1,8 +1,9 @@
 package es.uniovi.dlp.visitor.semantic;
 
-import es.uniovi.dlp.ast.statement.Assignment;
-import es.uniovi.dlp.ast.statement.ReadStatement;
-import es.uniovi.dlp.ast.types.CompilerType;
+import es.uniovi.dlp.ast.definition.FunctionDefinition;
+import es.uniovi.dlp.ast.expressions.*;
+import es.uniovi.dlp.ast.statement.*;
+import es.uniovi.dlp.ast.types.*;
 import es.uniovi.dlp.error.Error;
 import es.uniovi.dlp.error.ErrorManager;
 import es.uniovi.dlp.error.ErrorReason;
@@ -10,7 +11,25 @@ import es.uniovi.dlp.error.Location;
 import es.uniovi.dlp.visitor.AbstractVisitor;
 
 public class TypeCheckingVisitor extends AbstractVisitor<CompilerType, CompilerType> {
+  // Definitions
+  public CompilerType visit(FunctionDefinition functionDefinition, CompilerType param) {
+    super.visit(functionDefinition, param);
+    FunctionType functionType = (FunctionType) functionDefinition.getType();
+
+    for (Statement statement : functionDefinition.getStatements()) {
+      if (statement instanceof ReturnStatement) {
+        // TODO: pasar el parámetro adecuado, puede hacer falta un cast
+        statement.accept(this, ((FunctionType) (functionDefinition.getType())).getReturnType());
+      }
+    }
+
+    return null;
+  }
+
+  // Statements
   public CompilerType visit(Assignment assignment, CompilerType param) {
+    super.visit(assignment, param);
+
     if (!assignment.getLeftPart().getLValue()) {
       ErrorManager.getInstance()
           .addError(
@@ -20,7 +39,23 @@ public class TypeCheckingVisitor extends AbstractVisitor<CompilerType, CompilerT
                   ErrorReason.LVALUE_REQUIRED));
     }
 
-    return super.visit(assignment, param);
+    CompilerType leftType = assignment.getLeftPart().getType();
+    CompilerType rightType = assignment.getValue().getType();
+
+    if (leftType == null || leftType.isError() || rightType == null || rightType.isError()) {
+      // TODO ¿añadir error?
+      return null;
+    }
+
+    if (leftType.getClass() != rightType.getClass() && !rightType.canPromoteTo(leftType)) {
+      ErrorManager.getInstance()
+          .addError(
+              new Error(
+                  new Location(assignment.getLine(), assignment.getColumn()),
+                  ErrorReason.INCOMPATIBLE_TYPES));
+    }
+
+    return null;
   }
 
   public CompilerType visit(ReadStatement readStatement, CompilerType param) {
@@ -35,5 +70,270 @@ public class TypeCheckingVisitor extends AbstractVisitor<CompilerType, CompilerT
     }
 
     return super.visit(readStatement, param);
+  }
+
+  public CompilerType visit(IfElse ifElse, CompilerType param) {
+    super.visit(ifElse, param);
+
+    CompilerType conditionType = ifElse.getCondition().getType();
+    if (!conditionType.isLogical() && !conditionType.isError()) {
+      ErrorManager.getInstance()
+          .addError(
+              new Error(
+                  new Location(ifElse.getCondition().getLine(), ifElse.getCondition().getColumn()),
+                  ErrorReason.NOT_LOGICAL));
+    }
+
+    return null;
+  }
+
+  public CompilerType visit(While whileStatement, CompilerType param) {
+    super.visit(whileStatement, param);
+
+    CompilerType conditionType = whileStatement.getCondition().getType();
+    if (!conditionType.isLogical() && !conditionType.isError()) {
+      ErrorManager.getInstance()
+          .addError(
+              new Error(
+                  new Location(
+                      whileStatement.getCondition().getLine(),
+                      whileStatement.getCondition().getColumn()),
+                  ErrorReason.NOT_LOGICAL));
+    }
+
+    return null;
+  }
+
+  public CompilerType visit(ReturnStatement returnStatement, CompilerType param) {
+    super.visit(returnStatement, param);
+
+    if (param != null) {
+      if (param.getClass() != returnStatement.getExpression().getType().getClass()
+          && !returnStatement.getExpression().getType().canPromoteTo(param)) {
+        ErrorManager.getInstance()
+            .addError(
+                new Error(
+                    new Location(returnStatement.getLine(), returnStatement.getColumn()),
+                    ErrorReason.INVALID_RETURN_TYPE));
+      }
+    }
+
+    // TODO: hacer
+    return null;
+  }
+
+  // Expressions
+  public CompilerType visit(ArithmeticOperation arithmeticOperation, CompilerType param) {
+    super.visit(arithmeticOperation, param);
+
+    Expression left = arithmeticOperation.getLeftExpression();
+    Expression right = arithmeticOperation.getRightExpression();
+    arithmeticOperation.setType(left.getType().arithmetic(right.getType()));
+
+    if (arithmeticOperation.getType() == null) {
+      arithmeticOperation.setType(ErrorType.getInstance());
+      ErrorManager.getInstance()
+          .addError(
+              new Error(
+                  new Location(arithmeticOperation.getLine(), arithmeticOperation.getColumn()),
+                  ErrorReason.INVALID_ARITHMETIC));
+    }
+
+    return null;
+  }
+
+  public CompilerType visit(ArrayIndexing arrayIndexing, CompilerType param) {
+    super.visit(arrayIndexing, param);
+
+    CompilerType arrayType = arrayIndexing.getArray().getType();
+    CompilerType indexType = arrayIndexing.getIndex().getType();
+    arrayIndexing.setType(arrayType.indexing(indexType));
+
+    if (arrayIndexing.getType() == null) {
+      arrayIndexing.setType(ErrorType.getInstance());
+      if (!arrayType.isArray()) {
+        ErrorManager.getInstance()
+            .addError(
+                new Error(
+                    new Location(
+                        arrayIndexing.getArray().getLine(), arrayIndexing.getArray().getColumn()),
+                    ErrorReason.INVALID_INDEXING));
+      }
+      if (!indexType.isIndexable()) {
+        ErrorManager.getInstance()
+            .addError(
+                new Error(
+                    new Location(
+                        arrayIndexing.getIndex().getLine(), arrayIndexing.getIndex().getColumn()),
+                    ErrorReason.INVALID_INDEX_EXPRESSION));
+      }
+    }
+
+    return null;
+  }
+
+  public CompilerType visit(Cast cast, CompilerType param) {
+    super.visit(cast, param);
+
+    CompilerType fromType = cast.getExpression().getType();
+    CompilerType toType = cast.getToType();
+    cast.setType(fromType.cast(toType));
+
+    if (cast.getType() == null) {
+      ErrorManager.getInstance()
+          .addError(
+              new Error(new Location(cast.getLine(), cast.getColumn()), ErrorReason.INVALID_CAST));
+    }
+
+    // TODO:
+    return null;
+  }
+
+  public CompilerType visit(ComparisonOperation comparisonOperation, CompilerType param) {
+    super.visit(comparisonOperation, param);
+
+    Expression left = comparisonOperation.getLeftExpression();
+    Expression right = comparisonOperation.getRightExpression();
+    comparisonOperation.setType(left.getType().comparison(right.getType()));
+
+    if (comparisonOperation.getType() == null) {
+      comparisonOperation.setType(ErrorType.getInstance());
+      ErrorManager.getInstance()
+          .addError(
+              new Error(
+                  new Location(comparisonOperation.getLine(), comparisonOperation.getColumn()),
+                  ErrorReason.INVALID_COMPARISON));
+    }
+
+    return null;
+  }
+
+  public CompilerType visit(FieldAccess fieldAccess, CompilerType param) {
+    super.visit(fieldAccess, param);
+
+    CompilerType structType = fieldAccess.getStruct().getType();
+    fieldAccess.setType(structType.dot(fieldAccess.getFieldName()));
+
+    if (fieldAccess.getType().isError()) {
+      if (!structType.allowsDot()) {
+        ErrorManager.getInstance()
+            .addError(
+                new Error(
+                    new Location(fieldAccess.getLine(), fieldAccess.getColumn()),
+                    ErrorReason.INVALID_DOT));
+      } else {
+        ErrorManager.getInstance()
+            .addError(
+                new Error(
+                    new Location(fieldAccess.getLine(), fieldAccess.getColumn()),
+                    ErrorReason.NO_SUCH_FIELD));
+      }
+    }
+
+    return null;
+  }
+
+  public CompilerType visit(FunctionInvocation functionInvocation, CompilerType param) {
+    super.visit(functionInvocation, param);
+
+    CompilerType functionInvocationType = functionInvocation.getVariable().getType();
+    if (functionInvocationType == null) return null;
+    // TODO: algo puede ser null?
+
+    functionInvocation.setType(
+        functionInvocationType.invocation(functionInvocation.getArguments()));
+
+    if (functionInvocation.getType().isError()) {
+      if (!functionInvocationType.isCallable()) {
+        // No es una expresión que se puede invocar
+        ErrorManager.getInstance()
+            .addError(
+                new Error(
+                    new Location(functionInvocation.getLine(), functionInvocation.getColumn()),
+                    ErrorReason.INVALID_INVOCATION));
+        return null;
+      }
+      if (((FunctionType) functionInvocationType).getParameters().size()
+          != functionInvocation.getArguments().size()) {
+        ErrorManager.getInstance()
+            .addError(
+                new Error(
+                    new Location(functionInvocation.getLine(), functionInvocation.getColumn()),
+                    ErrorReason.INVALID_ARGS));
+        return null;
+      }
+      for (Expression argument : functionInvocation.getArguments()) {
+        if (argument.getType().isError()) {
+          ErrorManager.getInstance()
+              .addError(
+                  new Error(
+                      new Location(argument.getLine(), argument.getColumn()),
+                      ErrorReason.INVALID_ARGS));
+        }
+      }
+    }
+
+    return null;
+  }
+
+  public CompilerType visit(LogicOperation logicOperation, CompilerType param) {
+    super.visit(logicOperation, param);
+
+    Expression left = logicOperation.getLeftExpression();
+    Expression right = logicOperation.getRightExpression();
+    logicOperation.setType(left.getType().logical(right.getType()));
+
+    if (logicOperation.getType() == null) {
+      logicOperation.setType(ErrorType.getInstance());
+      ErrorManager.getInstance()
+          .addError(
+              new Error(
+                  new Location(logicOperation.getLine(), logicOperation.getColumn()),
+                  ErrorReason.INVALID_LOGICAL));
+    }
+
+    return null;
+  }
+
+  public CompilerType visit(MinusOperation minusOperation, CompilerType param) {
+    super.visit(minusOperation, param);
+    if (!minusOperation.getExpression().getType().isArithmetic()) {
+      minusOperation.setType(ErrorType.getInstance());
+      ErrorManager.getInstance()
+          .addError(
+              new Error(
+                  new Location(minusOperation.getLine(), minusOperation.getColumn()),
+                  ErrorReason.INVALID_ARITHMETIC));
+    } else {
+      minusOperation.setType(minusOperation.getExpression().getType());
+    }
+    return null;
+  }
+
+  public CompilerType visit(NotOperation notOperation, CompilerType param) {
+    super.visit(notOperation, param);
+    if (!notOperation.getExpression().getType().isLogical()) {
+      notOperation.setType(ErrorType.getInstance());
+      ErrorManager.getInstance()
+          .addError(
+              new Error(
+                  new Location(notOperation.getLine(), notOperation.getColumn()),
+                  ErrorReason.NOT_LOGICAL));
+    } else {
+      notOperation.setType(IntType.getInstance()); // TODO: comprobar si está bien
+    }
+    return null;
+  }
+
+  public CompilerType visit(Variable variable, CompilerType param) {
+    super.visit(variable, param);
+
+    if (variable.getDefinition() != null) {
+      variable.setType(variable.getDefinition().getType());
+    } else {
+      // TODO: ¿hay que lanzar error?
+    }
+
+    return null;
   }
 }

@@ -37,7 +37,32 @@ public class StructType extends AbstractCompilerType {
     return visitor.visit(this, param);
   }
 
+  @Override
+  public CompilerType dot(String fieldName) {
+    for (StructField structField : getFields()) {
+      if (structField.getName().equals(fieldName)) return structField.getType();
+    }
+
+    return super.dot(fieldName);
+  }
+
   public List<StructField> getFields() {
     return new ArrayList<>(this.fields);
+  }
+
+  @Override
+  public int getNumberOfBytes() {
+    int res = 0;
+    for (StructField structField : this.getFields()) {
+      int tmp = structField.getNumberOfBytes();
+      assert tmp >= 0;
+      res += tmp;
+    }
+    return res;
+  }
+
+  @Override
+  public boolean allowsDot() {
+    return true;
   }
 }

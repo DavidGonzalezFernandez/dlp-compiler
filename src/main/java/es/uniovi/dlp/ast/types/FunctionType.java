@@ -1,6 +1,7 @@
 package es.uniovi.dlp.ast.types;
 
 import es.uniovi.dlp.ast.definition.VarDefinition;
+import es.uniovi.dlp.ast.expressions.Expression;
 import es.uniovi.dlp.visitor.AbstractVisitor;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,5 +33,35 @@ public class FunctionType extends AbstractCompilerType {
 
   public CompilerType getReturnType() {
     return this.returnType;
+  }
+
+  @Override
+  public int getNumberOfBytes() {
+    return 0;
+  }
+
+  @Override
+  public boolean isCallable() {
+    return true;
+  }
+
+  @Override
+  public CompilerType invocation(List<Expression> arguments) {
+    if (this.parameters.size() != arguments.size()) {
+      return super.invocation(arguments);
+    }
+
+    boolean isCompletelyValid = true;
+
+    for (int i = 0; i < this.parameters.size(); i++) {
+      CompilerType paramType = this.parameters.get(i).getType();
+      CompilerType argType = arguments.get(i).getType();
+      if (paramType.getClass() != argType.getClass()) {
+        arguments.get(i).setType(ErrorType.getInstance());
+        isCompletelyValid = false;
+      }
+    }
+
+    return isCompletelyValid ? this.returnType : super.invocation(arguments);
   }
 }

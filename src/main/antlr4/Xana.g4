@@ -76,9 +76,9 @@ var_type_def returns [CompilerType ast]
     ;
 
 simple_type returns [CompilerType ast]
-    : t='int'    { $ast = new IntType($t.getLine(), $t.getCharPositionInLine()+1); }
-    | t='double' { $ast = new DoubleType($t.getLine(), $t.getCharPositionInLine()+1); }
-    | t='char'   { $ast = new CharType($t.getLine(), $t.getCharPositionInLine()+1); }
+    : t='int'    { $ast = IntType.getInstance(); }
+    | t='double' { $ast = DoubleType.getInstance(); }
+    | t='char'   { $ast = CharType.getInstance(); }
     ;
 
 array_def_type returns [ArrayType ast]
@@ -166,7 +166,7 @@ in returns [List<Statement> ast = new ArrayList<Statement>();]
 
 return_statement returns [ReturnStatement ast]
     : RETURN expression
-    {$ast = new ReturnStatement($RETURN.getLine(), $RETURN.getCharPositionInLine()+1, $expression.ast);}
+    {$ast = new ReturnStatement($RETURN.getLine(), $RETURN.getCharPositionInLine()+1+($RETURN.text.length()+1), $expression.ast);}
     ;
 
 
@@ -185,13 +185,13 @@ expression returns [Expression ast]
     | NOT expression
         {$ast = new NotOperation($NOT.getLine(), $NOT.getCharPositionInLine()+1, $expression.ast);}
     | left=expression op=('*' | '/' | '%') right=expression
-        {$ast = new ArithmeticOperation($start.getLine(), $start.getCharPositionInLine()+1, $left.ast, $op.text, $right.ast);}
+        {$ast = new ArithmeticOperation($op.getLine(), $op.getCharPositionInLine()+1, $left.ast, $op.text, $right.ast);}
     | leftExpression=expression op=('+' | MINUS) rightExpression=expression
-        {$ast = new ArithmeticOperation($start.getLine(), $start.getCharPositionInLine()+1, $leftExpression.ast, $op.text, $rightExpression.ast);}
+        {$ast = new ArithmeticOperation($op.getLine(), $op.getCharPositionInLine()+1, $leftExpression.ast, $op.text, $rightExpression.ast);}
     | leftExpression=expression op=('>' | '>=' | '<' | '<=' | '!=' | '==') rightExpression=expression
-        {$ast = new ComparisonOperation($start.getLine(), $start.getCharPositionInLine()+1, $leftExpression.ast, $op.text, $rightExpression.ast);}
+        {$ast = new ComparisonOperation($op.getLine(), $op.getCharPositionInLine()+1, $leftExpression.ast, $op.text, $rightExpression.ast);}
     | leftExpression=expression op=('&&' | '||') rightExpression=expression
-        {$ast = new LogicOperation($start.getLine(), $start.getCharPositionInLine()+1, $leftExpression.ast, $op.text, $rightExpression.ast);}
+        {$ast = new LogicOperation($op.getLine(), $op.getCharPositionInLine()+1, $leftExpression.ast, $op.text, $rightExpression.ast);}
     | func_invocation
         {$ast = $func_invocation.ast;}
     | ID

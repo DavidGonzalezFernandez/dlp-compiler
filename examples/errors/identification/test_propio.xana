@@ -1,0 +1,9 @@
+def suma(a :: int, b :: int) :: int do
+    return a + b
+end
+
+def main() do
+    suma :: int      # ERROR
+    suma = 5         # ERROR
+    suma(aa, bb)     # ERROR ERROR
+end

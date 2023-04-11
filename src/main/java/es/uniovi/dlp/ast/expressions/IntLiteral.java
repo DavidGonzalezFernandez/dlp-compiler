@@ -7,11 +7,10 @@ import es.uniovi.dlp.visitor.AbstractVisitor;
 
 public class IntLiteral extends AbstractExpression {
   private int value;
-  private CompilerType type;
 
   public IntLiteral(int line, int column, String value) {
     super(line, column);
-    this.type = new IntType(line, column);
+    super.setType(IntType.getInstance());
     this.value = LexerHelper.lexemeToInt(value);
     super.setLValue(false);
   }
@@ -20,5 +19,15 @@ public class IntLiteral extends AbstractExpression {
   public <ReturnType, ParamType> ReturnType accept(
       AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
     return visitor.visit(this, param);
+  }
+
+  @Override
+  public void setType(CompilerType type) {
+    /*
+    if (!(type instanceof IntType)) {
+      throw new IllegalArgumentException("El tipo tiene que ser IntTyle");
+    }
+     */
+    super.setType(type);
   }
 }

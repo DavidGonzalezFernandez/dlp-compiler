@@ -7,11 +7,10 @@ import es.uniovi.dlp.visitor.AbstractVisitor;
 
 public class DoubleLiteral extends AbstractExpression {
   private double value;
-  private CompilerType type;
 
   public DoubleLiteral(int line, int column, String value) {
     super(line, column);
-    this.type = new DoubleType(line, column);
+    super.setType(DoubleType.getInstance());
     this.value = LexerHelper.lexemeToReal(value);
     super.setLValue(false);
   }
@@ -20,5 +19,15 @@ public class DoubleLiteral extends AbstractExpression {
   public <ReturnType, ParamType> ReturnType accept(
       AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
     return visitor.visit(this, param);
+  }
+
+  @Override
+  public void setType(CompilerType type) {
+    /*
+    if (!(type instanceof DoubleType)) {
+      throw new IllegalArgumentException("El tipo tiene que ser DoubleType");
+    }
+     */
+    super.setType(type);
   }
 }

@@ -9,6 +9,9 @@ public class Cast extends AbstractExpression {
 
   public Cast(int line, int column, Expression expression, CompilerType newType) {
     super(line, column);
+
+    if (newType == null) throw new IllegalArgumentException("newType cannot be null");
+
     this.expression = expression;
     this.newType = newType;
     super.setLValue(false);
@@ -22,5 +25,9 @@ public class Cast extends AbstractExpression {
 
   public Expression getExpression() {
     return this.expression;
+  }
+
+  public CompilerType getToType() {
+    return this.newType;
   }
 }

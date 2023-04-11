@@ -29,7 +29,7 @@ public class Variable extends AbstractExpression {
 
   public void setDefinition(Definition definition) {
     assert this.name.equals(definition.getName());
-
+    super.setType(definition.getType());
     this.definition = definition;
   }
 }

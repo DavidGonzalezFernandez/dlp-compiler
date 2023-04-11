@@ -7,11 +7,10 @@ import es.uniovi.dlp.visitor.AbstractVisitor;
 
 public class CharLiteral extends AbstractExpression {
   private char value;
-  private CompilerType type;
 
   public CharLiteral(int line, int column, String value) {
     super(line, column);
-    this.type = new CharType(line, column);
+    super.setType(CharType.getInstance());
     this.value = LexerHelper.lexemeToChar(value);
     super.setLValue(false);
   }
@@ -20,5 +19,15 @@ public class CharLiteral extends AbstractExpression {
   public <ReturnType, ParamType> ReturnType accept(
       AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
     return visitor.visit(this, param);
+  }
+
+  @Override
+  public void setType(CompilerType type) {
+    /*
+    if (!(type instanceof CharType)) {
+      throw new IllegalArgumentException("El tipo tiene que ser CharType");
+    }
+     */
+    super.setType(type);
   }
 }

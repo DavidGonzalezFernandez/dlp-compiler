@@ -59,6 +59,7 @@ public abstract class AbstractVisitor<ReturnType, ParamType>
   @Override
   public ReturnType visit(Cast cast, ParamType param) {
     cast.getExpression().accept(this, param);
+    cast.getToType().accept(this, param);
     return null;
   }
 
@@ -173,7 +174,7 @@ public abstract class AbstractVisitor<ReturnType, ParamType>
   // Types
   @Override
   public ReturnType visit(ArrayType arrayType, ParamType param) {
-    arrayType.getType().accept(this, param);
+    arrayType.getTypeOf().accept(this, param);
     return null;
   }
 

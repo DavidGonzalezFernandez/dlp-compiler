@@ -22,4 +22,8 @@ public class FieldAccess extends AbstractExpression {
   public Expression getStruct() {
     return this.struct;
   }
+
+  public String getFieldName() {
+    return this.fieldName;
+  }
 }
