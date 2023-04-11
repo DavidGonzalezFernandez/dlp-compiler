@@ -4,6 +4,7 @@ import es.uniovi.dlp.ast.Program;
 import es.uniovi.dlp.error.ErrorManager;
 import es.uniovi.dlp.parser.XanaLexer;
 import es.uniovi.dlp.parser.XanaParser;
+import es.uniovi.dlp.visitor.codegeneration.OffsetVisitor;
 import es.uniovi.dlp.visitor.semantic.IdentificationVisitor;
 import es.uniovi.dlp.visitor.semantic.TypeCheckingVisitor;
 import java.io.IOException;
@@ -25,6 +26,7 @@ public class Compiler {
     program = parse(filename);
     assignScope();
     assignType();
+    runOffset();
     checkErrors();
   }
 
@@ -36,6 +38,11 @@ public class Compiler {
       errorManager.getErrors().forEach(System.err::println);
       System.exit(-1);
     }
+  }
+
+  private void runOffset() {
+    OffsetVisitor offsetVisitor = new OffsetVisitor();
+    offsetVisitor.visit(program, null);
   }
 
   public Program getProgram() {

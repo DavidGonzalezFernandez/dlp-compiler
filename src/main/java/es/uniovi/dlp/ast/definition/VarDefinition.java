@@ -7,8 +7,8 @@ import es.uniovi.dlp.visitor.AbstractVisitor;
 public class VarDefinition extends AbstractASTNode implements Definition {
   private CompilerType type;
   private String name;
-
   private int scope;
+  private int offset;
 
   public VarDefinition(int line, int column, CompilerType type, String name) {
     super(line, column);
@@ -54,4 +54,13 @@ public class VarDefinition extends AbstractASTNode implements Definition {
       AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
     return visitor.visit(this, param);
   }
+
+  public void setOffset(int offset) {
+    this.offset = offset;
+  }
+
+  public int getOffset() {
+    return this.offset;
+  }
+
 }

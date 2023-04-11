@@ -7,6 +7,7 @@ public class StructField implements ASTNode {
   private int line, column;
   private String name;
   private CompilerType type;
+  private int offset;
 
   public StructField(int line, int column, String name, CompilerType type) {
     assert line >= 0;
@@ -44,5 +45,13 @@ public class StructField implements ASTNode {
 
   public int getNumberOfBytes() {
     return this.type.getNumberOfBytes();
+  }
+
+  public void setOffset(int offset) {
+    this.offset = offset;
+  }
+
+  public int getOffset() {
+    return this.offset;
   }
 }
