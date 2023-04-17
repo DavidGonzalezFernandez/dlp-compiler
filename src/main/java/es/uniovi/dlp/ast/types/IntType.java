@@ -36,7 +36,7 @@ public class IntType extends AbstractCompilerType {
 
   @Override
   public int getNumberOfBytes() {
-    throw new IllegalStateException("No implementado");
+    return 2;
   }
 
   @Override
@@ -75,7 +75,7 @@ public class IntType extends AbstractCompilerType {
 
   @Override
   public boolean canPromoteTo(CompilerType other) {
-    if (other instanceof DoubleType) return true;
+    if (other instanceof IntType  ||  other instanceof DoubleType) return true;
 
     return false;
   }

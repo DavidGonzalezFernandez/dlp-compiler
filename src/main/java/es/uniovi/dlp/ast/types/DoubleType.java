@@ -24,7 +24,7 @@ public class DoubleType extends AbstractCompilerType {
 
   @Override
   public int getNumberOfBytes() {
-    throw new IllegalStateException("No implementado");
+    return 4;
   }
 
   public static DoubleType getInstance() {
@@ -54,5 +54,13 @@ public class DoubleType extends AbstractCompilerType {
   @Override
   public boolean isArithmetic() {
     return true;
+  }
+
+  @Override
+  public boolean canPromoteTo(CompilerType other) {
+    if (other instanceof DoubleType) {
+      return true;
+    }
+    return false;
   }
 }

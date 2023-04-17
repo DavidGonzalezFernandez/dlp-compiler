@@ -28,7 +28,7 @@ public class CharType extends AbstractCompilerType {
 
   @Override
   public int getNumberOfBytes() {
-    throw new IllegalStateException("No implementado");
+    return 1;
   }
 
   @Override
@@ -58,7 +58,7 @@ public class CharType extends AbstractCompilerType {
 
   @Override
   public boolean canPromoteTo(CompilerType other) {
-    if (other instanceof DoubleType || other instanceof IntType) return true;
+    if (other instanceof CharType  ||  other instanceof DoubleType || other instanceof IntType) return true;
 
     return false;
   }
