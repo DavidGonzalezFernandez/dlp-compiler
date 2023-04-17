@@ -2,8 +2,8 @@ package es.uniovi.dlp.parser;
 
 import es.uniovi.dlp.ast.Program;
 import introspector.model.IntrospectorModel;
-import java.io.IOException;
 import introspector.view.IntrospectorView;
+import java.io.IOException;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;

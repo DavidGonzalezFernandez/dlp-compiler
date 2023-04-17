@@ -62,5 +62,4 @@ public class VarDefinition extends AbstractASTNode implements Definition {
   public int getOffset() {
     return this.offset;
   }
-
 }
