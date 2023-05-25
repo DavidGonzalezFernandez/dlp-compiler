@@ -60,4 +60,7 @@ CompilerType <|.. FunctionType
 class VoidType
 CompilerType <|.. VoidType
 
+class ErrorType
+CompilerType <|.. ErrorType
+
 @enduml

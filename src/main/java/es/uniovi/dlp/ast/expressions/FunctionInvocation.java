@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FunctionInvocation extends AbstractExpression implements Statement {
-  private Variable variable; // TODO: ¿por qué es una variable?
+  private Variable variable;
   private List<Expression> arguments;
 
   public FunctionInvocation(int line, int column, Variable variable, List<Expression> arguments) {

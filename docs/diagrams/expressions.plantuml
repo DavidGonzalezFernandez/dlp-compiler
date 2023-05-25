@@ -84,6 +84,7 @@ class ComparisonOperation {
     operator: String
     leftExpression: Expression
     rightExpression: Expression
+    operandsType: CompilerType
 }
 Expression <|.. ComparisonOperation
 
@@ -96,6 +97,7 @@ class FunctionInvocation {
     arguments: List<Expression>
 }
 Expression <|.. FunctionInvocation
+FunctionInvocation o-- "0..n" Expression
 
 
 class ArrayIndexing {

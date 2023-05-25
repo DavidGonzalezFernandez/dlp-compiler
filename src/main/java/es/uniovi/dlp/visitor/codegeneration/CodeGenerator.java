@@ -20,7 +20,7 @@ public class CodeGenerator {
   }
 
   private void writePragma(String string) {
-    write("# " + string + "\n");
+    write("#" + string + "\n");
   }
 
   private void write(String string) {

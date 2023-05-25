@@ -65,4 +65,11 @@ class Assignment {
 Statement <|.. Assignment
 Assignment o-- "2" Expression
 
+class FunctionInvocation {
+    name: String
+    arguments: List<Expression>
+}
+Statement <|.. FunctionInvocation
+FunctionInvocation o-- "0..n" Expression
+
 @enduml

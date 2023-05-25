@@ -17,7 +17,8 @@ ASTNode <|.. Program
 class Program
 
 interface Definition {
-    type: Type
+    type: CompilerType
+    scope: int
 }
 
 Program o-- "0..n" Definition
@@ -25,7 +26,6 @@ Program o-- "0..n" Definition
 'La definición de una variable es un identificador seguido de :: y su respectivo tipo
 class VarDefinition {
     name: String
-    type: CompilerType
 }
 
 'TODO pendiente de terminar
@@ -37,7 +37,6 @@ class VarDefinition {
 '/
 class FunctionDefinition {
     name: String
-    type: FunctionType
     varDefinitions: List<VarDefinition>
     statements: List<Statement>
 }
