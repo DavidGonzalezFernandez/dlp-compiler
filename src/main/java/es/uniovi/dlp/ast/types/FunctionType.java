@@ -2,7 +2,7 @@ package es.uniovi.dlp.ast.types;
 
 import es.uniovi.dlp.ast.definition.VarDefinition;
 import es.uniovi.dlp.ast.expressions.Expression;
-import es.uniovi.dlp.visitor.AbstractVisitor;
+import es.uniovi.dlp.visitor.Visitor;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class FunctionType extends AbstractCompilerType {
 
   @Override
   public <ReturnType, ParamType> ReturnType accept(
-      AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
+      Visitor<ReturnType, ParamType> visitor, ParamType param) {
     return visitor.visit(this, param);
   }
 

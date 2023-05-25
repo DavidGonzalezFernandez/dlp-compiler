@@ -1,6 +1,6 @@
 package es.uniovi.dlp.ast;
 
-import es.uniovi.dlp.visitor.AbstractVisitor;
+import es.uniovi.dlp.visitor.Visitor;
 
 public interface ASTNode {
   int getLine();
@@ -8,5 +8,5 @@ public interface ASTNode {
   int getColumn();
 
   <ReturnType, ParamType> ReturnType accept(
-      AbstractVisitor<ReturnType, ParamType> visitor, ParamType param);
+      Visitor<ReturnType, ParamType> visitor, ParamType param);
 }

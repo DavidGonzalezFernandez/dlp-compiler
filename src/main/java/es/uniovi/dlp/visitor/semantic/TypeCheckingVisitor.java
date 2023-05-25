@@ -18,7 +18,6 @@ public class TypeCheckingVisitor extends AbstractVisitor<CompilerType, CompilerT
 
     for (Statement statement : functionDefinition.getStatements()) {
       if (statement instanceof ReturnStatement) {
-        // TODO: pasar el parámetro adecuado, puede hacer falta un cast
         statement.accept(this, ((FunctionType) (functionDefinition.getType())).getReturnType());
       }
     }
@@ -203,6 +202,17 @@ public class TypeCheckingVisitor extends AbstractVisitor<CompilerType, CompilerT
               new Error(
                   new Location(comparisonOperation.getLine(), comparisonOperation.getColumn()),
                   ErrorReason.INVALID_COMPARISON));
+    } else {
+      // Se establece el tipo de comparación que hay que hacer
+      // Se necesita para castear los operandos y para poner el sufijo correcto de MAPL
+      CompilerType operandTypes =
+          left.getType().canPromoteTo(right.getType())
+              ? left.getType().cast(right.getType())
+              : right.getType().cast(left.getType());
+      if (operandTypes.canPromoteTo(IntType.getInstance())) {
+        operandTypes = operandTypes.cast(IntType.getInstance());
+      }
+      comparisonOperation.setOperandTypes(operandTypes);
     }
 
     return null;
@@ -243,16 +253,18 @@ public class TypeCheckingVisitor extends AbstractVisitor<CompilerType, CompilerT
     functionInvocation.setType(
         functionInvocationType.invocation(functionInvocation.getArguments()));
 
-    if (functionInvocation.getType().isError()) {
-      if (!functionInvocationType.isCallable()) {
-        // No es una expresión que se puede invocar
+    if (!functionInvocationType.isCallable()) {
+      if (functionInvocation.getVariable().getDefinition() != null) {
         ErrorManager.getInstance()
             .addError(
                 new Error(
                     new Location(functionInvocation.getLine(), functionInvocation.getColumn()),
                     ErrorReason.INVALID_INVOCATION));
-        return null;
       }
+      return null;
+    }
+
+    if (functionInvocation.getType().isError()) {
       if (((FunctionType) functionInvocationType).getParameters().size()
           != functionInvocation.getArguments().size()) {
         ErrorManager.getInstance()
@@ -305,7 +317,12 @@ public class TypeCheckingVisitor extends AbstractVisitor<CompilerType, CompilerT
                   new Location(minusOperation.getLine(), minusOperation.getColumn()),
                   ErrorReason.INVALID_ARITHMETIC));
     } else {
-      minusOperation.setType(minusOperation.getExpression().getType());
+      minusOperation.setType(
+          // Casteo para evitar que sea resta de char
+          minusOperation
+              .getExpression()
+              .getType()
+              .arithmetic(minusOperation.getExpression().getType()));
     }
     return null;
   }
@@ -320,7 +337,8 @@ public class TypeCheckingVisitor extends AbstractVisitor<CompilerType, CompilerT
                   new Location(notOperation.getLine(), notOperation.getColumn()),
                   ErrorReason.NOT_LOGICAL));
     } else {
-      notOperation.setType(IntType.getInstance()); // TODO: comprobar si está bien
+      // siempre son tipo Int
+      notOperation.setType(IntType.getInstance());
     }
     return null;
   }
@@ -331,9 +349,9 @@ public class TypeCheckingVisitor extends AbstractVisitor<CompilerType, CompilerT
     if (variable.getDefinition() != null) {
       variable.setType(variable.getDefinition().getType());
     } else {
-      // TODO: ¿hay que lanzar error?
+      variable.setType(ErrorType.getInstance());
     }
 
-    return null;
+    return super.visit(variable, param);
   }
 }

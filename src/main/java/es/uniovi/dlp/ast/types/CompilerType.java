@@ -38,4 +38,6 @@ public interface CompilerType extends ASTNode {
   public boolean isCallable();
 
   public boolean canPromoteTo(CompilerType other);
+
+  public CompilerType getIntermediateType(CompilerType toType);
 }

@@ -1,7 +1,7 @@
 package es.uniovi.dlp.ast.types;
 
 import es.uniovi.dlp.ast.ASTNode;
-import es.uniovi.dlp.visitor.AbstractVisitor;
+import es.uniovi.dlp.visitor.Visitor;
 
 public class StructField implements ASTNode {
   private int line, column;
@@ -35,7 +35,7 @@ public class StructField implements ASTNode {
 
   @Override
   public <ReturnType, ParamType> ReturnType accept(
-      AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
+      Visitor<ReturnType, ParamType> visitor, ParamType param) {
     return visitor.visit(this, param);
   }
 
@@ -53,5 +53,10 @@ public class StructField implements ASTNode {
 
   public int getOffset() {
     return this.offset;
+  }
+
+  @Override
+  public String toString() {
+    return "(" + name + " x " + type.toString() + ")";
   }
 }

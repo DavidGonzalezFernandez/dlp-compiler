@@ -1,6 +1,6 @@
 package es.uniovi.dlp.ast.types;
 
-import es.uniovi.dlp.visitor.AbstractVisitor;
+import es.uniovi.dlp.visitor.Visitor;
 
 public class ErrorType extends AbstractCompilerType {
   public static ErrorType myInstance = new ErrorType(0, 0);
@@ -15,7 +15,7 @@ public class ErrorType extends AbstractCompilerType {
 
   @Override
   public <ReturnType, ParamType> ReturnType accept(
-      AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
+      Visitor<ReturnType, ParamType> visitor, ParamType param) {
     return null;
   }
 

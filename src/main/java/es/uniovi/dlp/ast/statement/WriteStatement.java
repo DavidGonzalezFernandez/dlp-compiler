@@ -1,7 +1,7 @@
 package es.uniovi.dlp.ast.statement;
 
 import es.uniovi.dlp.ast.expressions.Expression;
-import es.uniovi.dlp.visitor.AbstractVisitor;
+import es.uniovi.dlp.visitor.Visitor;
 
 public class WriteStatement extends AbstractStatement {
   private Expression expression;
@@ -13,7 +13,7 @@ public class WriteStatement extends AbstractStatement {
 
   @Override
   public <ReturnType, ParamType> ReturnType accept(
-      AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
+      Visitor<ReturnType, ParamType> visitor, ParamType param) {
     return visitor.visit(this, param);
   }
 

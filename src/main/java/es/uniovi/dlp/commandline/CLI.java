@@ -3,7 +3,6 @@ package es.uniovi.dlp.commandline;
 import es.uniovi.dlp.compiler.Compiler;
 import introspector.model.IntrospectorModel;
 import introspector.view.IntrospectorView;
-
 import java.io.OutputStreamWriter;
 
 public class CLI {
@@ -35,7 +34,7 @@ public class CLI {
 
   private static void runProgram(String file) {
     try {
-      new Compiler(file).run();
+      new Compiler(file, new OutputStreamWriter(System.out)).run();
     } catch (Exception e) {
       System.err.println("Failed to run the program:");
       System.err.println(e.getMessage());
@@ -44,7 +43,7 @@ public class CLI {
 
   private static void introspectProgram(String file) {
     try {
-      Compiler compiler = new Compiler(file);
+      Compiler compiler = new Compiler(file, new OutputStreamWriter(System.out));
       compiler.run();
       IntrospectorModel model = new IntrospectorModel("Program", compiler.getProgram());
       new IntrospectorView("Introspector", model);

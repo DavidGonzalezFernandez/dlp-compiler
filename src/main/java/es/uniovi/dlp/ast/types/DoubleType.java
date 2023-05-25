@@ -1,6 +1,6 @@
 package es.uniovi.dlp.ast.types;
 
-import es.uniovi.dlp.visitor.AbstractVisitor;
+import es.uniovi.dlp.visitor.Visitor;
 
 public class DoubleType extends AbstractCompilerType {
   private static DoubleType myInstance = new DoubleType(0, 0);
@@ -11,7 +11,7 @@ public class DoubleType extends AbstractCompilerType {
 
   @Override
   public <ReturnType, ParamType> ReturnType accept(
-      AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
+      Visitor<ReturnType, ParamType> visitor, ParamType param) {
     return visitor.visit(this, param);
   }
 
@@ -46,8 +46,8 @@ public class DoubleType extends AbstractCompilerType {
   @Override
   public CompilerType comparison(CompilerType other) {
     if (other instanceof IntType || other instanceof DoubleType || other instanceof CharType)
-      // Los booleanos son int, así que devuelvo un int
       return IntType.getInstance();
+
     return super.comparison(other);
   }
 
@@ -62,5 +62,17 @@ public class DoubleType extends AbstractCompilerType {
       return true;
     }
     return false;
+  }
+
+  @Override
+  public String toString() {
+    return "double";
+  }
+
+  @Override
+  public CompilerType getIntermediateType(CompilerType toType) {
+    if (toType instanceof IntType || toType instanceof CharType) return IntType.getInstance();
+
+    return super.getIntermediateType(toType);
   }
 }

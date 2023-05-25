@@ -1,6 +1,6 @@
 package es.uniovi.dlp.ast.types;
 
-import es.uniovi.dlp.visitor.AbstractVisitor;
+import es.uniovi.dlp.visitor.Visitor;
 
 public class CharType extends AbstractCompilerType {
   private static CharType myInstance = new CharType(0, 0);
@@ -15,7 +15,7 @@ public class CharType extends AbstractCompilerType {
 
   @Override
   public <ReturnType, ParamType> ReturnType accept(
-      AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
+      Visitor<ReturnType, ParamType> visitor, ParamType param) {
     return visitor.visit(this, param);
   }
 
@@ -45,9 +45,9 @@ public class CharType extends AbstractCompilerType {
 
   @Override
   public CompilerType comparison(CompilerType other) {
-    if (other instanceof IntType || other instanceof DoubleType || other instanceof CharType)
-      // Los booleanos son int, así que devuelvo un int
+    if (other instanceof IntType || other instanceof CharType || other instanceof DoubleType)
       return IntType.getInstance();
+
     return super.comparison(other);
   }
 
@@ -58,8 +58,21 @@ public class CharType extends AbstractCompilerType {
 
   @Override
   public boolean canPromoteTo(CompilerType other) {
-    if (other instanceof CharType  ||  other instanceof DoubleType || other instanceof IntType) return true;
+    if (other instanceof CharType || other instanceof DoubleType || other instanceof IntType)
+      return true;
 
     return false;
+  }
+
+  @Override
+  public String toString() {
+    return "char";
+  }
+
+  @Override
+  public CompilerType getIntermediateType(CompilerType toType) {
+    if (toType instanceof IntType || toType instanceof DoubleType) return IntType.getInstance();
+
+    return super.getIntermediateType(toType);
   }
 }

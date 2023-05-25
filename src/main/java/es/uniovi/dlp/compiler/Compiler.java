@@ -4,30 +4,43 @@ import es.uniovi.dlp.ast.Program;
 import es.uniovi.dlp.error.ErrorManager;
 import es.uniovi.dlp.parser.XanaLexer;
 import es.uniovi.dlp.parser.XanaParser;
+import es.uniovi.dlp.visitor.codegeneration.ExecuteCGVisitor;
 import es.uniovi.dlp.visitor.codegeneration.OffsetVisitor;
 import es.uniovi.dlp.visitor.semantic.IdentificationVisitor;
 import es.uniovi.dlp.visitor.semantic.TypeCheckingVisitor;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 
 public class Compiler {
-  private final String filename;
+  private boolean showDebug = true;
+  private String filename;
   private Program program;
   private boolean reportErrors = true;
 
-  public Compiler(String filename) {
+  private OutputStreamWriter outputStreamWriter;
+
+  public Compiler(String filename, OutputStreamWriter outputStreamWriter) {
     this.filename = filename;
+    this.outputStreamWriter = outputStreamWriter;
   }
 
   public void run() throws IOException {
     ErrorManager.getInstance().clearErrors();
     program = parse(filename);
     assignScope();
+
     assignType();
-    runOffset();
+
     checkErrors();
+    if (ErrorManager.getInstance().hasErrors()) return;
+
+    runOffset();
+    generateMAPLCode();
   }
 
   private void checkErrors() {
@@ -71,5 +84,22 @@ public class Compiler {
 
   public void setReportErrors(boolean reportErrors) {
     this.reportErrors = reportErrors;
+  }
+
+  public void setShowDebug(boolean showDebug) {
+    this.showDebug = showDebug;
+  }
+
+  private void generateMAPLCode() {
+    try {
+      this.outputStreamWriter = new FileWriter(this.filename + ".mp");
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    File file = new File(this.filename);
+    ExecuteCGVisitor executeCGVisitor =
+        new ExecuteCGVisitor(filename, outputStreamWriter, this.showDebug);
+    executeCGVisitor.visit(program, null);
   }
 }

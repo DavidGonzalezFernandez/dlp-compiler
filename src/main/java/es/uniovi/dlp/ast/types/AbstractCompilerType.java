@@ -103,4 +103,9 @@ public abstract class AbstractCompilerType extends AbstractASTNode implements Co
   public boolean canPromoteTo(CompilerType other) {
     return false;
   }
+
+  public CompilerType getIntermediateType(CompilerType toType) {
+    if (this.getClass().equals(toType.getClass())) return this;
+    return null;
+  }
 }

@@ -58,17 +58,17 @@ public interface Visitor<ReturnType, ParamType> {
   // Tipos
   ReturnType visit(ArrayType arrayType, ParamType param);
 
-  ReturnType visit(CharType arrayType, ParamType param);
+  ReturnType visit(CharType charType, ParamType param);
 
-  ReturnType visit(DoubleType arrayType, ParamType param);
+  ReturnType visit(DoubleType doubleType, ParamType param);
 
-  ReturnType visit(FunctionType arrayType, ParamType param);
+  ReturnType visit(FunctionType functionType, ParamType param);
 
-  ReturnType visit(IntType arrayType, ParamType param);
+  ReturnType visit(IntType intType, ParamType param);
 
-  ReturnType visit(StructField arrayType, ParamType param);
+  ReturnType visit(StructField structField, ParamType param);
 
-  ReturnType visit(StructType arrayType, ParamType param);
+  ReturnType visit(StructType structType, ParamType param);
 
-  ReturnType visit(VoidType arrayType, ParamType param);
+  ReturnType visit(VoidType voidType, ParamType param);
 }

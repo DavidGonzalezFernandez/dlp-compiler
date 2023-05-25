@@ -4,7 +4,7 @@ import es.uniovi.dlp.error.Error;
 import es.uniovi.dlp.error.ErrorManager;
 import es.uniovi.dlp.error.ErrorReason;
 import es.uniovi.dlp.error.Location;
-import es.uniovi.dlp.visitor.AbstractVisitor;
+import es.uniovi.dlp.visitor.Visitor;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -33,7 +33,7 @@ public class StructType extends AbstractCompilerType {
 
   @Override
   public <ReturnType, ParamType> ReturnType accept(
-      AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
+      Visitor<ReturnType, ParamType> visitor, ParamType param) {
     return visitor.visit(this, param);
   }
 
@@ -61,8 +61,33 @@ public class StructType extends AbstractCompilerType {
     return res;
   }
 
+  public StructField getStructFieldByName(String name) {
+    for (StructField field : getFields()) {
+      if (field.getName().equals(name)) {
+        return field;
+      }
+    }
+    return null;
+  }
+
   @Override
   public boolean allowsDot() {
     return true;
+  }
+
+  @Override
+  public String toString() {
+    String res = "record(";
+
+    if (fields.size() > 0) {
+      res += fields.get(0).toString();
+    }
+
+    for (int i = 1; i < fields.size(); i++) {
+      res += " x " + fields.get(i).toString();
+    }
+
+    res += ")";
+    return res;
   }
 }

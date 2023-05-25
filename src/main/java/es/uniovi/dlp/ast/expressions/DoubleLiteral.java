@@ -3,7 +3,7 @@ package es.uniovi.dlp.ast.expressions;
 import es.uniovi.dlp.ast.types.CompilerType;
 import es.uniovi.dlp.ast.types.DoubleType;
 import es.uniovi.dlp.parser.LexerHelper;
-import es.uniovi.dlp.visitor.AbstractVisitor;
+import es.uniovi.dlp.visitor.Visitor;
 
 public class DoubleLiteral extends AbstractExpression {
   private double value;
@@ -17,8 +17,12 @@ public class DoubleLiteral extends AbstractExpression {
 
   @Override
   public <ReturnType, ParamType> ReturnType accept(
-      AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
+      Visitor<ReturnType, ParamType> visitor, ParamType param) {
     return visitor.visit(this, param);
+  }
+
+  public double getValue() {
+    return this.value;
   }
 
   @Override

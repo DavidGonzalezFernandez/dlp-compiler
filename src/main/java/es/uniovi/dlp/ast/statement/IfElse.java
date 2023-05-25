@@ -1,7 +1,7 @@
 package es.uniovi.dlp.ast.statement;
 
 import es.uniovi.dlp.ast.expressions.Expression;
-import es.uniovi.dlp.visitor.AbstractVisitor;
+import es.uniovi.dlp.visitor.Visitor;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +28,7 @@ public class IfElse extends AbstractStatement {
 
   @Override
   public <ReturnType, ParamType> ReturnType accept(
-      AbstractVisitor<ReturnType, ParamType> visitor, ParamType param) {
+      Visitor<ReturnType, ParamType> visitor, ParamType param) {
     return visitor.visit(this, param);
   }
 
