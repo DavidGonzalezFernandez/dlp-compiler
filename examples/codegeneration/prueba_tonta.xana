@@ -1,5 +1,0 @@
-def main() do
-    a :: int
-
-    a = 2.0 <= 2.5
-end
