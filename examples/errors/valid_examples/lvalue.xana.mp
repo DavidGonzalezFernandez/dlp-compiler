@@ -1,4 +1,4 @@
-# source	"examples/errors/valid_examples/lvalue.xana"
+#source	"examples/errors/valid_examples/lvalue.xana"
 
 ' Global variables
 
@@ -7,7 +7,7 @@ call main
 halt
 
 
-# line 1
+#line 1
 
 f:
 ' Parameters
@@ -15,7 +15,7 @@ f:
 ' Local variables
 enter	0
 
-# line 2
+#line 2
 
 ' Return statement
 push	bp
@@ -25,7 +25,7 @@ loadi
 i2f
 ret	4, 0, 2
 
-# line 5
+#line 5
 
 main:
 ' Parameters
@@ -36,7 +36,7 @@ main:
 ' v :: [10 :: double] (offset -46)
 enter	46
 
-# line 9
+#line 9
 
 ' Assignment statement
 push	bp
@@ -45,7 +45,7 @@ addi
 pushi	0
 storei
 
-# line 10
+#line 10
 
 ' Assignment statement
 push	bp
@@ -54,7 +54,7 @@ addi
 pushi	0
 storei
 
-# line 11
+#line 11
 
 ' Assignment statement
 push	bp
@@ -77,7 +77,7 @@ pushi	2
 subi
 storei
 
-# line 13
+#line 13
 
 ' Assignment statement
 push	bp
@@ -106,41 +106,41 @@ loadi
 i2f
 storef
 
-# line 15
+#line 15
 
 ' Write statement
 pushb	102
 outb
 
-# line 15
+#line 15
 
 ' Write statement
 pushb	40
 outb
 
-# line 15
+#line 15
 
 ' Write statement
 pushb	105
 outb
 
-# line 15
+#line 15
 
 ' Write statement
 pushb	41
 outb
 
-# line 15
+#line 15
 
 ' Write statement
 pushb	61
 outb
 
-# line 15
+#line 15
 
 ' Write statement
 
-# line 15
+#line 15
 
 ' Function invocation (expression)
 push	bp

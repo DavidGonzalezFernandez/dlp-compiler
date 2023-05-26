@@ -1,6 +1,7 @@
 package es.uniovi.dlp.visitor.codegeneration;
 
 import es.uniovi.dlp.ast.expressions.*;
+import es.uniovi.dlp.ast.types.FunctionType;
 import es.uniovi.dlp.ast.types.IntType;
 
 public class ValueCGVisitor extends CGAbstractVisitor<Void, Void> {
@@ -94,13 +95,19 @@ public class ValueCGVisitor extends CGAbstractVisitor<Void, Void> {
     codeGenerator.writeComment("Function invocation (expression)");
 
     // Apilar de IZQ a DRCH
-    for (Expression argument : functionInvocation.getArguments()) {
+    FunctionType functionType = (FunctionType) functionInvocation.getVariable().getType();
+    var params = functionType.getParameters();
+    var arguments = functionInvocation.getArguments();
+    for (int i = 0; i < arguments.size(); i++) {
+      Expression argument = arguments.get(i);
+
       argument.accept(this, param);
+
+      // Promote los argumentos si es necesario
+      codeGenerator.promoteType(argument.getType(), params.get(i).getType());
     }
 
     codeGenerator.call(functionInvocation.getVariable().getName());
-
-    // TODO: mirar cast
 
     return null;
   }

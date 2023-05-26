@@ -1,7 +1,10 @@
 package es.uniovi.dlp.visitor.codegeneration;
 
+import es.uniovi.dlp.ast.types.CompilerType;
+
 public class ReturnInfoTriple {
   private int localBytes, paramBytes, returnBytes;
+  private CompilerType expectedTypeToReturn;
 
   public ReturnInfoTriple() {}
 
@@ -26,6 +29,11 @@ public class ReturnInfoTriple {
     return this;
   }
 
+  public ReturnInfoTriple setExpectedTypeToReturn(CompilerType expectedTypeToReturn) {
+    this.expectedTypeToReturn = expectedTypeToReturn;
+    return this;
+  }
+
   public int getLocalBytes() {
     return this.localBytes;
   }
@@ -36,5 +44,9 @@ public class ReturnInfoTriple {
 
   public int getReturnBytes() {
     return this.returnBytes;
+  }
+
+  public CompilerType getExpectedTypeToReturn() {
+    return this.expectedTypeToReturn;
   }
 }

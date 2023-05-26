@@ -94,7 +94,8 @@ public class ExecuteCGVisitor extends CGAbstractVisitor<Void, ReturnInfoTriple> 
         new ReturnInfoTriple()
             .setLocalBytes(localBytes)
             .setParamBytes(paramBytes)
-            .setReturnBytes(functionType.getReturnType().getNumberOfBytes());
+            .setReturnBytes(functionType.getReturnType().getNumberOfBytes())
+            .setExpectedTypeToReturn(functionType.returnType);
 
     for (Statement statement : functionDefinition.getStatements()) {
       statement.accept(this, returnInfoTriple);
@@ -239,6 +240,10 @@ public class ExecuteCGVisitor extends CGAbstractVisitor<Void, ReturnInfoTriple> 
 
     returnStatement.getExpression().accept(valueCGVisitor, null);
 
+    // Promotes the return value
+    codeGenerator.promoteType(
+        returnStatement.getExpression().getType(), param.getExpectedTypeToReturn());
+
     codeGenerator.returnInstruction(param);
 
     return null;
@@ -250,9 +255,16 @@ public class ExecuteCGVisitor extends CGAbstractVisitor<Void, ReturnInfoTriple> 
     codeGenerator.writeComment("Function invocation (statement)");
 
     // Apilar de IZQ a DRCH
-    for (Expression argument : functionInvocation.getArguments()) {
-      // TODO: comprobar si hay que hacer cast
+    FunctionType functionType = (FunctionType) functionInvocation.getVariable().getType();
+    var params = functionType.getParameters();
+    var arguments = functionInvocation.getArguments();
+    for (int i = 0; i < arguments.size(); i++) {
+      Expression argument = arguments.get(i);
+
       argument.accept(valueCGVisitor, null);
+
+      // Promote de los argumentos si es necesario
+      codeGenerator.promoteType(argument.getType(), params.get(i).getType());
     }
 
     codeGenerator.call(functionInvocation.getVariable().getName());
